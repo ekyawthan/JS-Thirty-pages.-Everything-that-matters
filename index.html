@@ -128,7 +128,7 @@ header.hero .facts span{font-family:var(--mono); font-size:9.5px; letter-spacing
 @keyframes rise{from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none}}
 
 /* section */
-section{padding:9vh 0 2vh; border-bottom:1px solid var(--rule2); position:relative; max-width:900px}
+section{padding:9vh 0 2vh; border-bottom:1px solid var(--rule2); position:relative; max-width:900px; scroll-margin-top:28px}
 section > .num{
   position:absolute; right:100%; top:9vh; margin-right:26px;
   font-family:var(--serif); font-style:italic; font-size:64px; line-height:1; color:var(--ink3); opacity:.5;
@@ -1821,10 +1821,17 @@ function onScroll(){
     let cur=0;
     secs.forEach((s,i)=>{ if(s.getBoundingClientRect().top<160) cur=i; });
     links.forEach((l,i)=>l.classList.toggle('on',i===cur));
-    const on=links[cur];
-    if(on){ const r=on.getBoundingClientRect(), nr=nav.getBoundingClientRect();
-      if(r.top<nr.top+20||r.bottom>nr.bottom-20) on.scrollIntoView({block:'center'}); }
+    keepLinkVisible(links[cur]);
   });
+}
+/* scroll ONLY the sidebar. scrollIntoView() would also scroll the document,
+   which cancels the anchor jump the user just triggered. */
+function keepLinkVisible(on){
+  if(!on) return;
+  const r=on.getBoundingClientRect(), nr=nav.getBoundingClientRect();
+  if(r.top>=nr.top+16 && r.bottom<=nr.bottom-16) return;
+  const delta=(r.top-nr.top)-(nav.clientHeight/2-r.height/2);
+  nav.scrollTop=Math.max(0,Math.min(nav.scrollTop+delta,nav.scrollHeight-nav.clientHeight));
 }
 addEventListener('scroll',onScroll,{passive:true}); onScroll();
 
@@ -1851,11 +1858,22 @@ function renderPal(){
     '<a href="#'+s.id+'" class="'+(j===0?'sel':'')+'"><i>'+String(i+1).padStart(2,'0')+'</i><span>'+s.t.replace(/<\/?em>/g,'')+'</span></a>'
   ).join('')||'<a style="color:var(--ink3)"><i>—</i><span>No section matches</span></a>';
 }
+function goTo(id){
+  const t=document.getElementById(id);
+  if(!t) return;
+  history.replaceState(null,'','#'+id);
+  t.scrollIntoView({block:'start'});   // safe here: the document is the only scrollable ancestor
+}
 function openPal(){ pal.classList.add('open'); palq.value=''; renderPal(); palq.focus(); }
 function closePal(){ pal.classList.remove('open'); }
 document.getElementById('find').onclick=openPal;
 document.getElementById('find2').onclick=openPal;
 pal.onclick=e=>{ if(e.target===pal) closePal(); };
+palr.onclick=e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(!a) return;
+  e.preventDefault(); goTo(a.getAttribute('href').slice(1)); closePal();
+};
 palq.oninput=renderPal;
 addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); pal.classList.contains('open')?closePal():openPal(); return; }
@@ -1868,7 +1886,7 @@ addEventListener('keydown',e=>{
     sel=(sel+(e.key==='ArrowDown'?1:as.length-1))%as.length;
     as[sel].classList.add('sel'); as[sel].scrollIntoView({block:'nearest'});
   }
-  if(e.key==='Enter'&&as[sel]){ location.hash=as[sel].getAttribute('href'); closePal(); }
+  if(e.key==='Enter'&&as[sel]){ goTo(as[sel].getAttribute('href').slice(1)); closePal(); }
 });
 </script>
 </body>
