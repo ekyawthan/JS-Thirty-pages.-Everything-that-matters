@@ -1,0 +1,1875 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript, Properly — a crash course for new CS grads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── tokens ─────────────────────────────────────────────────────── */
+:root{
+  --serif:'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --sans:'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --r:2px;
+  --ease:cubic-bezier(.19,1,.22,1);
+}
+html[data-theme="ink"]{
+  --bg:#0c0d0f; --bg2:#121316; --bg3:#181a1e; --panel:#101114;
+  --ink:#e9e5dc; --ink2:#a5a29a; --ink3:#6e6c67;
+  --rule:#26282d; --rule2:#1b1d21;
+  --acc:#f5d312; --acc-dim:#8a7807;
+  --mint:#6fe3b6; --rose:#ff7a6b; --sky:#8ab4ff; --plum:#c9a7ff;
+  --grid:rgba(255,255,255,.021);
+  --glow1:rgba(245,211,18,.055); --glow2:rgba(111,227,182,.04);
+  --shadow:0 18px 50px -22px rgba(0,0,0,.9);
+}
+html[data-theme="paper"]{
+  --bg:#f3efe5; --bg2:#eae5d8; --bg3:#e2dccc; --panel:#1a1a18;
+  --ink:#16160f; --ink2:#5a574c; --ink3:#8d8877;
+  --rule:#d2cbb9; --rule2:#e0daca;
+  --acc:#a8730c; --acc-dim:#c9a24a;
+  --mint:#1c7a5a; --rose:#b4402f; --sky:#2b5fa8; --plum:#6d4a9e;
+  --grid:rgba(0,0,0,.022);
+  --glow1:rgba(168,115,12,.07); --glow2:rgba(28,122,90,.05);
+  --shadow:0 14px 40px -20px rgba(70,60,30,.38);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-weight:300; font-size:16.5px; line-height:1.68;
+  -webkit-font-smoothing:antialiased; letter-spacing:.005em;
+  transition:background .5s var(--ease), color .5s var(--ease);
+}
+/* atmosphere: glow + engineering grid + grain */
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(900px 620px at 8% -8%, var(--glow1), transparent 62%),
+    radial-gradient(720px 520px at 102% 42%, var(--glow2), transparent 60%),
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px 88px);
+}
+body::after{
+  content:''; position:fixed; inset:-50%; z-index:0; pointer-events:none; opacity:.32;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+html[data-theme="paper"] body::after{opacity:.5; mix-blend-mode:multiply}
+::selection{background:var(--acc); color:#0c0d0f}
+html[data-theme="paper"] ::selection{background:var(--acc); color:#fff}
+
+/* ─── reading progress ───────────────────────────────────────────── */
+#bar{position:fixed; top:0; left:0; height:2px; width:0; background:var(--acc); z-index:90; box-shadow:0 0 12px var(--acc)}
+
+/* ─── shell ──────────────────────────────────────────────────────── */
+.shell{position:relative; z-index:1; display:grid; grid-template-columns:clamp(232px,20vw,282px) minmax(0,1fr); gap:0; max-width:1480px; margin:0 auto}
+
+/* ─── sidebar ────────────────────────────────────────────────────── */
+aside{
+  position:sticky; top:0; align-self:start; height:100vh; display:flex; flex-direction:column;
+  border-right:1px solid var(--rule); padding:26px 0 0;
+}
+.brand{padding:0 22px 16px; border-bottom:1px solid var(--rule2)}
+.brand b{display:block; font-family:var(--serif); font-weight:400; font-size:27px; line-height:1.06; letter-spacing:-.01em}
+.brand b i{font-style:italic; color:var(--acc)}
+.brand span{display:block; margin-top:7px; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink3)}
+.tools{display:flex; gap:6px; padding:12px 18px; border-bottom:1px solid var(--rule2)}
+.tool{
+  flex:1; background:transparent; border:1px solid var(--rule); color:var(--ink2);
+  font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+  padding:7px 4px; border-radius:var(--r); cursor:pointer; transition:.22s var(--ease);
+}
+.tool:hover{border-color:var(--acc); color:var(--acc)}
+.prog{padding:11px 22px; border-bottom:1px solid var(--rule2); font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--ink3); display:flex; justify-content:space-between; align-items:center}
+.prog em{font-style:normal; color:var(--acc)}
+nav{overflow-y:auto; flex:1; padding:10px 0 60px; scrollbar-width:thin}
+nav::-webkit-scrollbar{width:7px}
+nav::-webkit-scrollbar-thumb{background:var(--rule); border-radius:9px}
+nav a{
+  position:relative; display:grid; grid-template-columns:26px 1fr 14px; gap:9px; align-items:baseline;
+  padding:6px 20px 6px 18px; text-decoration:none; color:var(--ink2); font-size:13.5px; line-height:1.4;
+  opacity:0; animation:slip .5s var(--ease) forwards; transition:color .2s
+}
+@keyframes slip{from{opacity:0; transform:translateX(-9px)} to{opacity:1; transform:none}}
+nav a i{font-style:normal; font-family:var(--mono); font-size:10px; color:var(--ink3); letter-spacing:.04em}
+nav a b{font-weight:400}
+nav a u{text-decoration:none; font-family:var(--mono); font-size:10px; color:var(--mint); opacity:0; transition:.2s}
+nav a.done u{opacity:1}
+nav a::before{content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:var(--acc); transform:scaleY(0); transform-origin:top; transition:transform .3s var(--ease)}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--ink)} nav a.on i{color:var(--acc)} nav a.on::before{transform:scaleY(1)}
+nav hr{border:0; border-top:1px solid var(--rule2); margin:10px 20px}
+
+/* ─── main ───────────────────────────────────────────────────────── */
+main{padding:0 clamp(22px,5vw,86px) 30vh; min-width:0}
+
+/* hero */
+header.hero{padding:16vh 0 12vh; border-bottom:1px solid var(--rule); position:relative}
+header.hero .eyebrow{font-family:var(--mono); font-size:10.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--acc); margin-bottom:26px}
+header.hero h1{
+  font-family:var(--serif); font-weight:400; font-size:clamp(50px,9.2vw,124px); line-height:.9;
+  letter-spacing:-.028em; margin:0 0 6px; max-width:15ch;
+}
+header.hero h1 i{font-style:italic; color:var(--acc)}
+header.hero .sub{max-width:56ch; color:var(--ink2); font-size:18px; margin:30px 0 0}
+header.hero .facts{display:flex; flex-wrap:wrap; gap:0; margin-top:46px; border-top:1px solid var(--rule2)}
+header.hero .facts div{padding:16px 30px 14px 0; margin-right:30px; border-right:1px solid var(--rule2)}
+header.hero .facts div:last-child{border-right:0}
+header.hero .facts b{display:block; font-family:var(--serif); font-size:34px; line-height:1; color:var(--acc)}
+header.hero .facts span{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink3)}
+.hero > *{opacity:0; animation:rise .9s var(--ease) forwards}
+.hero .eyebrow{animation-delay:.05s} .hero h1{animation-delay:.14s} .hero .sub{animation-delay:.28s} .hero .facts{animation-delay:.4s}
+@keyframes rise{from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none}}
+
+/* section */
+section{padding:9vh 0 2vh; border-bottom:1px solid var(--rule2); position:relative; max-width:900px}
+section > .num{
+  position:absolute; right:100%; top:9vh; margin-right:26px;
+  font-family:var(--serif); font-style:italic; font-size:64px; line-height:1; color:var(--ink3); opacity:.5;
+}
+@media (max-width:1240px){section > .num{position:static; display:block; margin:0 0 4px; font-size:38px}}
+section h2{font-family:var(--serif); font-weight:400; font-size:clamp(31px,4.4vw,50px); line-height:1.03; letter-spacing:-.02em; margin:0 0 14px; max-width:26ch}
+section h2 em{font-style:italic; color:var(--acc)}
+.kicker{font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--ink3); margin:0 0 34px; max-width:60ch; line-height:1.6}
+section h3{font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.17em; text-transform:uppercase; color:var(--acc); margin:52px 0 16px; display:flex; align-items:center; gap:12px}
+section h3::after{content:''; flex:1; height:1px; background:var(--rule)}
+p{margin:0 0 17px; max-width:70ch}
+p code, li code, td code, th code{font-family:var(--mono); font-size:.855em; background:var(--bg3); border:1px solid var(--rule2); padding:1px 5px; border-radius:var(--r); color:var(--ink); white-space:nowrap}
+html[data-theme="paper"] p code{background:var(--bg2)}
+strong{font-weight:600; color:var(--ink)}
+em.k{font-style:normal; color:var(--acc); font-weight:500}
+ul,ol{margin:0 0 18px; padding-left:21px; max-width:70ch}
+li{margin-bottom:7px}
+ul{list-style:none; padding-left:17px}
+ul li::before{content:'—'; font-family:var(--mono); color:var(--acc); margin-right:11px; margin-left:-27px; opacity:.7}
+
+/* table */
+.tw{overflow-x:auto; margin:0 0 24px; border:1px solid var(--rule); border-radius:var(--r)}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th{text-align:left; font-family:var(--mono); font-weight:500; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink3); padding:11px 15px; border-bottom:1px solid var(--rule); background:var(--bg2)}
+td{padding:11px 15px; border-bottom:1px solid var(--rule2); vertical-align:top; color:var(--ink2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink); font-weight:400}
+
+/* callout */
+.note{position:relative; margin:0 0 24px; padding:15px 19px 15px 21px; border:1px solid var(--rule); border-left:2px solid var(--c); border-radius:var(--r); background:var(--bg2); font-size:14.5px; max-width:70ch}
+.note b{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--c); margin-bottom:6px; font-weight:500}
+.note.trap{--c:var(--rose)} .note.tip{--c:var(--mint)} .note.why{--c:var(--sky)}
+.note p:last-child{margin-bottom:0}
+
+/* ─── code block ─────────────────────────────────────────────────── */
+.cb{margin:0 0 26px; border:1px solid var(--rule); border-radius:var(--r); background:var(--panel); overflow:hidden; box-shadow:var(--shadow)}
+html[data-theme="paper"] .cb{background:#15161a}
+.cb .top{display:flex; align-items:center; gap:8px; padding:7px 9px 7px 13px; border-bottom:1px solid #26282d; background:#0e0f12}
+.cb .top .tag{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:#6e6c67; margin-right:auto}
+.cb .top .tag b{color:#f5d312; font-weight:500}
+.btn{
+  background:transparent; border:1px solid #2e3035; color:#a5a29a; font-family:var(--mono);
+  font-size:10px; letter-spacing:.09em; text-transform:uppercase; padding:4px 10px; border-radius:var(--r);
+  cursor:pointer; transition:.18s var(--ease); white-space:nowrap;
+}
+.btn:hover{border-color:#f5d312; color:#f5d312; background:rgba(245,211,18,.06)}
+.btn.go{border-color:#8a7807; color:#f5d312}
+.btn.go:hover{background:#f5d312; color:#0c0d0f; border-color:#f5d312}
+.btn:active{transform:translateY(1px)}
+.cb pre{
+  margin:0; padding:15px 17px; overflow-x:auto; font-family:var(--mono); font-size:13.1px; line-height:1.72;
+  color:#dcd8cf; tab-size:2; outline:none; caret-color:#f5d312;
+}
+.cb pre:focus{background:rgba(245,211,18,.022)}
+.cb pre::-webkit-scrollbar{height:8px} .cb pre::-webkit-scrollbar-thumb{background:#2e3035; border-radius:9px}
+/* syntax */
+.t-c{color:#5e6268; font-style:italic} .t-c .arw{color:#8a8f96; font-style:normal}
+.t-s{color:#9fd98a} .t-t{color:#8fd4c4} .t-n{color:#e0a86a}
+.t-k{color:#f5d312} .t-l{color:#c9a7ff} .t-C{color:#8ab4ff} .t-f{color:#ffd9a0}
+/* output */
+.out{border-top:1px solid #26282d; background:#0a0b0d; font-family:var(--mono); font-size:12.6px; line-height:1.66; max-height:0; overflow:hidden; transition:max-height .4s var(--ease)}
+.out.open{max-height:460px; overflow-y:auto}
+.out .hdr{display:flex; justify-content:space-between; padding:6px 13px; border-bottom:1px solid #1b1d21; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:#6e6c67; position:sticky; top:0; background:#0a0b0d}
+.out .rows{padding:9px 13px 12px}
+.out .r{display:flex; gap:10px; padding:1.5px 0; white-space:pre-wrap; word-break:break-word; animation:pop .28s var(--ease)}
+@keyframes pop{from{opacity:0; transform:translateX(-5px)} to{opacity:1}}
+.out .r i{font-style:normal; color:#3d4046; flex:none; user-select:none}
+.out .log{color:#c9d7c4} .out .err{color:#ff7a6b} .out .warn{color:#e0a86a} .out .ret{color:#6fe3b6}
+.out .err b{font-weight:600}
+
+/* ─── quiz ───────────────────────────────────────────────────────── */
+.quiz{margin:0 0 26px; border:1px solid var(--rule); border-radius:var(--r); padding:19px 21px; background:var(--bg2); max-width:70ch}
+.quiz .q{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--acc); margin-bottom:10px}
+.quiz .body{font-size:15.5px; margin-bottom:15px}
+.quiz .body code{white-space:pre-wrap}
+.opts{display:grid; gap:7px}
+.opt{
+  display:flex; align-items:baseline; gap:11px; text-align:left; width:100%;
+  background:transparent; border:1px solid var(--rule); color:var(--ink2); border-radius:var(--r);
+  padding:9px 13px; font-family:var(--mono); font-size:13px; cursor:pointer; transition:.2s var(--ease);
+}
+.opt span{color:var(--ink3); flex:none}
+.opt:hover:not(:disabled){border-color:var(--acc); color:var(--ink); transform:translateX(3px)}
+.opt.right{border-color:var(--mint); color:var(--mint); background:color-mix(in srgb, var(--mint) 9%, transparent)}
+.opt.wrong{border-color:var(--rose); color:var(--rose); opacity:.85}
+.opt:disabled{cursor:default}
+.why{margin-top:14px; padding-top:13px; border-top:1px dashed var(--rule); font-size:14.5px; color:var(--ink2); display:none}
+.why.show{display:block; animation:rise .4s var(--ease)}
+.why b{color:var(--ink)}
+
+/* ─── section footer / complete ──────────────────────────────────── */
+.done-row{display:flex; align-items:center; gap:14px; margin:34px 0 0; padding-top:20px; border-top:1px dashed var(--rule)}
+.chk{
+  display:inline-flex; align-items:center; gap:10px; background:transparent; border:1px solid var(--rule);
+  color:var(--ink3); font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+  padding:8px 14px; border-radius:var(--r); cursor:pointer; transition:.22s var(--ease);
+}
+.chk em{font-style:normal; width:11px; height:11px; border:1px solid var(--ink3); border-radius:1px; display:inline-block; transition:.22s}
+.chk:hover{border-color:var(--mint); color:var(--mint)} .chk:hover em{border-color:var(--mint)}
+.chk.is-done{border-color:var(--mint); color:var(--mint)} .chk.is-done em{background:var(--mint); border-color:var(--mint); box-shadow:inset 0 0 0 2px var(--bg2)}
+
+/* ─── palette (⌘K) ───────────────────────────────────────────────── */
+.pal{position:fixed; inset:0; z-index:100; display:none; padding:12vh 20px 20px; background:rgba(4,5,6,.76); backdrop-filter:blur(7px)}
+html[data-theme="paper"] .pal{background:rgba(60,52,32,.42)}
+.pal.open{display:block; animation:rise .26s var(--ease)}
+.pal .box{max-width:620px; margin:0 auto; background:var(--bg2); border:1px solid var(--rule); border-radius:var(--r); box-shadow:0 40px 90px -30px #000; overflow:hidden}
+.pal input{width:100%; background:transparent; border:0; border-bottom:1px solid var(--rule); color:var(--ink); font-family:var(--mono); font-size:15px; padding:17px 20px; outline:none}
+.pal input::placeholder{color:var(--ink3)}
+.pal .res{max-height:48vh; overflow-y:auto; padding:7px 0}
+.pal .res a{display:grid; grid-template-columns:28px 1fr; gap:11px; padding:8px 20px; text-decoration:none; color:var(--ink2); font-size:14px}
+.pal .res a i{font-style:normal; font-family:var(--mono); font-size:10px; color:var(--ink3)}
+.pal .res a.sel, .pal .res a:hover{background:var(--bg3); color:var(--ink)}
+.pal .res a.sel i{color:var(--acc)}
+.pal .hint{padding:9px 20px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3)}
+
+/* ─── misc ───────────────────────────────────────────────────────── */
+footer{max-width:900px; padding:11vh 0 0; font-size:14px; color:var(--ink2)}
+footer h2{font-family:var(--serif); font-weight:400; font-size:40px; margin:0 0 18px; color:var(--ink)}
+kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); border-bottom-width:2px; padding:1px 5px; border-radius:3px; color:var(--ink2)}
+.mobinav{display:none}
+@media (max-width:920px){
+  .shell{grid-template-columns:1fr}
+  aside{display:none}
+  .mobinav{display:flex; position:sticky; top:0; z-index:40; gap:8px; align-items:center; padding:10px 22px; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule)}
+  .mobinav b{font-family:var(--serif); font-size:19px; margin-right:auto}
+  header.hero{padding:9vh 0 7vh}
+  section > .num{position:static; display:block; margin:0 0 2px; font-size:34px}
+}
+@media print{
+  body::before,body::after,aside,.mobinav,.pal,#bar,.done-row,.btn{display:none!important}
+  .shell{grid-template-columns:1fr} .cb{box-shadow:none} .out{max-height:none}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="shell">
+  <aside>
+    <div class="brand">
+      <b>JavaScript,<br><i>properly</i></b>
+      <span>Crash course · 25 parts</span>
+    </div>
+    <div class="tools">
+      <button class="tool" id="theme">Paper</button>
+      <button class="tool" id="find">Search</button>
+    </div>
+    <div class="prog"><span>Progress</span><span><em id="pdone">0</em> / 25</span></div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <div>
+    <div class="mobinav">
+      <b>JavaScript, properly</b>
+      <button class="tool" id="theme2" style="flex:none;padding:6px 10px">Theme</button>
+      <button class="tool" id="find2" style="flex:none;padding:6px 10px">Search</button>
+    </div>
+    <main>
+      <header class="hero">
+        <div class="eyebrow">For engineers who already know how to program</div>
+        <h1>Thirty pages. <i>Everything</i> that matters.</h1>
+        <p class="sub">You know loops, recursion, and Big-O. You have not written much JavaScript. This is the gap — the coercion rules, <code>this</code>, closures, the event loop, and promises — closed in one sitting. Every example below runs in your browser. Edit them.</p>
+        <div class="facts">
+          <div><b>25</b><span>Sections</span></div>
+          <div><b>70</b><span>Runnable examples</span></div>
+          <div><b>8</b><span>Quizzes</span></div>
+          <div><b>12</b><span>Exercises</span></div>
+        </div>
+      </header>
+      <div id="doc"></div>
+      <footer>
+        <h2>That's the whole language.</h2>
+        <p>What's left is libraries, and libraries are just other people's functions. The habits worth keeping: <em class="k">const</em> by default, <em class="k">===</em> always, <code>async/await</code> over <code>.then</code> chains, small pure functions with side effects pushed to the edges, and every <code>catch</code> either handling the error or rethrowing it.</p>
+        <p style="color:var(--ink3);font-family:var(--mono);font-size:11px;letter-spacing:.08em;margin-top:34px">Press <kbd>Cmd K</kbd> to jump · <kbd>Cmd Enter</kbd> to run a focused block · progress is saved locally</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<div class="pal" id="pal">
+  <div class="box">
+    <input id="palq" placeholder="Jump to a section…" autocomplete="off" spellcheck="false">
+    <div class="res" id="palr"></div>
+    <div class="hint">up / down navigate &nbsp;·&nbsp; enter open &nbsp;·&nbsp; esc close</div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   CONTENT
+   block kinds: p h ul ol table note code quiz predict
+   ══════════════════════════════════════════════════════════════════ */
+const C = [
+{id:'what', t:'What JavaScript <em>actually</em> is', k:'Three things get conflated. Keep them separate and half the confusion disappears.', b:[
+ {table:[['Thing','What it is'],
+  ['ECMAScript (ES)','The language specification. Versions are yearly. ES2015 (“ES6”) was the big one; we are in the ES2024/2025 era.'],
+  ['Engine','The implementation. V8 (Chrome, Node, Deno), JavaScriptCore (Safari), SpiderMonkey (Firefox).'],
+  ['Runtime','Engine <em>plus</em> host APIs. The browser gives you <code>document</code> and <code>fetch</code>; Node gives you <code>fs</code> and <code>process</code>. Neither is “JavaScript”.']]},
+ {h:'What will feel unfamiliar'},
+ {ul:['<strong>Dynamically typed.</strong> A variable holds any type; types are checked at runtime.',
+  '<strong>Single-threaded, with an event loop.</strong> One call stack. Concurrency comes from async I/O, not threads.',
+  '<strong>Objects are hash maps with a prototype link.</strong> There is no class inheritance underneath — <code>class</code> is syntax over prototypes.',
+  '<strong>Functions are closures and first-class values.</strong> Used constantly, not occasionally.',
+  '<strong>No compile step required</strong> — but essentially every real project has one.']},
+ {note:'tip', n:'Baseline', p:'ES modules and class bodies are strict mode automatically. In plain scripts add <code>\'use strict\'</code> — it turns silent mistakes into errors.'},
+ {code:`'use strict';
+try {
+  undeclaredVariable = 5;
+} catch (e) {
+  console.log(e.constructor.name + ': ' + e.message);
+}
+// Without strict mode, that line would have silently created a global.`, run:1}
+]},
+
+{id:'types', t:'Values and types', k:'Seven primitives and objects. That is the entire type system.', b:[
+ {code:`console.log(typeof 42, typeof 'hi', typeof true);
+console.log(typeof undefined, typeof 10n, typeof Symbol('id'));
+console.log(typeof null);            // 'object' — a 1995 bug, kept for compatibility
+console.log(typeof [], typeof {});   // both 'object'
+console.log(typeof function () {});  // 'function' — objects, but typeof special-cases them
+console.log(Array.isArray([]));      // this is how you actually test for an array`, run:1},
+ {h:'Numbers — there is only one'},
+ {p:'IEEE-754 double. No <code>int</code>, no <code>float</code>, no <code>long</code>. Integer arithmetic is exact only up to 2⁵³−1.'},
+ {code:`console.log(0.1 + 0.2);                  // 0.30000000000000004
+console.log(0.1 + 0.2 === 0.3);          // false
+console.log(Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON);  // the correct comparison
+
+console.log(Number.MAX_SAFE_INTEGER);    // 9007199254740991
+console.log(9007199254740993);           // silently wrong
+console.log(9007199254740993n);          // BigInt is exact
+
+console.log(7 / 2, Math.trunc(7 / 2));   // 3.5, 3  — no integer division
+console.log(-7 % 3);                     // -1  sign follows the dividend (like C, unlike Python)
+console.log(2 ** 10, 1 / 0, 0 / 0);      // 1024, Infinity, NaN`, run:1},
+ {note:'trap', n:'Money', p:'Never store currency in a float. Use integer cents, or a decimal library. <code>0.1 + 0.2</code> is not an academic curiosity — it is a rounding bug in your invoice totals.'},
+ {p:'<code>NaN</code> is the only value not equal to itself:'},
+ {code:`console.log(NaN === NaN);          // false
+console.log(Number.isNaN(NaN));    // true
+console.log(Object.is(NaN, NaN));  // true
+console.log([NaN].includes(NaN));  // true   — includes uses SameValueZero
+console.log([NaN].indexOf(NaN));   // -1     — indexOf uses ===`, run:1},
+ {h:'Strings'},
+ {p:'Immutable, UTF-16 code units. Template literals are the default way to build them.'},
+ {code:`const name = 'Ada', n = 3;
+console.log(\`Hello \${name}, you have \${n} message\${n === 1 ? '' : 's'}.\`);
+
+console.log('a,b,,c'.split(','));      // [ 'a', 'b', '', 'c' ]
+console.log('abc'.at(-1), 'ab'.padStart(5, '.'));
+console.log('a-b-c'.replaceAll('-', '+'), 'na'.repeat(2) + ' batman');
+console.log('  pad  '.trim().toUpperCase());
+
+console.log('👋'.length);              // 2 — emoji is two UTF-16 units
+console.log([...'👋'].length);         // 1 — spreading iterates code points`, run:1},
+ {h:'null vs undefined'},
+ {table:[['Value','Meaning','You see it when'],
+  ['<code>undefined</code>','The engine’s absence','Uninitialised variable, missing property, missing argument, function with no <code>return</code>'],
+  ['<code>null</code>','<em>Your</em> absence','You deliberately set something to nothing']]},
+ {p:'Pick one convention and hold it: most codebases use <code>null</code> for intentional emptiness and let <code>undefined</code> mean “not supplied”.'},
+ {quiz:'What does <code>typeof null</code> return?', o:["'null'","'object'","'undefined'",'throws a TypeError'], a:1,
+  w:'<b>\'object\'</b>. A bug in the first implementation, now permanent because fixing it would break the web. Test for null with <code>x === null</code> or <code>x == null</code> (which also catches <code>undefined</code>) — never with <code>typeof</code>.'}
+]},
+
+{id:'coercion', t:'Coercion, equality, <em>truthiness</em>', k:'Where JavaScript earns its reputation. Learn the rules once, then write code that never depends on them.', b:[
+ {h:'The eight falsy values'},
+ {p:'Everything is truthy <strong>except</strong> <code>false</code>, <code>0</code>, <code>-0</code>, <code>0n</code>, <code>\'\'</code>, <code>null</code>, <code>undefined</code>, and <code>NaN</code>. That means <code>[]</code>, <code>{}</code>, <code>\'0\'</code> and <code>\'false\'</code> are all truthy.'},
+ {code:`const cases = [
+  ['[]', []], ['{}', {}], ["'0'", '0'], ["'false'", 'false'], ["' '", ' '],
+  ['-1', -1], ['[0]', [0]], ['function(){}', function(){}],
+  ['false', false], ['0', 0], ['-0', -0], ['0n', 0n],
+  ["''", ''], ['null', null], ['undefined', undefined], ['NaN', NaN],
+];
+for (const [label, v] of cases) {
+  console.log(label.padEnd(12), v ? 'truthy' : 'falsy  ← one of the eight');
+}`, run:1},
+ {p:'Which makes this a real bug, and one you will write:'},
+ {code:`function greet(count) {
+  if (!count) return 'nothing to do';   // 0 falls in here. Probably not the intent.
+  return count + ' items';
+}
+console.log(greet(0));     // 'nothing to do'  ← wrong
+
+function greetFixed(count) {
+  if (count == null) return 'nothing to do';
+  return count + ' items';
+}
+console.log(greetFixed(0));  // '0 items'`, run:1},
+ {h:'=== vs =='},
+ {p:'Use <code>===</code> always. The one exception worth keeping: <code>x == null</code> is a concise, safe test for “null or undefined”.'},
+ {code:`console.log(1 === '1', 1 == '1');            // false true
+console.log(0 == '', 0 == '0', '' == '0');   // true true false  ← == is not transitive
+console.log(null == undefined, null === undefined);  // true false
+console.log(null == 0);                      // false — null only loosely equals undefined
+console.log([] == false, [1] == 1, [1,2] == '1,2');  // true true true`, run:1},
+ {note:'why', n:'Why this exists', p:'<code>==</code> applies a coercion table before comparing. It is not random, but memorising it is a poor use of your memory. <code>===</code> compares type <em>and</em> value and has no table.'},
+ {h:'The operators that save you'},
+ {code:`// || coalesces on ALL falsy values
+console.log(0 || 'default', '' || 'default');   // 'default' 'default'
+
+// ?? coalesces only on null / undefined  ← usually what config wants
+console.log(0 ?? 'default', null ?? 'default'); // 0 'default'
+
+// ?. short-circuits instead of throwing
+const cfg = { server: { port: 8080 } };
+console.log(cfg.server?.port, cfg.database?.port);  // 8080 undefined
+console.log(cfg.getPort?.(), cfg.list?.[0]);        // safe optional call & index
+
+// ??= &&= ||= assign conditionally
+const opts = { retries: 0 };
+opts.retries ??= 3;    // stays 0
+opts.timeout ??= 1000; // becomes 1000
+console.log(opts);`, run:1},
+ {code:`function connect(options = {}) {
+  const host    = options.host ?? 'localhost';
+  const port    = options.port ?? 5432;
+  const poolMax = options.pool?.max ?? 10;
+  return \`\${host}:\${port} (pool=\${poolMax})\`;
+}
+console.log(connect());
+console.log(connect({ port: 0, pool: { max: 1 } }));   // port 0 survives`, run:1},
+ {p:'That <code>port: 0</code> surviving is the whole point. With <code>||</code> it would have been silently replaced by 5432.'},
+ {quiz:'What is the value of <code>0 || \'fallback\'</code> and <code>0 ?? \'fallback\'</code>?',
+  o:["both 'fallback'",'both <code>0</code>',"<code>'fallback'</code> then <code>0</code>","<code>0</code> then <code>'fallback'</code>"], a:2,
+  w:'<b><code>\'fallback\'</code>, then <code>0</code>.</b> <code>||</code> triggers on any falsy value, so a legitimate <code>0</code> gets replaced. <code>??</code> triggers only on <code>null</code>/<code>undefined</code>. For numeric config — port, retries, timeout, quantity — <code>??</code> is almost always the one you want.'},
+ {h:'Explicit conversion'},
+ {code:`console.log(Number('42'), Number('42abc'), Number(''));   // 42 NaN 0
+console.log(parseInt('42abc'), parseFloat('3.9kg'));      // 42 3.9
+console.log(+'42', String(42), Boolean(''));              // 42 '42' false
+console.log('5' + 1, '5' - 1);                            // '51' 4  ← + is overloaded`, run:1},
+ {p:'Use <code>Number()</code> when the whole string must be valid; <code>parseInt</code> only when trailing junk is expected.'}
+]},
+
+{id:'scope', t:'Variables, scope, hoisting', k:'Three declaration keywords. You need two.', b:[
+ {table:[['Keyword','Scope','Reassignable','Use it?'],
+  ['<code>const</code>','block','no','<strong>Default choice</strong>'],
+  ['<code>let</code>','block','yes','When you must mutate'],
+  ['<code>var</code>','function','yes','Never, in new code']]},
+ {p:'<code>const</code> freezes the <em>binding</em>, not the value:'},
+ {code:`const arr = [1, 2];
+arr.push(3);
+console.log(arr);          // [1,2,3] — contents are still mutable
+try { arr = []; } catch (e) { console.log(e.constructor.name, '—', e.message); }`, run:1},
+ {h:'Hoisting and the temporal dead zone'},
+ {p:'Declarations are processed before the code runs. <code>var</code> is initialised to <code>undefined</code>; <code>let</code>/<code>const</code> exist but are unreadable until their declaration line — the <em class="k">temporal dead zone</em>.'},
+ {code:`console.log('var before declaration:', typeof varThing, varThing);
+var varThing = 1;
+
+try { console.log(letThing); } catch (e) { console.log('let before declaration:', e.message); }
+let letThing = 1;
+
+hoistedFn();                     // function declarations hoist entirely
+function hoistedFn() { console.log('declarations hoist'); }
+
+try { exprFn(); } catch (e) { console.log('expressions do not:', e.message); }
+var exprFn = function () {};`, run:1},
+ {h:'The classic loop bug'},
+ {code:`const withVar = [];
+for (var i = 0; i < 3; i++) withVar.push(() => i);
+console.log(withVar.map(f => f()));   // [3,3,3] — one shared binding
+
+const withLet = [];
+for (let j = 0; j < 3; j++) withLet.push(() => j);
+console.log(withLet.map(f => f()));   // [0,1,2] — a fresh binding per iteration`, run:1},
+ {note:'why', n:'Why let exists', p:'That difference is the single best justification for <code>let</code>. Every callback registered inside a <code>var</code> loop captures the same variable, and by the time the callbacks run the loop has finished.'},
+ {quiz:'What does <code>withVar.map(f => f())</code> log above, and why?',
+  o:['<code>[0,1,2]</code> — each arrow captured its own <code>i</code>','<code>[3,3,3]</code> — all three arrows share one <code>i</code>, which ended at 3','<code>[2,2,2]</code> — the loop stops at the last valid index','A <code>ReferenceError</code> — <code>i</code> is out of scope'], a:1,
+  w:'<b><code>[3,3,3]</code>.</b> <code>var i</code> is function-scoped, so there is exactly one <code>i</code>. All three closures reference it, and after the loop exits it holds <code>3</code>. <code>let</code> creates a new binding per iteration, so each closure captures a different variable.'}
+]},
+
+{id:'functions', t:'Functions', k:'Four ways to declare one, and they are not interchangeable.', b:[
+ {code:`function declared(a, b) { return a + b; }        // hoisted, has its own \`this\`
+const expr = function (a, b) { return a + b; };  // not hoisted
+const arrow = (a, b) => a + b;                   // concise, inherits \`this\`
+const obj = { method(a, b) { return a + b; } };  // shorthand method
+console.log(declared(1,2), expr(1,2), arrow(1,2), obj.method(1,2));
+
+const double   = n => n * 2;
+const asObject = n => ({ value: n });   // parens required, or {} parses as a block
+console.log(double(4), asObject(4));`, run:1},
+ {h:'Parameters are forgiving — sometimes too forgiving'},
+ {code:`function two(a, b) { return [a, b]; }
+console.log(two(1));         // [1, undefined] — no arity check
+console.log(two(1, 2, 3));   // [1, 2] — extras silently dropped
+
+function f(x = 10) { return x; }
+console.log(f(), f(undefined), f(null));   // 10 10 null  ← defaults fire only for undefined
+
+function sum(first, ...rest) { return rest.reduce((a, b) => a + b, first); }
+console.log(sum(1, 2, 3, 4));   // 10 — rest is a real array`, run:1},
+ {note:'trap', n:'No overloading', p:'There is one function per name. Passing the wrong number of arguments is not an error — it is <code>undefined</code> leaking through your logic. This is the class of bug TypeScript exists to catch.'},
+ {h:'Destructured parameters = named arguments'},
+ {code:`function fetchPage(url, { retries = 3, timeout = 5000 } = {}) {
+  return \`\${url} retries=\${retries} timeout=\${timeout}\`;
+}
+console.log(fetchPage('/a'));
+console.log(fetchPage('/a', { retries: 1 }));`, run:1},
+ {h:'Functions are values'},
+ {code:`const multiplyBy = factor => n => n * factor;   // returns a function
+const triple = multiplyBy(3);
+console.log(triple(5));
+
+const compose = (...fns) => x => fns.reduceRight((acc, f) => f(acc), x);
+const slugify = compose(s => s.replaceAll(' ', '-'), s => s.toLowerCase(), s => s.trim());
+console.log(slugify('   Hello Brave World  '));`, run:1}
+]},
+
+{id:'this', t:'<em>this</em> — the big one', k:'In Java, this is the instance. In JavaScript, this is decided by HOW a function is called, not where it is written.', b:[
+ {p:'There are exactly four call patterns:'},
+ {code:`function show() { return this; }
+
+console.log('1. plain call      →', show());                 // undefined (strict mode)
+const o = { name: 'o', show };
+console.log('2. method call     →', o.show().name);          // 'o' — the object before the dot
+console.log('3. explicit bind   →', show.call({ name: 'called' }).name);
+function Thing() { this.kind = 'thing'; }
+console.log('4. new             →', new Thing().kind);`, run:1},
+ {h:'The trap: a detached method loses its receiver'},
+ {code:`class Counter {
+  count = 0;
+  increment() { this.count++; return this.count; }
+}
+const c = new Counter();
+console.log(c.increment());            // 1 — fine
+
+const detached = c.increment;          // same function, no receiver
+try { detached(); } catch (e) { console.log('detached →', e.message); }
+
+// setTimeout(c.increment, 0) fails for exactly the same reason.`, run:1},
+ {p:'Three fixes, best first:'},
+ {code:`class A {
+  count = 0;
+  increment = () => { this.count++; };   // 1. arrow class field, bound at construction
+}
+const a = new A();
+setTimeout(a.increment, 0);
+
+const c = { count: 0, increment() { this.count++; } };
+setTimeout(() => c.increment(), 0);      // 2. wrap at the call site
+setTimeout(c.increment.bind(c), 0);      // 3. bind (older style)
+setTimeout(() => console.log('a.count =', a.count, '· c.count =', c.count), 10);`, run:1},
+ {h:'Arrow functions have no this of their own'},
+ {p:'They close over the <code>this</code> of the enclosing scope. Exactly right for callbacks; exactly wrong for object methods.'},
+ {code:`const timer = {
+  seconds: 0,
+  tickBroken() {
+    [1,2,3].forEach(function () { this.seconds++; });   // \`this\` is not timer
+  },
+  tickWorking() {
+    [1,2,3].forEach(() => { this.seconds++; });         // arrow inherits timer
+  },
+};
+try { timer.tickBroken(); } catch (e) { console.log('broken →', e.message); }
+timer.tickWorking();
+console.log('working →', timer.seconds);
+
+const bad = { name: 'bad', getName: () => this?.name };  // arrow at literal level
+console.log('arrow as method →', bad.getName());         // undefined`, run:1},
+ {note:'tip', n:'Rule of thumb', p:'<strong>Arrow functions for callbacks. Regular functions and methods for anything that needs a receiver.</strong> That one line resolves nearly every <code>this</code> question you will hit.'},
+ {quiz:'<code>const f = obj.method; f();</code> — what is <code>this</code> inside <code>f</code> in strict mode?',
+  o:['<code>obj</code>, because that is where the method was defined','<code>globalThis</code>','<code>undefined</code> — the receiver was lost at the call site','A new empty object'], a:2,
+  w:'<b><code>undefined</code>.</b> <code>this</code> is bound at call time by the call pattern. <code>f()</code> is a plain call, so there is no receiver — and in strict mode that means <code>undefined</code> rather than the global object. Any property access on it throws a <code>TypeError</code>. This is why React class components were full of <code>this.handleClick = this.handleClick.bind(this)</code>.'}
+]},
+
+{id:'objects', t:'Objects', k:'An ordered map of string and symbol keys to values, plus a link to a prototype.', b:[
+ {code:`const user = {
+  id: 1,
+  name: 'Ada',
+  'needs-quotes': true,
+  greet() { return \`hi, \${this.name}\`; },
+  get initials() { return this.name[0]; },      // getter — read without parens
+  set rename(v) { this.name = v; },
+};
+console.log(user.name, user['needs-quotes'], user.initials, user.greet());
+user.rename = 'Grace';
+console.log(user.name);
+
+const key = 'name';
+console.log(user[key]);                          // computed access
+const k = 'dynamic';
+console.log({ [k + 'Key']: 1 });                 // computed key in a literal`, run:1},
+ {code:`const rec = { id: 7, name: 'Bo' };
+console.log('id' in rec, Object.hasOwn(rec, 'id'));
+delete rec.name;
+console.log(rec);
+
+console.log(Object.keys({ a: 1, b: 2 }));
+console.log(Object.entries({ a: 1, b: 2 }));
+console.log(Object.fromEntries([['a', 1], ['b', 2]]));
+
+const frozen = Object.freeze({ id: 1 });
+frozen.id = 99;                                   // silently ignored (throws in strict mode)
+console.log(frozen.id);`, run:1},
+ {h:'Iterating'},
+ {code:`const scores = { alice: 90, bob: 72 };
+for (const [name, score] of Object.entries(scores)) console.log(name, score);
+for (const key in scores) console.log('for-in also walks inherited keys:', key);`, run:1},
+ {p:'Prefer <code>for...of</code> over <code>Object.entries()</code>. Reserve <code>for...in</code> for the rare case you genuinely want inherited keys.'},
+ {h:'JSON'},
+ {code:`const obj = { a: 1, when: new Date('2026-01-01'), fn() {}, u: undefined, nested: { b: [1,2] } };
+console.log(JSON.stringify(obj));        // functions & undefined dropped, Date → string
+console.log(JSON.stringify(obj, ['a'])); // allowlist of keys
+console.log(JSON.parse('{"a":1}').a);
+
+try { JSON.parse('{oops}'); } catch (e) { console.log('parse →', e.constructor.name); }
+const cyclic = {}; cyclic.self = cyclic;
+try { JSON.stringify(cyclic); } catch (e) { console.log('stringify →', e.constructor.name); }`, run:1},
+ {note:'trap', n:'Always wrap JSON.parse', p:'It throws a <code>SyntaxError</code> on any malformed input — including an empty response body, which is the most common source in practice.'}
+]},
+
+{id:'classes', t:'Prototypes and classes', k:'Every object has a hidden prototype link. Property lookup walks the chain. class is sugar over exactly that.', b:[
+ {code:`const animal = { speak() { return \`\${this.name} makes a sound\`; } };
+const dog = Object.create(animal);
+dog.name = 'Rex';
+console.log(dog.speak());                        // found on the prototype
+console.log(Object.hasOwn(dog, 'speak'));        // false — it is not its own
+console.log(Object.getPrototypeOf(dog) === animal);`, run:1},
+ {code:`class Account {
+  static #count = 0;          // static private field
+  #balance;                   // instance private — truly private, not a naming convention
+  currency = 'USD';           // public field
+
+  constructor(owner, initial = 0) {
+    this.owner = owner;
+    this.#balance = initial;
+    Account.#count++;
+  }
+  static get created() { return Account.#count; }
+  static from({ owner, balance }) { return new Account(owner, balance); }
+  get balance() { return this.#balance; }
+  deposit(amount) {
+    if (amount <= 0) throw new RangeError('amount must be positive');
+    this.#balance += amount;
+    return this;              // returning this enables chaining
+  }
+  toString() { return \`\${this.owner}: \${this.#balance} \${this.currency}\`; }
+}
+
+const acct = new Account('Ada', 100);
+acct.deposit(50).deposit(25);
+console.log(acct.balance, String(acct), Account.created);
+console.log(Account.from({ owner: 'Bo', balance: 5 }).balance);`, run:1},
+ {code:`class Account {
+  #balance;
+  constructor(owner, initial = 0) { this.owner = owner; this.#balance = initial; }
+  get balance() { return this.#balance; }
+  deposit(n) { this.#balance += n; return this; }
+  toString() { return \`\${this.owner}: \${this.#balance}\`; }
+}
+class Savings extends Account {
+  constructor(owner, initial, rate) {
+    super(owner, initial);            // must run before touching \`this\`
+    this.rate = rate;
+  }
+  addInterest() { return this.deposit(this.balance * this.rate); }
+  toString() { return \`\${super.toString()} @ \${this.rate * 100}%\`; }
+}
+const s = new Savings('Cy', 1000, 0.05);
+s.addInterest();
+console.log(String(s), s instanceof Savings, s instanceof Account);`, run:1},
+ {h:'For the Java-trained'},
+ {ul:['No interfaces, no abstract classes, no overloading, no <code>final</code>, no package-private.',
+  'Everything is public unless prefixed <code>#</code>.',
+  'Exactly one constructor. Use static factory methods for alternatives.',
+  'Duck typing is the norm: if it has <code>.write()</code>, it is writable.',
+  '<strong>Idiomatic modern JS uses far fewer classes than idiomatic Java.</strong> Prefer plain functions over plain objects unless you truly need instance state bundled with behaviour.']}
+]},
+
+{id:'arrays', t:'Arrays and the methods you use <em>daily</em>', k:'Objects with integer-ish keys and a length. The method set replaces most explicit loops.', b:[
+ {code:`console.log(Array.from({ length: 4 }, (_, i) => i * i));   // [0,1,4,9]
+console.log(Array.from('abc'), [...'abc']);
+console.log(new Array(3).fill(0));
+const a = [1,2,3]; a[6] = 7;
+console.log(a, a.length);                                  // holes are undefined`, run:1},
+ {h:'Non-mutating: transform and query'},
+ {code:`const nums = [5, 1, 4, 2, 3];
+console.log('map     ', nums.map(n => n * 2));
+console.log('filter  ', nums.filter(n => n % 2 === 1));
+console.log('reduce  ', nums.reduce((acc, n) => acc + n, 0));
+console.log('find    ', nums.find(n => n > 3), nums.findIndex(n => n > 3), nums.findLast(n => n > 3));
+console.log('some/evy', nums.some(n => n > 4), nums.every(n => n > 0));
+console.log('slice   ', nums.slice(1, 3), nums.slice(-2));   // end exclusive
+console.log('at      ', nums.at(-1));
+console.log('flat    ', [[1,2],[3,[4]]].flat(), [[1,2],[3,[4]]].flat(2));
+console.log('flatMap ', ['a b','c'].flatMap(s => s.split(' ')));
+console.log('toSorted', nums.toSorted((x,y) => x - y), '· original:', nums);`, run:1},
+ {h:'Mutating — know which these are'},
+ {code:`const m = [1,2,3];
+console.log(m.push(4), m);      // returns new length
+console.log(m.pop(), m);
+console.log(m.unshift(0), m);
+console.log(m.shift(), m);
+console.log(m.splice(1, 1, 'x'), m);   // returns removed items
+// reverse() sort() fill() copyWithin() also mutate.
+// The ES2023 copies: toSorted() toReversed() toSpliced() with()`, run:1},
+ {h:'sort will surprise you'},
+ {code:`console.log([10, 9, 100].sort());                  // [10,100,9] — lexicographic!
+console.log([10, 9, 100].sort((a, b) => a - b));   // [9,10,100]
+
+const people = [{n:'B',age:30},{n:'A',age:30},{n:'C',age:25}];
+console.log(people.toSorted((x, y) => x.age - y.age || x.n.localeCompare(y.n)));
+// \`||\` chains tiebreakers: age ascending, then name`, run:1},
+ {note:'trap', n:'Default sort is a string sort', p:'<code>[10,9,100].sort()</code> gives <code>[10,100,9]</code> because every element is converted to a string first. Always pass a comparator for numbers. Comparators must return a number — <code>a > b</code> returning a boolean silently produces garbage.'},
+ {h:'reduce, in real use'},
+ {code:`const orders = [
+  { id: 1, customer: 'ada', total: 30, status: 'paid' },
+  { id: 2, customer: 'bo',  total: 20, status: 'open' },
+  { id: 3, customer: 'ada', total: 12, status: 'paid' },
+];
+
+// 1. aggregate to a scalar
+console.log(orders.reduce((sum, o) => sum + o.total, 0));
+
+// 2. group
+console.log(orders.reduce((groups, o) => {
+  (groups[o.customer] ??= []).push(o.id);
+  return groups;
+}, {}));
+
+// 3. index for O(1) lookup
+const byId = new Map(orders.map(o => [o.id, o]));
+console.log(byId.get(3).total);
+
+// chaining reads top-to-bottom — that is why it beats a loop
+console.log(
+  orders.filter(o => o.status === 'paid')
+        .map(o => o.customer)
+        .filter((c, i, arr) => arr.indexOf(c) === i)
+);`, run:1},
+ {note:'trap', n:'The O(n²) reduce', p:'<code>reduce((acc, x) => ({ ...acc, [x.k]: x }), {})</code> allocates a whole new object per element. Fine for 100 items, catastrophic for 100,000. Mutate the accumulator you own instead — it is private to the reduce.'},
+ {p:'Still write a loop when you need <code>break</code>, <code>continue</code>, or <code>await</code>:'},
+ {code:`const orders = [{id:1,total:10},{id:2,total:40},{id:3,total:5}];
+for (const [i, o] of orders.entries()) {
+  if (o.total > 25) { console.log(\`first big order at index \${i}: #\${o.id}\`); break; }
+}`, run:1},
+ {quiz:'What does <code>[1, 5, 10, 20].sort()</code> evaluate to?',
+  o:['<code>[1,5,10,20]</code>','<code>[1,10,20,5]</code>','<code>[20,10,5,1]</code>','<code>[1,5,10,20]</code> but the array is copied'], a:1,
+  w:'<b><code>[1,10,20,5]</code>.</b> Without a comparator, <code>sort</code> converts each element to a string and compares UTF-16 code units — so <code>\'10\'</code> sorts before <code>\'5\'</code>. Pass <code>(a,b) => a - b</code>. Also note <code>sort</code> mutates in place and returns the same array; use <code>toSorted()</code> when you need a copy.'}
+]},
+
+{id:'modern', t:'Destructuring, spread, modern syntax', k:'The syntax that makes idiomatic JS look nothing like the JS from 2012.', b:[
+ {code:`const [first, second = 0, ...others] = [1];
+console.log(first, second, others);      // 1 0 []
+
+const [, onlySecond] = ['skip', 'me'];
+console.log(onlySecond);
+
+let x = 1, y = 2;
+[x, y] = [y, x];                          // swap, no temp
+console.log(x, y);
+
+const { name, age = 0, address: { city } = {}, ...rest } =
+  { name: 'Ada', address: { city: 'London' }, role: 'eng' };
+console.log(name, age, city, rest);
+
+const { name: userName } = { name: 'Bo' };   // rename
+console.log(userName);`, run:1},
+ {code:`const base = { host: 'localhost', port: 80 };
+console.log({ ...base, port: 443, tls: true });      // later keys win
+
+console.log([...[1,2], ...[3,4]]);
+console.log(Math.max(...[3, 1, 4]));                 // spread into arguments
+
+const includeDebug = true;
+console.log({ level: 'info', ...(includeDebug && { debug: true }) });  // conditional key`, run:1},
+ {note:'trap', n:'Spread is shallow', p:'Nested objects are shared between the copy and the original. Mutating <code>copy.nested.x</code> changes <code>original.nested.x</code>. Use <code>structuredClone()</code> when you need a real deep copy.'},
+ {code:`const original = { id: 1, nested: { n: 1 } };
+const shallow = { ...original };
+shallow.nested.n = 99;
+console.log('shallow shares nested:', original.nested.n);
+
+const deep = structuredClone(original);
+deep.nested.n = 0;
+console.log('structuredClone does not:', original.nested.n);`, run:1}
+]},
+
+{id:'closures', t:'Closures', k:'A function plus the variables it captured from where it was defined. The mechanism behind privacy, memoisation, and every callback you will write.', b:[
+ {code:`function makeCounter(start = 0) {
+  let count = start;                    // captured; unreachable from outside
+  return {
+    increment: () => ++count,
+    reset: () => { count = start; },
+    get value() { return count; },
+  };
+}
+const counter = makeCounter(10);
+counter.increment(); counter.increment();
+console.log(counter.value, '· counter.count is', counter.count);   // 12 · undefined
+
+const other = makeCounter(10);
+console.log('independent state:', other.value);`, run:1},
+ {h:'Memoisation'},
+ {code:`function memoize(fn) {
+  const cache = new Map();
+  return (...args) => {
+    const key = JSON.stringify(args);
+    if (!cache.has(key)) cache.set(key, fn(...args));
+    return cache.get(key);
+  };
+}
+let calls = 0;
+const square = memoize(n => { calls++; return n * n; });
+square(4); square(4); square(4);
+console.log('result', square(4), '· underlying calls:', calls);`, run:1},
+ {h:'Partial application and debounce'},
+ {code:`const partial = (fn, ...preset) => (...later) => fn(...preset, ...later);
+const log = (level, msg) => \`[\${level}] \${msg}\`;
+console.log(partial(log, 'WARN')('disk almost full'));
+
+function debounce(fn, ms) {
+  let timer;                            // one timer captured per debounced fn
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+}
+const save = debounce(() => console.log('saved (once, 200ms after the last call)'), 200);
+save(); save(); save();`, run:1},
+ {note:'trap', n:'Closures keep things alive', p:'A captured variable lives as long as the closure does. A long-lived event handler that captured a 50 MB array keeps that array out of the garbage collector forever. This is the most common memory leak in JS applications.'}
+]},
+
+{id:'errors', t:'Errors', k:'throw accepts any value. Always throw an Error, so you get a stack trace.', b:[
+ {code:`class ValidationError extends Error {
+  constructor(field, message) {
+    super(message);
+    this.name = 'ValidationError';
+    this.field = field;                 // structured data beats string parsing
+  }
+}
+function parseAge(input) {
+  const n = Number(input);
+  if (!Number.isInteger(n)) throw new ValidationError('age', \`not an integer: \${input}\`);
+  if (n < 0) throw new RangeError('age must be non-negative');
+  return n;
+}
+try {
+  parseAge('abc');
+} catch (err) {
+  if (err instanceof ValidationError) console.log(err.name, '·', err.field, '·', err.message);
+  else throw err;                       // never swallow what you do not understand
+} finally {
+  console.log('finally always runs — on return, throw, and normal exit');
+}`, run:1},
+ {code:`try { JSON.parse('{oops}'); }
+catch (cause) {
+  const wrapped = new Error('config file is not valid JSON', { cause });
+  console.log(wrapped.message);
+  console.log('  caused by:', wrapped.cause.constructor.name, wrapped.cause.message);
+}
+
+try { risky(); } catch { console.log('the catch binding is optional'); }
+
+const agg = new AggregateError([new Error('a'), new Error('b')], 'all sources failed');
+console.log(agg.message, '·', agg.errors.length, 'inner errors');`, run:1},
+ {table:[['Type','Thrown when'],
+  ['<code>TypeError</code>','Wrong type, or a property access on <code>null</code>/<code>undefined</code>. The most common by far.'],
+  ['<code>RangeError</code>','Value out of the allowed range'],
+  ['<code>ReferenceError</code>','Name does not exist, or TDZ access'],
+  ['<code>SyntaxError</code>','Unparseable code — usually from <code>JSON.parse</code>']]},
+ {note:'trap', n:'Three anti-patterns', p:'<code>catch (e) {}</code> — a silent swallow, the worst bug class in JS. <code>catch (e) { console.log(e) }</code> — logged and ignored; the caller still thinks it succeeded. <code>throw \'broke\'</code> — a string has no stack trace.'}
+]},
+
+{id:'loop', t:'The event loop', k:'One thread, one call stack. Understanding the loop is the difference between writing async code and writing CORRECT async code.', b:[
+ {ol:['Run the current synchronous code to completion — the stack empties.',
+  'Drain the <strong>microtask queue</strong> entirely: promise callbacks, <code>queueMicrotask</code>.',
+  'Take <strong>one macrotask</strong> — a timer, an I/O callback, an event — and run it.',
+  'Drain microtasks again. Repeat.']},
+ {p:'Microtasks always beat macrotasks, and a microtask can enqueue another microtask ahead of any timer.'},
+ {code:`console.log('1 · sync');
+setTimeout(() => console.log('5 · timeout (macrotask)'), 0);
+Promise.resolve().then(() => console.log('3 · promise (microtask)'));
+queueMicrotask(() => console.log('4 · queueMicrotask'));
+console.log('2 · sync');`, run:1},
+ {code:`async function main() {
+  console.log('A');
+  await null;                 // everything after an await becomes a microtask
+  console.log('C');
+}
+main();
+console.log('B');             // → A, B, C`, run:1},
+ {predict:`console.log('a');
+setTimeout(() => console.log('b'), 0);
+Promise.resolve()
+  .then(() => { console.log('c'); return Promise.resolve(); })
+  .then(() => console.log('d'));
+queueMicrotask(() => console.log('e'));
+(async () => { console.log('f'); await null; console.log('g'); })();
+console.log('h');`,
+  w:'<b>a f h c e g d b.</b> Sync first (<code>a</code>, <code>f</code> up to the await, <code>h</code>). Then the microtask queue in FIFO order: <code>c</code>, <code>e</code>, <code>g</code>. Returning a promise from <code>.then</code> costs <em>two extra microtask ticks</em> to adopt it, which pushes <code>d</code> behind <code>g</code>. The timer <code>b</code> is a macrotask and runs last. Run it and check.'},
+ {note:'trap', n:'Timers are a floor, not a promise', p:'<code>setTimeout(fn, 0)</code> means “after the current task and all pending microtasks”, not “now”. A 2-second synchronous loop delays every timer by 2 seconds, blocks rendering, and stalls incoming requests. CPU-heavy work belongs in a worker or chunked across tasks.'}
+]},
+
+{id:'promises', t:'Promises', k:'An object representing a value that is not ready yet. Pending → fulfilled or rejected. The state changes once and is permanent.', b:[
+ {code:`const delay = (ms, value) => new Promise(resolve => setTimeout(() => resolve(value), ms));
+
+delay(30, 'data')
+  .then(v => v.toUpperCase())        // returning a value passes it along
+  .then(v => console.log('got', v))
+  .catch(e => console.error(e.message))
+  .finally(() => console.log('cleanup runs either way'));`, run:1},
+ {ul:['<code>.then</code> always returns a <em>new</em> promise.',
+  'Returning a value fulfills it; returning a promise <em>adopts</em> it; throwing rejects it.',
+  'One <code>.catch</code> at the end handles rejections from any earlier step — and recovers the chain.']},
+ {code:`Promise.resolve(1)
+  .then(n => n + 1)                            // 2
+  .then(n => new Promise(r => setTimeout(() => r(n * 10), 10)))   // 20
+  .then(n => { throw new Error('bad ' + n); })
+  .then(() => console.log('skipped — chain is rejecting'))
+  .catch(e => e.message)                       // handled: chain is fulfilled again
+  .then(m => console.log('recovered:', m));`, run:1},
+ {h:'The four combinators'},
+ {code:`const delay = (ms, v) => new Promise(r => setTimeout(() => r(v), ms));
+const boom = () => Promise.reject(new Error('x'));
+
+(async () => {
+  console.log('all       ', await Promise.all([delay(30,'a'), delay(10,'b')]));
+  console.log('allSettled', (await Promise.allSettled([delay(10,'a'), boom()]))
+    .map(r => r.status));
+  console.log('race      ', await Promise.race([delay(30,'slow'), delay(10,'fast')]));
+  console.log('any       ', await Promise.any([boom(), delay(10,'survivor')]));
+})();`, run:1},
+ {table:[['Combinator','Use when'],
+  ['<code>Promise.all</code>','You need every result. Rejects immediately on the first failure.'],
+  ['<code>Promise.allSettled</code>','You want a per-item outcome report and no early exit.'],
+  ['<code>Promise.race</code>','First to settle wins — success <em>or</em> failure. This is how you build timeouts.'],
+  ['<code>Promise.any</code>','First <em>success</em> wins. <code>AggregateError</code> if all fail. Fallback sources.']]},
+ {code:`function withTimeout(promise, ms) {
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(\`timed out after \${ms}ms\`)), ms));
+  return Promise.race([promise, timeout]);
+}
+const slow = new Promise(r => setTimeout(r, 1000));
+withTimeout(slow, 50).catch(e => console.log(e.message));`, run:1},
+ {note:'trap', n:'The promise constructor anti-pattern', p:'If you already have a promise, do not wrap it. <code>new Promise(res => fetchThing().then(res))</code> loses rejections; just <code>return fetchThing()</code>. Reach for <code>new Promise</code> only to adapt a callback or event API.'},
+ {quiz:'You need three independent API calls and all three results. Which is right?',
+  o:['<code>await a(); await b(); await c();</code>','<code>await Promise.all([a(), b(), c()])</code>','<code>await Promise.race([a(), b(), c()])</code>','<code>await Promise.allSettled([a(), b(), c()])</code>'], a:1,
+  w:'<b><code>Promise.all</code>.</b> The three calls start immediately and you wait once, so total time is the slowest call rather than the sum. Sequential <code>await</code>s are correct only when each call needs the previous result. <code>race</code> gives you one result; <code>allSettled</code> never rejects, so a failure would pass through as a <code>{status:\'rejected\'}</code> entry you have to check by hand.'}
+]},
+
+{id:'async', t:'async / await', k:'Syntax over promises. An async function always returns a promise; await pauses that function, never the thread.', b:[
+ {code:`const delay = (ms, v) => new Promise(r => setTimeout(() => r(v), ms));
+
+async function load(id) {
+  if (id < 0) throw new Error('bad id ' + id);
+  const value = await delay(20, { id, name: 'user-' + id });
+  return value;                  // fulfills the outer promise
+}
+
+(async () => {
+  console.log(await load(1));
+  try { await load(-1); } catch (e) { console.log('caught:', e.message); }
+  console.log('load(1) returns a promise:', load(1) instanceof Promise);
+})();`, run:1},
+ {h:'Sequential vs parallel — the most common async mistake'},
+ {code:`const delay = (ms, v) => new Promise(r => setTimeout(() => r(v), ms));
+
+async function slow() {                        // ~300ms
+  const a = await delay(100, 'a');
+  const b = await delay(100, 'b');
+  const c = await delay(100, 'c');
+  return [a, b, c];
+}
+async function fast() {                        // ~100ms
+  return Promise.all([delay(100,'a'), delay(100,'b'), delay(100,'c')]);
+}
+(async () => {
+  let t = Date.now(); await slow(); console.log('sequential:', Date.now() - t, 'ms');
+  t = Date.now();     await fast(); console.log('parallel:  ', Date.now() - t, 'ms');
+})();`, run:1},
+ {p:'Sequential is correct only when each step needs the previous result. Inside a loop, <code>await</code> always serialises:'},
+ {code:`const ids = [1,2,3,4,5,6,7];
+const load = async id => { await new Promise(r => setTimeout(r, 20)); return id * 10; };
+
+(async () => {
+  const serial = [];
+  for (const id of ids) serial.push(await load(id));      // one at a time
+  console.log('serial  ', serial);
+
+  console.log('parallel', await Promise.all(ids.map(load)));  // all at once — careful at scale
+
+  // bounded concurrency — the production answer
+  async function mapLimit(items, limit, fn) {
+    const out = new Array(items.length);
+    let cursor = 0, inFlight = 0, peak = 0;
+    const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+      while (cursor < items.length) {
+        const i = cursor++;
+        inFlight++; peak = Math.max(peak, inFlight);
+        out[i] = await fn(items[i]);
+        inFlight--;
+      }
+    });
+    await Promise.all(workers);
+    console.log('peak concurrency was', peak);
+    return out;
+  }
+  console.log('limited ', await mapLimit(ids, 3, load));
+})();`, run:1},
+ {note:'trap', n:'forEach does not await', p:'<code>arr.forEach(async x => await work(x))</code> fires everything off and returns immediately — <code>forEach</code> ignores the returned promises. Use <code>for...of</code> for serial, or <code>Promise.all(arr.map(...))</code> for parallel.'},
+ {code:`const work = async n => { await new Promise(r => setTimeout(r, 10)); console.log('  done', n); };
+[1,2,3].forEach(async n => await work(n));
+console.log('forEach returned already — nothing was awaited');`, run:1},
+ {h:'for await, and cancellation'},
+ {code:`async function* pages() {
+  for (let p = 1; p <= 3; p++) {
+    await new Promise(r => setTimeout(r, 10));
+    yield { page: p, items: [p * 10, p * 10 + 1] };
+  }
+}
+(async () => {
+  for await (const { page, items } of pages()) {
+    console.log('page', page, items);
+    if (page === 2) break;            // breaks cleanly and closes the iterator
+  }
+
+  const controller = new AbortController();
+  const cancellable = new Promise((_, reject) =>
+    controller.signal.addEventListener('abort', () => reject(new DOMException('Aborted','AbortError'))));
+  setTimeout(() => controller.abort(), 20);
+  try { await cancellable; } catch (e) { console.log('cancelled via AbortController:', e.name); }
+})();`, run:1},
+ {quiz:'<code>[1,2,3].forEach(async n => { await work(n); }); console.log(\'done\');</code> — when does <code>\'done\'</code> print?',
+  o:['After all three <code>work</code> calls finish','Immediately — <code>forEach</code> discards the returned promises','After the first <code>work</code> call finishes','It is a syntax error'], a:1,
+  w:'<b>Immediately.</b> Each callback returns a promise, and <code>forEach</code> throws those away — it has no notion of awaiting. The three <code>work</code> calls run concurrently and unordered, and any rejection becomes an unhandled rejection that can crash a Node process. Use <code>for (const n of arr) await work(n)</code> or <code>await Promise.all(arr.map(work))</code>.'}
+]},
+
+{id:'modules', t:'Modules', k:'Two systems coexist. Write ESM in new code.', b:[
+ {h:'ESM — the standard'},
+ {code:`// math.js
+export const PI = 3.14159;
+export function area(r) { return PI * r * r; }
+export default class Circle { constructor(r) { this.r = r; } }
+
+// main.js
+import Circle, { area, PI as Pi } from './math.js';
+import * as math from './math.js';
+const { area: lazy } = await import('./math.js');   // dynamic, code-split friendly`},
+ {ul:['Static, hoisted and analysable — this is what enables tree-shaking.',
+  'Bindings are live views, not copies.',
+  'File extensions are required in Node ESM. Opt in with <code>"type": "module"</code> or an <code>.mjs</code> extension.',
+  'Always strict mode; top-level <code>await</code> is allowed.']},
+ {h:'CommonJS — Node’s legacy default'},
+ {code:`const { area } = require('./math.js');
+module.exports = { area };
+module.exports.helper = () => {};`},
+ {p:'Dynamic, synchronous, and still the majority of npm. You can <code>import</code> CJS from ESM in most cases, but you cannot <code>require</code> ESM — use <code>await import()</code>.'},
+ {note:'tip', n:'Practical guidance', p:'Prefer named exports over default exports — better refactoring and autocomplete, no naming drift. Keep modules single-purpose. Avoid side effects at import time (no network calls, no global mutation); it makes testing miserable. Circular imports “work” but hand you <code>undefined</code> at the wrong moment — break the cycle instead.'}
+]},
+
+{id:'iterators', t:'Iterators and generators', k:'An object is iterable if it has a [Symbol.iterator]() method. That contract powers for...of, spread, destructuring, Map, Set, and Promise.all.', b:[
+ {code:`const manual = {
+  [Symbol.iterator]() {
+    let n = 0;
+    return { next: () => (n < 3 ? { value: n++, done: false } : { value: undefined, done: true }) };
+  },
+};
+console.log([...manual]);
+
+class Range {
+  constructor(a, b) { this.a = a; this.b = b; }
+  *[Symbol.iterator]() { for (let i = this.a; i < this.b; i++) yield i; }
+}
+console.log([...new Range(1, 6)]);
+const [head, ...tail] = new Range(0, 4);
+console.log(head, tail);`, run:1},
+ {h:'Generators: lazy, pausable functions'},
+ {code:`function* fib() {
+  let [a, b] = [0, 1];
+  while (true) { yield a; [a, b] = [b, a + b]; }   // infinite, but lazy
+}
+function* take(n, it) { let i = 0; for (const v of it) { if (i++ >= n) return; yield v; } }
+function* map(fn, it) { for (const v of it) yield fn(v); }
+function* filter(p, it) { for (const v of it) if (p(v)) yield v; }
+
+console.log([...take(9, fib())]);
+// a lazy pipeline over an infinite sequence — nothing is materialised
+console.log([...take(4, filter(n => n % 2 === 0, map(n => n * n, fib())))]);`, run:1},
+ {code:`function* walk(node) {
+  yield node.value;
+  for (const child of node.children ?? []) yield* walk(child);   // yield* delegates
+}
+const tree = { value: 1, children: [{ value: 2, children: [{ value: 3 }] }, { value: 4 }] };
+console.log([...walk(tree)]);`, run:1},
+ {h:'Two-way channels'},
+ {code:`function* dialogue() {
+  const name = yield 'What is your name?';
+  const lang = yield \`Hi \${name}. Favourite language?\`;
+  return \`\${name} likes \${lang}\`;
+}
+const d = dialogue();
+console.log(d.next().value);
+console.log(d.next('Ada').value);
+console.log(d.next('JS').value);`, run:1},
+ {p:'Where you will actually use them: walking trees without building an intermediate array, paginated API traversal via <code>async function*</code>, test-data factories, and effect systems like Redux-Saga.'}
+]},
+
+{id:'collections', t:'Map, Set, and friends', k:'Plain objects are for records with known keys. Map and Set are for collections.', b:[
+ {code:`const m = new Map([['a', 1]]);
+const objKey = { id: 1 };
+m.set('b', 2).set(objKey, 'objects can be keys');
+console.log(m.get('a'), m.get(objKey), m.has('a'), m.size);
+console.log([...m.keys()]);               // insertion order, guaranteed
+for (const [k, v] of m) console.log('  ', typeof k === 'object' ? '{obj}' : k, '→', v);`, run:1},
+ {table:[['Need','Reach for'],
+  ['Fixed-shape record','object literal, or a <code>class</code>'],
+  ['Keyed collection with dynamic or non-string keys','<code>Map</code>'],
+  ['Uniqueness / membership test','<code>Set</code>'],
+  ['Ordered sequence','<code>Array</code>'],
+  ['Object-keyed cache that must not leak','<code>WeakMap</code>'],
+  ['Binary data','<code>Uint8Array</code> / <code>ArrayBuffer</code>']]},
+ {code:`const s = new Set([1, 2, 2, 3]);
+console.log(s.size, s.has(2));
+console.log([...new Set(['a','a','b'])]);        // idiomatic dedupe
+
+// ES2025 set operations
+const A = new Set([1,2,3]), B = new Set([2,3,4]);
+console.log([...A.intersection(B)], [...A.union(B)], [...A.difference(B)]);`, run:1},
+ {note:'tip', n:'Why Map over object', p:'Use <code>Map</code> when keys are user-supplied (an object key like <code>"__proto__"</code> or <code>"constructor"</code> is a real hazard), when keys are not strings, when you insert and delete often, or when you want <code>.size</code> and clean iteration. <code>WeakMap</code> holds keys weakly — entries disappear when the key is collected, which is how you attach metadata to objects you do not own without leaking.'}
+]},
+
+{id:'copies', t:'Copying, references, immutability', k:'Primitives copy by value. Objects and arrays copy by reference. Every aliasing bug traces back to this line.', b:[
+ {code:`let p = 1, q = p; q++;
+console.log('primitive:', p, q);            // 1 2 — independent
+
+const o1 = { n: 1 }, o2 = o1; o2.n = 99;
+console.log('object:', o1.n);               // 99 — same object
+
+console.log({ n: 1 } === { n: 1 });         // false — reference equality, not structural
+
+function reassign(o) { o = { n: 2 }; }      // rebinds the local parameter only
+function mutate(o)   { o.n = 2; }           // reaches the caller's object
+const t = { n: 1 };
+reassign(t); console.log('after reassign:', t.n);
+mutate(t);   console.log('after mutate:  ', t.n);`, run:1},
+ {code:`const original = { id: 1, tags: ['a'], meta: { seen: false }, when: new Date('2026-01-01') };
+
+const shallow = { ...original };
+shallow.tags.push('b');
+console.log('shallow shares arrays:', original.tags);
+
+const deep = structuredClone(original);
+deep.meta.seen = true;
+console.log('deep is independent:', original.meta.seen, '· Date survives:', deep.when instanceof Date);
+
+const viaJson = JSON.parse(JSON.stringify(original));
+console.log('JSON round-trip loses the Date type:', typeof viaJson.when);`, run:1},
+ {h:'Immutable update patterns'},
+ {p:'You will write these constantly in React and Redux code. Learn the shapes.'},
+ {code:`const state = { user: { name: 'Ada', prefs: { theme: 'dark' } }, items: [1, 2, 3] };
+
+const renamed  = { ...state, user: { ...state.user, name: 'Grace' } };
+const themed   = { ...state, user: { ...state.user, prefs: { ...state.user.prefs, theme: 'light' } } };
+const appended = { ...state, items: [...state.items, 4] };
+const removed  = { ...state, items: state.items.filter(n => n !== 2) };
+const replaced = { ...state, items: state.items.map(n => (n === 2 ? 20 : n)) };
+
+console.log(renamed.user.name, themed.user.prefs.theme, appended.items, removed.items, replaced.items);
+console.log('original untouched:', state.user.name, state.items);`, run:1},
+ {code:`const frozen = Object.freeze({ a: 1, nested: { b: 2 } });
+frozen.a = 9;              // ignored
+frozen.nested.b = 9;       // succeeds — freeze is shallow
+console.log(frozen.a, frozen.nested.b, Object.isFrozen(frozen));`, run:1}
+]},
+
+{id:'gotchas', t:'Gotchas that <em>will</em> bite you', k:'A checklist worth rereading after your first week on a real codebase.', b:[
+ {code:`console.log(1, [1,5,10].sort());                   // default sort is lexicographic
+console.log(2, typeof null, Array.isArray([]));    // typeof lies about null and arrays
+console.log(3, 0.1 + 0.2 === 0.3);                 // floating point
+
+const weird = {}; weird[1] = 'a'; weird['1'] = 'b';
+console.log(4, weird);                             // object keys are strings — one key
+
+console.log(5, Boolean([]), [] + [], [] + {});     // empty array is truthy, coerces to ''
+console.log(6, '5' + 1, '5' - 1);                  // + is string concat, - is numeric
+
+const arr = [1,2,3]; delete arr[1];
+console.log(7, arr, arr.length);                   // delete leaves a hole; use splice/filter
+
+function broken() {
+  return                                            // automatic semicolon insertion
+    42;
+}
+console.log(8, broken());                          // undefined
+
+console.log(9, new Date(2026, 0, 31).getMonth());  // months are 0-indexed`, run:1},
+ {code:`// Date parsing depends on the string format — a genuine cross-timezone bug source
+console.log('2026-01-31        →', new Date('2026-01-31').toISOString(), '(parsed as UTC)');
+console.log('2026-01-31T00:00  →', new Date('2026-01-31T00:00').toISOString(), '(parsed as local)');
+// For anything nontrivial use Temporal when available, or date-fns / Luxon.`, run:1},
+ {code:`const obj = { exists: true };
+try { obj.method(); } catch (e) { console.log('obj.method()   →', e.message); }
+console.log('obj.method?.() →', obj.method?.());   // safe optional CALL
+// obj?.method() only guards obj, not method. You usually want obj?.method?.()`, run:1},
+ {note:'trap', n:'Comparing objects', p:'<code>{a:1} === {a:1}</code> is <code>false</code>. There is no built-in structural equality. Use a deep-equal helper, or <code>JSON.stringify</code> comparison if you control the key order and there are no <code>undefined</code>/functions/Dates involved.'}
+]},
+
+{id:'tooling', t:'Tooling and the ecosystem', k:'What the files in a real repository are for.', b:[
+ {code:`{
+  "name": "my-app",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies":    { "express": "^4.19.2" },
+  "devDependencies": { "eslint": "^9.0.0", "prettier": "^3.3.0" }
+}`},
+ {ul:['<code>dependencies</code> ship to production; <code>devDependencies</code> do not.',
+  '<code>^4.19.2</code> allows minor + patch · <code>~4.19.2</code> patch only · <code>4.19.2</code> pins exactly.',
+  '<strong>Commit your lockfile.</strong> Use <code>npm ci</code> in CI for reproducible installs.',
+  '<code>npx &lt;tool&gt;</code> runs a package without a global install.']},
+ {table:[['Category','Options','Note'],
+  ['Runtime','Node · Deno · Bun','Node is the default; Bun is fast and mostly compatible'],
+  ['Package manager','npm · pnpm · yarn','pnpm saves disk and is strict about phantom dependencies'],
+  ['Linter','ESLint','Catches real bugs, not just style. Configure once per repo.'],
+  ['Formatter','Prettier · Biome','Never argue about style again'],
+  ['Types','TypeScript · JSDoc + <code>checkJs</code>','Adopt for anything you will maintain past a week'],
+  ['Bundler','Vite · esbuild · Rollup · webpack','Vite for apps, Rollup/tsup for libraries'],
+  ['Tests','<code>node --test</code> · Vitest · Jest','The built-in runner is enough for many projects']]},
+ {h:'Node flags worth knowing'},
+ {code:`node --watch src/index.js      # restart on change — no nodemon needed
+node --env-file=.env app.js    # load env vars natively
+node --inspect app.js          # attach Chrome devtools or the VS Code debugger
+node --test --experimental-test-coverage`},
+ {h:'TypeScript, briefly'},
+ {p:'You will end up on a TypeScript codebase. It is JavaScript plus compile-time types, erased at runtime — every semantic in this course still holds.'},
+ {code:`type User = { id: number; name: string; email?: string };
+
+function greet(user: User): string {
+  return \`Hello \${user.name}\`;
+}
+function firstOrNull<T>(items: T[]): T | null {
+  return items.length > 0 ? items[0] : null;
+}`},
+ {p:'Types catch precisely the class of bug that the coercion rules in §3 create.'}
+]},
+
+{id:'testing', t:'Testing', k:'Node has a built-in runner. No dependencies required.', b:[
+ {code:`// math.test.js  ·  run with: node --test
+import { test, describe, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { add, divide } from './math.js';
+
+describe('divide', () => {
+  test('divides', () => {
+    assert.equal(divide(10, 4), 2.5);
+  });
+
+  test('throws on a zero denominator', () => {
+    assert.throws(() => divide(1, 0), RangeError);
+  });
+});
+
+test('async rejection paths', async () => {
+  await assert.rejects(() => Promise.reject(new TypeError('nope')), TypeError);
+});
+
+test('deep equality compares structure', () => {
+  assert.deepEqual({ a: [1, 2] }, { a: [1, 2] });
+});
+
+test('mocking a collaborator', () => {
+  const logger = mock.fn();
+  logger('hello');
+  assert.equal(logger.mock.callCount(), 1);
+  assert.deepEqual(logger.mock.calls[0].arguments, ['hello']);
+});`},
+ {p:'What to test, in priority order: <strong>every branch in both directions</strong>, boundary values (<code>0</code>, <code>-1</code>, empty array, empty string, <code>null</code>), thrown errors, and async rejection paths.'},
+ {note:'tip', n:'Assert on behaviour', p:'A test that calls a function and asserts nothing proves nothing — coverage tools will still count the line as covered. Assert the return value, the state change, or the interaction.'}
+]},
+
+{id:'program', t:'A short, <em>real</em> program', k:'A CLI that fetches GitHub repositories with concurrency limits, timeouts, retries and aggregation. Every concept above appears here.', b:[
+ {code:`// repos.js — run: node repos.js nodejs
+const API = 'https://api.github.com';
+const CONCURRENCY = 4;
+const REQUEST_TIMEOUT_MS = 5000;
+const MAX_RETRIES = 3;
+
+class HttpError extends Error {
+  constructor(status, url) {
+    super(\`HTTP \${status} for \${url}\`);
+    this.name = 'HttpError';
+    this.status = status;
+    this.retryable = status >= 500 || status === 429;
+  }
+}
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+async function getJson(path, { retries = MAX_RETRIES } = {}) {
+  const url = \`\${API}\${path}\`;
+  for (let attempt = 1; ; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    try {
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers: { accept: 'application/vnd.github+json' },
+      });
+      if (!res.ok) throw new HttpError(res.status, url);
+      return await res.json();
+    } catch (err) {
+      const isRetryable = err.name === 'AbortError' || err.retryable;
+      if (!isRetryable || attempt >= retries) {
+        throw new Error(\`giving up on \${path} after \${attempt} attempt(s)\`, { cause: err });
+      }
+      await sleep(2 ** attempt * 100);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+}
+
+async function* paginate(path, { perPage = 100 } = {}) {
+  for (let page = 1; ; page++) {
+    const batch = await getJson(\`\${path}?per_page=\${perPage}&page=\${page}\`);
+    if (batch.length === 0) return;
+    yield* batch;
+    if (batch.length < perPage) return;
+  }
+}
+
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const index = cursor++;
+      results[index] = await fn(items[index]);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+function summarize(repos) {
+  const byLanguage = Object.entries(
+    repos.reduce((acc, repo) => {
+      const language = repo.language ?? 'unknown';
+      acc[language] = (acc[language] ?? 0) + 1;
+      return acc;
+    }, {}),
+  ).toSorted(([, a], [, b]) => b - a);
+
+  return {
+    total: repos.length,
+    stars: repos.reduce((sum, r) => sum + r.stargazers_count, 0),
+    topStarred: repos.toSorted((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 5),
+    byLanguage,
+  };
+}
+
+async function main() {
+  const [user = 'nodejs'] = process.argv.slice(2);
+
+  const repos = [];
+  for await (const repo of paginate(\`/users/\${user}/repos\`)) {
+    if (!repo.fork) repos.push(repo);
+  }
+
+  const enriched = await mapLimit(repos.slice(0, 20), CONCURRENCY, async repo => {
+    const languages = await getJson(\`/repos/\${user}/\${repo.name}/languages\`).catch(() => ({}));
+    return { ...repo, languageBytes: languages };
+  });
+
+  const { total, stars, topStarred, byLanguage } = summarize(enriched);
+
+  console.log(\`\${user}: \${total} non-fork repos, \${stars.toLocaleString()} stars\\n\`);
+  console.log('Top starred:');
+  for (const { name, stargazers_count: count } of topStarred) {
+    console.log(\`  \${String(count).padStart(7)}  \${name}\`);
+  }
+  console.log('\\nLanguages:');
+  for (const [language, count] of byLanguage) {
+    console.log(\`  \${language.padEnd(14)} \${'█'.repeat(count)} \${count}\`);
+  }
+}
+
+main().catch(err => {
+  console.error(err.message);
+  if (err.cause) console.error('  caused by:', err.cause.message);
+  process.exitCode = 1;
+});`},
+ {h:'What to notice'},
+ {ul:['A custom error carrying <strong>structured data</strong> (<code>status</code>, <code>retryable</code>) instead of a parseable string.',
+  '<code>AbortController</code> plus <code>finally</code>, so the timer is cleared on every path.',
+  'Exponential backoff via <code>2 ** attempt</code>.',
+  '<code>async function*</code> for pagination, consumed with <code>for await...of</code>.',
+  '<strong>Bounded</strong> concurrency rather than <code>Promise.all</code> over an unbounded list.',
+  '<code>?? \'unknown\'</code> so a missing language is labelled, not dropped.',
+  'A single top-level <code>.catch</code> that sets <code>process.exitCode</code> instead of throwing.']},
+ {p:'Here is the aggregation half, running on fixture data:'},
+ {code:`const repos = [
+  { name: 'node',    stargazers_count: 106000, language: 'JavaScript', fork: false },
+  { name: 'undici',  stargazers_count: 6200,   language: 'JavaScript', fork: false },
+  { name: 'llhttp',  stargazers_count: 1500,   language: 'TypeScript', fork: false },
+  { name: 'docker',  stargazers_count: 1300,   language: null,         fork: false },
+  { name: 'nan',     stargazers_count: 3200,   language: 'C++',        fork: false },
+];
+
+function summarize(repos) {
+  const byLanguage = Object.entries(
+    repos.reduce((acc, r) => {
+      const language = r.language ?? 'unknown';
+      acc[language] = (acc[language] ?? 0) + 1;
+      return acc;
+    }, {}),
+  ).toSorted(([, a], [, b]) => b - a);
+  return {
+    total: repos.length,
+    stars: repos.reduce((s, r) => s + r.stargazers_count, 0),
+    topStarred: repos.toSorted((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 3),
+    byLanguage,
+  };
+}
+
+const { total, stars, topStarred, byLanguage } = summarize(repos);
+console.log(\`\${total} repos · \${stars.toLocaleString()} stars\`);
+for (const { name, stargazers_count: c } of topStarred) {
+  console.log(\`  \${String(c).padStart(7)}  \${name}\`);
+}
+for (const [lang, n] of byLanguage) {
+  console.log(\`  \${lang.padEnd(12)} \${'█'.repeat(n)} \${n}\`);
+}`, run:1}
+]},
+
+{id:'next', t:'Where to go next', k:'Reference material, a practice order that works, and the habits to start today.', b:[
+ {h:'Reference, by usefulness'},
+ {ul:['<strong>MDN Web Docs</strong> — the authoritative reference for the language and browser APIs.',
+  '<strong>JavaScript for Impatient Programmers</strong> (Axel Rauschmayer) — free online, precise.',
+  '<strong>You Don’t Know JS Yet</strong> (Kyle Simpson) — free, deep on scope, closures, <code>this</code>.',
+  '<strong>Node.js API docs</strong> — the runtime half of your job.',
+  '<strong>TC39 proposals repo</strong> — what is coming.']},
+ {h:'Practice order'},
+ {ol:['Rebuild a data structure you already know — LRU cache, trie — in idiomatic JS. Get a feel for <code>Map</code> and closures.',
+  'Write a small CLI that hits a public API. Get a feel for async, errors, and modules.',
+  'Write a tiny HTTP server with <code>node:http</code> or Express. Feel the event loop under load.',
+  'Pick a frontend framework — React is the pragmatic default — <em>after</em> the above, not before.',
+  'Add TypeScript to one of your own projects and fix everything it finds.']},
+ {h:'Habits to start now'},
+ {ul:['<code>const</code> by default, <code>let</code> when needed, never <code>var</code>.',
+  '<code>===</code> always; <code>x == null</code> as the single exception.',
+  '<code>async</code>/<code>await</code> over <code>.then</code> chains; <code>Promise.all</code> when work is independent.',
+  'Small pure functions; push side effects to the edges.',
+  'Every <code>catch</code> either handles the error meaningfully or rethrows it.',
+  'Run a linter and a formatter from day one.']}
+]},
+
+{id:'exercises', t:'Exercises', k:'In order. Each targets a specific section. Use the editable blocks above as your scratchpad.', b:[
+ {ol:['<strong>Coercion audit</strong> (§3) — predict then verify: <code>[] + {}</code>, <code>\'5\' - 3</code>, <code>null >= 0</code>, <code>NaN === NaN</code>, <code>[] == ![]</code>, <code>0 ?? \'x\'</code>, <code>\'\' || \'x\'</code>. One sentence of explanation each.',
+  '<strong>Scope</strong> (§4, §11) — write <code>makeIdGenerator(prefix)</code> yielding <code>\'user-1\'</code>, <code>\'user-2\'</code>… Then explain why two generators do not share a counter.',
+  '<strong>this</strong> (§6) — given <code>{ n: 1, delayed() { setTimeout(function () { console.log(this.n); }, 0); } }</code>, fix it three ways and state each trade-off.',
+  '<strong>Array pipeline</strong> (§9) — from <code>{name, department, salary, startYear}</code> records, produce average salary per department, sorted descending, excluding anyone who started this year. No explicit <code>for</code> loops.',
+  '<strong>Group and index</strong> (§9, §18) — implement <code>groupBy(items, keyFn)</code> returning a <code>Map</code>. Then a version returning a plain object. When would you want each?',
+  '<strong>Deep equality</strong> (§19) — write <code>deepEqual(a, b)</code> handling nested objects, arrays, <code>null</code>, <code>NaN</code>, and differing key counts. Tests first.',
+  '<strong>Event loop</strong> (§13) — do the predict-the-output exercise in that section without running it.',
+  '<strong>Promise combinators</strong> (§14) — implement <code>promiseAll(promises)</code> from scratch using only <code>new Promise</code>. Preserve input order; reject on the first failure.',
+  '<strong>Retry with backoff</strong> (§12, §15) — write <code>retry(fn, { attempts, baseDelayMs, isRetryable })</code>. Test with a function that fails twice then succeeds; assert the call count.',
+  '<strong>Bounded concurrency</strong> (§15) — write <code>mapLimit</code> without looking, then prove no more than <code>limit</code> calls are ever in flight.',
+  '<strong>Generators</strong> (§17) — write a lazy <code>chunk(iterable, size)</code> and batch an infinite sequence with it. Confirm nothing computes until consumed.',
+  '<strong>Put it together</strong> — an LRU cache class with <code>get</code>, <code>set</code> and <code>maxSize</code>, backed by a <code>Map</code> (which preserves insertion order). O(1) both operations. Test eviction, re-access reordering, and overwriting an existing key.']},
+ {p:'A starting point for the last one — fill in the gaps and make the assertions pass:'},
+ {code:`class LRU {
+  #max; #map = new Map();
+  constructor(max) { this.#max = max; }
+
+  get(key) {
+    if (!this.#map.has(key)) return undefined;
+    const value = this.#map.get(key);
+    this.#map.delete(key);          // re-insert to move to the most-recent end
+    this.#map.set(key, value);
+    return value;
+  }
+
+  set(key, value) {
+    if (this.#map.has(key)) this.#map.delete(key);
+    this.#map.set(key, value);
+    if (this.#map.size > this.#max) {
+      const oldest = this.#map.keys().next().value;
+      this.#map.delete(oldest);
+    }
+    return this;
+  }
+
+  get size() { return this.#map.size; }
+  keys() { return [...this.#map.keys()]; }
+}
+
+const cache = new LRU(3);
+cache.set('a', 1).set('b', 2).set('c', 3);
+cache.get('a');                       // 'a' becomes most recent
+cache.set('d', 4);                    // evicts 'b', the least recently used
+console.log(cache.keys());            // expect [ 'c', 'a', 'd' ]
+console.log(cache.get('b'), cache.size);   // expect undefined 3`, run:1}
+]},
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   SYNTAX HIGHLIGHTER
+   ══════════════════════════════════════════════════════════════════ */
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const KW='await|async|break|case|catch|class|const|continue|default|delete|do|else|export|extends|finally|for|from|function|get|if|import|in|instanceof|let|new|of|return|set|static|super|switch|this|throw|try|typeof|var|void|while|yield';
+const RX=new RegExp(
+ '(\\/\\/[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)'+                                   //1 comment
+ '|(`(?:\\\\[\\s\\S]|[^`\\\\])*`)'+                                          //2 template
+ "|('(?:\\\\[\\s\\S]|[^'\\\\\\n])*'|\"(?:\\\\[\\s\\S]|[^\"\\\\\\n])*\")"+    //3 string
+ '|\\b(0[xX][\\da-fA-F]+n?|\\d[\\d_]*\\.?\\d*(?:[eE][+-]?\\d+)?n?)\\b'+      //4 number
+ '|\\b('+KW+')\\b'+                                                          //5 keyword
+ '|\\b(true|false|null|undefined|NaN|Infinity)\\b'+                          //6 literal
+ '|\\b([A-Z][A-Za-z0-9_]*)\\b'+                                              //7 Class
+ '|\\b([a-zA-Z_$][\\w$]*)(?=\\s*\\()','g');                                  //8 call
+function hl(src){
+  return esc(src).replace(RX,(m,c,tpl,str,num,kw,lit,cls,fn)=>{
+    if(c) return '<span class="t-c">'+c.replace(/→/g,'<span class="arw">→</span>')+'</span>';
+    if(tpl) return '<span class="t-t">'+tpl+'</span>';
+    if(str) return '<span class="t-s">'+str+'</span>';
+    if(num) return '<span class="t-n">'+num+'</span>';
+    if(kw)  return '<span class="t-k">'+kw+'</span>';
+    if(lit) return '<span class="t-l">'+lit+'</span>';
+    if(cls) return '<span class="t-C">'+cls+'</span>';
+    if(fn)  return '<span class="t-f">'+fn+'</span>';
+    return m;
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VALUE INSPECTOR
+   ══════════════════════════════════════════════════════════════════ */
+function inspect(v, d=0, seen=new WeakSet()){
+  const t=typeof v;
+  if(v===null) return 'null';
+  if(t==='undefined') return 'undefined';
+  if(t==='number') return Object.is(v,-0)?'-0':String(v);
+  if(t==='bigint') return v+'n';
+  if(t==='boolean') return String(v);
+  if(t==='symbol') return v.toString();
+  if(t==='string') return d===0?v:"'"+v.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')+"'";
+  if(t==='function'){
+    const n=v.name||'anonymous';
+    return /^class\s/.test(Function.prototype.toString.call(v))?'[class '+n+']':'[Function: '+n+']';
+  }
+  if(seen.has(v)) return '[Circular]';
+  if(d>4) return Array.isArray(v)?'[Array]':'[Object]';
+  seen.add(v);
+  try{
+    if(v instanceof Error) return (v.name||'Error')+': '+v.message;
+    if(v instanceof Date) return v.toISOString();
+    if(v instanceof RegExp) return String(v);
+    if(v instanceof Map) return 'Map('+v.size+') {'+(v.size?' '+[...v].map(([k,x])=>inspect(k,d+1,seen)+' => '+inspect(x,d+1,seen)).join(', ')+' ':'')+'}';
+    if(v instanceof Set) return 'Set('+v.size+') {'+(v.size?' '+[...v].map(x=>inspect(x,d+1,seen)).join(', ')+' ':'')+'}';
+    if(v instanceof Promise) return 'Promise { <pending> }';
+    if(Array.isArray(v)){
+      const parts=[]; let hole=0;
+      for(let i=0;i<v.length;i++){
+        if(!(i in v)){hole++;continue;}
+        if(hole){parts.push('<'+hole+' empty>');hole=0;}
+        parts.push(inspect(v[i],d+1,seen));
+      }
+      if(hole) parts.push('<'+hole+' empty>');
+      const s='[ '+parts.join(', ')+' ]';
+      return parts.length?(s.length>78?'[\n'+parts.map(p=>'  '.repeat(d+1)+p).join(',\n')+'\n'+'  '.repeat(d)+']':s):'[]';
+    }
+    const keys=Reflect.ownKeys(v).filter(k=>{
+      const dsc=Object.getOwnPropertyDescriptor(v,k); return dsc&&dsc.enumerable;
+    });
+    const ctor=v.constructor&&v.constructor.name;
+    const pre=(ctor&&ctor!=='Object')?ctor+' ':'';
+    if(!keys.length) return pre+'{}';
+    const parts=keys.map(k=>{
+      const ks=typeof k==='symbol'?'['+k.toString()+']':(/^[A-Za-z_$][\w$]*$/.test(k)?k:"'"+k+"'");
+      let val; try{val=inspect(v[k],d+1,seen);}catch(e){val='[getter threw]';}
+      return ks+': '+val;
+    });
+    const s=pre+'{ '+parts.join(', ')+' }';
+    return s.length>78?pre+'{\n'+parts.map(p=>'  '.repeat(d+1)+p).join(',\n')+'\n'+'  '.repeat(d)+'}':s;
+  } finally { seen.delete(v); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   POLYFILLS — so every example runs even on an older browser
+   ══════════════════════════════════════════════════════════════════ */
+(()=>{
+  const A=Array.prototype;
+  if(!A.toSorted) A.toSorted=function(c){return [...this].sort(c);};
+  if(!A.toReversed) A.toReversed=function(){return [...this].reverse();};
+  if(!A.toSpliced) A.toSpliced=function(...a){const c=[...this];c.splice(...a);return c;};
+  if(!A.with) A.with=function(i,v){const c=[...this];c[i<0?c.length+i:i]=v;return c;};
+  if(!A.findLast) A.findLast=function(p){for(let i=this.length-1;i>=0;i--)if(p(this[i],i,this))return this[i];};
+  if(!A.at) A.at=function(i){return this[i<0?this.length+i:i];};
+  if(!Object.hasOwn) Object.hasOwn=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+  if(!Object.groupBy) Object.groupBy=(items,fn)=>{
+    const out={}; let i=0; for(const x of items){(out[fn(x,i++)]??=[]).push(x);} return out;
+  };
+  const S=Set.prototype;
+  if(!S.union) S.union=function(o){return new Set([...this,...o]);};
+  if(!S.intersection) S.intersection=function(o){return new Set([...this].filter(v=>o.has(v)));};
+  if(!S.difference) S.difference=function(o){return new Set([...this].filter(v=>!o.has(v)));};
+  if(!S.symmetricDifference) S.symmetricDifference=function(o){
+    return new Set([...[...this].filter(v=>!o.has(v)),...[...o].filter(v=>!this.has(v))]);
+  };
+  if(!S.isSubsetOf) S.isSubsetOf=function(o){return [...this].every(v=>o.has(v));};
+  if(!S.isSupersetOf) S.isSupersetOf=function(o){return [...o].every(v=>this.has(v));};
+  if(!S.isDisjointFrom) S.isDisjointFrom=function(o){return [...this].every(v=>!o.has(v));};
+  if(typeof structuredClone!=='function') globalThis.structuredClone=v=>{
+    const walk=(x,seen)=>{
+      if(x===null||typeof x!=='object') return x;
+      if(seen.has(x)) return seen.get(x);
+      if(x instanceof Date) return new Date(x.getTime());
+      if(x instanceof RegExp) return new RegExp(x.source,x.flags);
+      if(x instanceof Map){const m=new Map();seen.set(x,m);for(const[k,v]of x)m.set(walk(k,seen),walk(v,seen));return m;}
+      if(x instanceof Set){const s=new Set();seen.set(x,s);for(const v of x)s.add(walk(v,seen));return s;}
+      const out=Array.isArray(x)?[]:{}; seen.set(x,out);
+      for(const k of Object.keys(x)) out[k]=walk(x[k],seen);
+      return out;
+    };
+    return walk(v,new Map());
+  };
+})();
+
+/* ══════════════════════════════════════════════════════════════════
+   RUNNER
+   ══════════════════════════════════════════════════════════════════ */
+const AsyncFn=Object.getPrototypeOf(async function(){}).constructor;
+async function run(src, outEl){
+  const rows=outEl.querySelector('.rows'), meta=outEl.querySelector('.meta');
+  rows.textContent=''; outEl.classList.add('open');
+  let n=0;
+  const push=(kind,text)=>{
+    const r=document.createElement('div'); r.className='r '+kind;
+    const i=document.createElement('i'); i.textContent=String(++n).padStart(2,'0');
+    const s=document.createElement('span'); s.textContent=text;
+    r.append(i,s); rows.append(r); outEl.scrollTop=outEl.scrollHeight;
+  };
+  const fmt=a=>a.map(x=>inspect(x)).join(' ');
+  const shim={
+    log:(...a)=>push('log',fmt(a)),
+    info:(...a)=>push('log',fmt(a)),
+    debug:(...a)=>push('log',fmt(a)),
+    warn:(...a)=>push('warn',fmt(a)),
+    error:(...a)=>push('err',fmt(a)),
+    table:(...a)=>push('log',fmt(a)),
+  };
+  const t0=performance.now();
+  try{
+    const fn=new AsyncFn('console','structuredClone','queueMicrotask',src);
+    const ret=await fn(shim, globalThis.structuredClone, globalThis.queueMicrotask);
+    if(ret!==undefined) push('ret','→ '+inspect(ret));
+  }catch(e){
+    push('err',(e&&e.constructor&&e.constructor.name||'Error')+': '+(e&&e.message||String(e)));
+  }
+  // let pending timers/microtasks in the example flush before we stamp the time
+  await new Promise(r=>setTimeout(r,0));
+  meta.textContent=(performance.now()-t0).toFixed(1)+' ms';
+  if(!n) push('log','(no output — this example declares things without logging)');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RENDER
+   ══════════════════════════════════════════════════════════════════ */
+const el=(tag,cls,html)=>{const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;};
+const LETTERS='ABCD';
+
+function codeBlock(src, runnable){
+  const cb=el('div','cb');
+  const top=el('div','top');
+  top.append(el('span','tag', runnable?'<b>js</b> · editable · ctrl+enter to run':'<b>js</b> · reference'));
+  const copy=el('button','btn','Copy');
+  const pre=el('pre'); pre.innerHTML=hl(src);
+  if(runnable){ pre.contentEditable='plaintext-only'; pre.spellcheck=false; }
+  const out=el('div','out');
+  out.append((()=>{const h=el('div','hdr'); h.append(el('span',null,'Console'), el('span','meta','')); return h;})());
+  out.append(el('div','rows'));
+
+  if(runnable){
+    const go=el('button','btn go','▸ Run');
+    const reset=el('button','btn','Reset');
+    go.onclick=()=>run(pre.innerText, out).then(()=>{ pre.innerHTML=hl(pre.innerText); });
+    reset.onclick=()=>{ pre.innerHTML=hl(src); out.classList.remove('open'); };
+    pre.addEventListener('keydown',e=>{
+      if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){ e.preventDefault(); go.click(); }
+    });
+    top.append(reset,copy,go);
+  } else top.append(copy);
+
+  copy.onclick=()=>{navigator.clipboard.writeText(pre.innerText).then(()=>{copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy',1200);});};
+  cb.append(top,pre,out);
+  return cb;
+}
+
+function quizBlock(q){
+  const box=el('div','quiz');
+  box.append(el('div','q','Check yourself'), el('div','body',q.quiz));
+  const opts=el('div','opts');
+  const why=el('div','why',q.w);
+  q.o.forEach((text,i)=>{
+    const b=el('button','opt');
+    b.append(el('span',null,LETTERS[i]), el('span',null,text));
+    b.querySelector('span:last-child').innerHTML=text;
+    b.onclick=()=>{
+      [...opts.children].forEach((c,j)=>{ c.disabled=true; if(j===q.a)c.classList.add('right'); });
+      if(i!==q.a) b.classList.add('wrong');
+      why.classList.add('show');
+    };
+    opts.append(b);
+  });
+  box.append(opts,why);
+  return box;
+}
+
+function predictBlock(p){
+  const box=el('div','quiz');
+  box.append(el('div','q','Predict the output'));
+  const cb=codeBlock(p.src,1);
+  box.append(cb);
+  const why=el('div','why',p.w);
+  const btn=el('button','btn','Reveal the answer');
+  btn.style.marginTop='4px';
+  btn.onclick=()=>{ why.classList.add('show'); btn.remove(); };
+  box.append(btn,why);
+  return box;
+}
+
+const doc=document.getElementById('doc'), nav=document.getElementById('nav');
+const store=JSON.parse(localStorage.getItem('jscc-done')||'{}');
+
+C.forEach((s,idx)=>{
+  const n=String(idx+1).padStart(2,'0');
+  const sec=el('section'); sec.id=s.id;
+  sec.append(el('div','num',n), el('h2',null,s.t), el('p','kicker',s.k));
+
+  for(const b of s.b){
+    if(b.p!=null&&b.note) { const d=el('div','note '+b.note); d.append(el('b',null,b.n), el('div',null,b.p)); sec.append(d); continue; }
+    if(b.p!=null) { sec.append(el('p',null,b.p)); continue; }
+    if(b.h) { sec.append(el('h3',null,b.h)); continue; }
+    if(b.ul) { const u=el('ul'); b.ul.forEach(i=>u.append(el('li',null,i))); sec.append(u); continue; }
+    if(b.ol) { const o=el('ol'); b.ol.forEach(i=>o.append(el('li',null,i))); sec.append(o); continue; }
+    if(b.table) {
+      const w=el('div','tw'), t=el('table'), th=el('tr');
+      b.table[0].forEach(c=>th.append(el('th',null,c)));
+      t.append(el('thead').appendChild(th).parentNode);
+      const tb=el('tbody');
+      b.table.slice(1).forEach(row=>{ const tr=el('tr'); row.forEach(c=>tr.append(el('td',null,c))); tb.append(tr); });
+      t.append(tb); w.append(t); sec.append(w); continue;
+    }
+    if(b.code) { sec.append(codeBlock(b.code, b.run)); continue; }
+    if(b.quiz) { sec.append(quizBlock(b)); continue; }
+    if(b.predict) { sec.append(predictBlock({src:b.predict,w:b.w})); continue; }
+  }
+
+  // completion toggle
+  const row=el('div','done-row');
+  const chk=el('button','chk'+(store[s.id]?' is-done':''));
+  chk.append(el('em'), el('span',null,store[s.id]?'Section complete':'Mark section complete'));
+  chk.onclick=()=>{
+    store[s.id]=!store[s.id];
+    localStorage.setItem('jscc-done',JSON.stringify(store));
+    chk.classList.toggle('is-done',!!store[s.id]);
+    chk.querySelector('span').textContent=store[s.id]?'Section complete':'Mark section complete';
+    link.classList.toggle('done',!!store[s.id]);
+    tally();
+  };
+  row.append(chk);
+  sec.append(row);
+  doc.append(sec);
+
+  const link=el('a'+'','' );
+  link.href='#'+s.id; link.className=store[s.id]?'done':'';
+  link.style.animationDelay=(idx*14)+'ms';
+  link.innerHTML='<i>'+n+'</i><b>'+s.t.replace(/<\/?em>/g,'')+'</b><u>✓</u>';
+  nav.append(link);
+  if(idx===11||idx===15) nav.append(el('hr'));
+});
+
+function tally(){
+  document.getElementById('pdone').textContent=Object.values(store).filter(Boolean).length;
+}
+tally();
+
+/* ── scroll spy + progress bar ──────────────────────────────────── */
+const links=[...nav.querySelectorAll('a')], secs=[...document.querySelectorAll('section')];
+const bar=document.getElementById('bar');
+let raf;
+function onScroll(){
+  cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(()=>{
+    const h=document.documentElement;
+    bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+    let cur=0;
+    secs.forEach((s,i)=>{ if(s.getBoundingClientRect().top<160) cur=i; });
+    links.forEach((l,i)=>l.classList.toggle('on',i===cur));
+    const on=links[cur];
+    if(on){ const r=on.getBoundingClientRect(), nr=nav.getBoundingClientRect();
+      if(r.top<nr.top+20||r.bottom>nr.bottom-20) on.scrollIntoView({block:'center'}); }
+  });
+}
+addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+/* ── theme ──────────────────────────────────────────────────────── */
+const root=document.documentElement;
+const savedTheme=localStorage.getItem('jscc-theme'); if(savedTheme) root.dataset.theme=savedTheme;
+function labelTheme(){ const l=root.dataset.theme==='ink'?'Paper':'Ink'; document.getElementById('theme').textContent=l; }
+function flipTheme(){ root.dataset.theme=root.dataset.theme==='ink'?'paper':'ink'; localStorage.setItem('jscc-theme',root.dataset.theme); labelTheme(); }
+document.getElementById('theme').onclick=flipTheme;
+document.getElementById('theme2').onclick=flipTheme;
+labelTheme();
+
+/* ── command palette ────────────────────────────────────────────── */
+const pal=document.getElementById('pal'), palq=document.getElementById('palq'), palr=document.getElementById('palr');
+let sel=0, hits=[];
+function renderPal(){
+  const q=palq.value.trim().toLowerCase();
+  hits=C.map((s,i)=>({s,i})).filter(({s})=>{
+    const hay=(s.t+' '+s.k+' '+s.id).replace(/<[^>]+>/g,'').toLowerCase();
+    return !q||q.split(/\s+/).every(w=>hay.includes(w));
+  });
+  sel=0;
+  palr.innerHTML=hits.map(({s,i},j)=>
+    '<a href="#'+s.id+'" class="'+(j===0?'sel':'')+'"><i>'+String(i+1).padStart(2,'0')+'</i><span>'+s.t.replace(/<\/?em>/g,'')+'</span></a>'
+  ).join('')||'<a style="color:var(--ink3)"><i>—</i><span>No section matches</span></a>';
+}
+function openPal(){ pal.classList.add('open'); palq.value=''; renderPal(); palq.focus(); }
+function closePal(){ pal.classList.remove('open'); }
+document.getElementById('find').onclick=openPal;
+document.getElementById('find2').onclick=openPal;
+pal.onclick=e=>{ if(e.target===pal) closePal(); };
+palq.oninput=renderPal;
+addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); pal.classList.contains('open')?closePal():openPal(); return; }
+  if(e.key==='Escape') closePal();
+  if(!pal.classList.contains('open')) return;
+  const as=[...palr.querySelectorAll('a')];
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    as[sel]&&as[sel].classList.remove('sel');
+    sel=(sel+(e.key==='ArrowDown'?1:as.length-1))%as.length;
+    as[sel].classList.add('sel'); as[sel].scrollIntoView({block:'nearest'});
+  }
+  if(e.key==='Enter'&&as[sel]){ location.hash=as[sel].getAttribute('href'); closePal(); }
+});
+</script>
+</body>
+</html>
