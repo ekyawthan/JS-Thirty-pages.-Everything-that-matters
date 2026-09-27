@@ -88,6 +88,10 @@ aside{
 .tool:hover{border-color:var(--acc); color:var(--acc)}
 .prog{padding:11px 22px; border-bottom:1px solid var(--rule2); font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--ink3); display:flex; justify-content:space-between; align-items:center}
 .prog em{font-style:normal; color:var(--acc)}
+.xlink{display:block; padding:12px 22px; border-bottom:1px solid var(--rule2); text-decoration:none}
+.xlink span{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink3)}
+.xlink b{display:block; margin-top:3px; font-weight:400; font-size:13.5px; color:var(--ink2); line-height:1.35}
+.xlink:hover b{color:var(--acc)}
 nav{overflow-y:auto; flex:1; padding:10px 0 60px; scrollbar-width:thin}
 nav::-webkit-scrollbar{width:7px}
 nav::-webkit-scrollbar-thumb{background:var(--rule); border-radius:9px}
@@ -276,6 +280,10 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); borde
       <button class="tool" id="theme">Paper</button>
       <button class="tool" id="find">Search</button>
     </div>
+    <a class="xlink" href="preparation.html">
+      <span>Companion guide</span>
+      <b>UC Davis IRL Developer — application &amp; interview prep &rsaquo;</b>
+    </a>
     <div class="prog"><span>Progress</span><span><em id="pdone">0</em> / 25</span></div>
     <nav id="nav"></nav>
   </aside>
@@ -283,14 +291,15 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); borde
   <div>
     <div class="mobinav">
       <b>JavaScript, properly</b>
+      <a class="tool" href="preparation.html" style="flex:none;padding:6px 10px">Job prep</a>
       <button class="tool" id="theme2" style="flex:none;padding:6px 10px">Theme</button>
       <button class="tool" id="find2" style="flex:none;padding:6px 10px">Search</button>
     </div>
     <main>
       <header class="hero">
-        <div class="eyebrow">For engineers who already know how to program</div>
+        <div class="eyebrow">For students who can already code in some language</div>
         <h1>Thirty pages. <i>Everything</i> that matters.</h1>
-        <p class="sub">You know loops, recursion, and Big-O. You have not written much JavaScript. This is the gap — the coercion rules, <code>this</code>, closures, the event loop, and promises — closed in one sitting. Every example below runs in your browser. Edit them.</p>
+        <p class="sub">You have written loops and functions before, just not much JavaScript. This closes that gap in one sitting: the weird type conversions, <code>this</code>, closures, the event loop, and promises. Every example below runs right here in your browser, and you can edit them.</p>
         <div class="facts">
           <div><b>25</b><span>Sections</span></div>
           <div><b>70</b><span>Runnable examples</span></div>
@@ -301,7 +310,8 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); borde
       <div id="doc"></div>
       <footer>
         <h2>That's the whole language.</h2>
-        <p>What's left is libraries, and libraries are just other people's functions. The habits worth keeping: <em class="k">const</em> by default, <em class="k">===</em> always, <code>async/await</code> over <code>.then</code> chains, small pure functions with side effects pushed to the edges, and every <code>catch</code> either handling the error or rethrowing it.</p>
+        <p>Everything else is libraries, and libraries are just other people's functions. The habits worth taking with you: <em class="k">const</em> unless you need to reassign, <em class="k">===</em> always, <code>async/await</code> instead of <code>.then</code> chains, small functions that take input and return output, and every <code>catch</code> either doing something about the error or re-throwing it.</p>
+        <p>Using this to apply for a job? There is a companion guide: <a href="preparation.html"><strong>UC Davis IRL Developer — application &amp; interview preparation</strong></a>. It breaks down that posting, drafts the three supplemental answers, and works through a set of behavioral and technical interview questions that link back to the sections above.</p>
         <p style="color:var(--ink3);font-family:var(--mono);font-size:11px;letter-spacing:.08em;margin-top:34px">Press <kbd>Cmd K</kbd> to jump · <kbd>Cmd Enter</kbd> to run a focused block · progress is saved locally</p>
       </footer>
     </main>
@@ -322,20 +332,20 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); borde
    block kinds: p h ul ol table note code quiz predict
    ══════════════════════════════════════════════════════════════════ */
 const C = [
-{id:'what', t:'What JavaScript <em>actually</em> is', k:'Three things get conflated. Keep them separate and half the confusion disappears.', b:[
- {p:'"JavaScript" gets used for three different things, and separating them clears up a surprising amount of confusion — including the two questions every newcomer asks: <em>why can I use <code>fetch</code> in the browser but not always in Node?</em> and <em>what does it mean for a feature to be "supported"?</em>'},
- {p:'The <strong>language</strong> is a written specification. An <strong>engine</strong> is a program that implements it. A <strong>runtime</strong> is an engine bundled with a set of APIs the language itself never defined. <code>Array.prototype.map</code> is the language and exists everywhere. <code>document</code>, <code>fetch</code>, <code>fs</code> and <code>setTimeout</code> are all runtime additions — none of them appear in the specification at all.'},
+{id:'what', t:'What JavaScript <em>actually</em> is', k:'The word means three different things. Sorting them out early saves you a lot of confusion.', b:[
+ {p:'People say "JavaScript" when they mean three separate things. Once you can tell them apart, two questions that confuse everyone stop being confusing: <em>why does <code>fetch</code> work in the browser but not always in Node?</em> and <em>what do people mean when they say a feature is "supported"?</em>'},
+ {p:'The <strong>language</strong> is a written rulebook. An <strong>engine</strong> is a program that follows those rules. A <strong>runtime</strong> is an engine plus a pile of extra tools bolted on top. <code>Array.prototype.map</code> is part of the language, so it works everywhere. <code>document</code>, <code>fetch</code>, <code>fs</code> and <code>setTimeout</code> are extras that a runtime adds. They are not in the rulebook at all.'},
  {table:[['Thing','What it is'],
-  ['ECMAScript (ES)','The language specification. Versions are yearly. ES2015 (“ES6”) was the big one; we are in the ES2024/2025 era.'],
-  ['Engine','The implementation. V8 (Chrome, Node, Deno), JavaScriptCore (Safari), SpiderMonkey (Firefox).'],
-  ['Runtime','Engine <em>plus</em> host APIs. The browser gives you <code>document</code> and <code>fetch</code>; Node gives you <code>fs</code> and <code>process</code>. Neither is “JavaScript”.']]},
- {h:'What will feel unfamiliar'},
- {ul:['<strong>Dynamically typed.</strong> A variable holds any type; types are checked at runtime.',
-  '<strong>Single-threaded, with an event loop.</strong> One call stack. Concurrency comes from async I/O, not threads.',
-  '<strong>Objects are hash maps with a prototype link.</strong> There is no class inheritance underneath — <code>class</code> is syntax over prototypes.',
-  '<strong>Functions are closures and first-class values.</strong> Used constantly, not occasionally.',
-  '<strong>No compile step required</strong> — but essentially every real project has one.']},
- {note:'tip', n:'Baseline', p:'ES modules and class bodies are strict mode automatically. In plain scripts add <code>\'use strict\'</code> — it turns silent mistakes into errors.'},
+  ['ECMAScript (ES)','The rulebook. A new version comes out each year. ES2015 (“ES6”) was the huge one. We are now around ES2024/2025.'],
+  ['Engine','A program that runs the language. V8 (Chrome, Node, Deno), JavaScriptCore (Safari), SpiderMonkey (Firefox).'],
+  ['Runtime','An engine <em>plus</em> extra tools. The browser hands you <code>document</code> and <code>fetch</code>. Node hands you <code>fs</code> and <code>process</code>. Neither set is "JavaScript" itself.']]},
+ {h:'Five things that may surprise you'},
+ {ul:['<strong>Types are checked while the code runs,</strong> not before it runs. A variable can hold anything.',
+  '<strong>There is only one thread.</strong> JavaScript does one thing at a time. It deals with slow work by handing it off and coming back later, not by using more threads.',
+  '<strong>Objects are basically hash maps</strong> with a link to another object. There is <code>class</code> syntax, but underneath it is still that link.',
+  '<strong>Functions are values.</strong> You pass them around constantly, not once in a while.',
+  '<strong>You do not need a compiler</strong> — but almost every real project has a build step anyway.']},
+ {note:'tip', n:'Turn on strict mode', p:'Files loaded as modules, and anything inside a <code>class</code>, are already strict. In a plain script, put <code>\'use strict\'</code> at the top. It turns silent mistakes into real errors, which is what you want.'},
  {code:`'use strict';
 try {
   undeclaredVariable = 5;
@@ -345,21 +355,21 @@ try {
 // Without strict mode, that line would have silently created a global.`, run:1}
 ]},
 
-{id:'types', t:'Values and types', k:'Seven primitives and objects. That is the entire type system.', b:[
- {p:'Coming from Java or C++, you are used to a type system with dozens of entries and a compiler that checks them. JavaScript has <strong>eight</strong> types total, and nothing checks them for you. Seven are <em class="k">primitives</em> — <code>number</code>, <code>string</code>, <code>boolean</code>, <code>undefined</code>, <code>null</code>, <code>bigint</code>, <code>symbol</code>. Everything else — arrays, functions, dates, regexes, class instances, <code>{}</code> — is the eighth: <code>object</code>.'},
- {p:'The split matters for two reasons that come up constantly. Primitives are <strong>immutable and copied by value</strong>; objects are <strong>mutable and copied by reference</strong> (see <a href="#copies">Copying, references, immutability</a>). And the <em class="k">variable</em> has no type at all — only the value does. A variable that holds a number now can hold a string in the next statement, so "what type is <code>x</code>?" is only ever a question about this instant.'},
- {p:'<code>typeof</code> is the runtime\'s answer to that question. It is also the first place the language shows its age — two of its answers are wrong:'},
+{id:'types', t:'Values and types', k:'Seven simple types plus objects. That is the whole list.', b:[
+ {p:'If you have used Java or C++, you are used to a long list of types and a compiler that checks them for you. JavaScript has <strong>eight</strong> types in total, and nothing checks anything. Seven of them are <em class="k">primitives</em>: <code>number</code>, <code>string</code>, <code>boolean</code>, <code>undefined</code>, <code>null</code>, <code>bigint</code>, <code>symbol</code>. Everything else is the eighth one, <code>object</code> — arrays, functions, dates, regexes, class instances, plain <code>{}</code>, all of it.'},
+ {p:'Two things follow from that split, and they come up daily. First, primitives cannot be changed and get copied by value, while objects can be changed and get copied by reference (more on that in <a href="#copies">Copying, references, immutability</a>). Second, <strong>the variable has no type — only the value does.</strong> A variable holding a number can hold a string on the next line. So "what type is <code>x</code>?" is only ever a question about right now.'},
+ {p:'<code>typeof</code> answers that question. It also shows the language\'s age, because two of its answers are just wrong:'},
  {code:`console.log(typeof 42, typeof 'hi', typeof true);
 console.log(typeof undefined, typeof 10n, typeof Symbol('id'));
 console.log(typeof null);            // 'object' — a 1995 bug, kept for compatibility
 console.log(typeof [], typeof {});   // both 'object'
 console.log(typeof function () {});  // 'function' — objects, but typeof special-cases them
 console.log(Array.isArray([]));      // this is how you actually test for an array`, run:1},
- {p:'Two of those results will mislead you. <code>typeof null</code> returns <code>\'object\'</code>, which is a bug from the 1995 implementation that can never be fixed without breaking existing sites — so test for null with <code>x === null</code>, never with <code>typeof</code>. And <code>typeof []</code> returns <code>\'object\'</code> too, because an array <em>is</em> an object; <code>Array.isArray()</code> is the only reliable check.'},
- {p:'So <code>typeof</code> is useful for distinguishing primitives from each other, and close to useless for distinguishing one kind of object from another. For that you use <code>Array.isArray</code>, <code>instanceof</code>, or a duck-typed check on the property you actually need.'},
- {h:'Numbers — there is only one'},
- {p:'There is no <code>int</code>, no <code>float</code>, no <code>long</code>, no <code>double</code>. There is one numeric type, and it is an IEEE-754 64-bit float — the thing other languages call <code>double</code>. When you write <code>5</code>, you are writing a float that happens to have no fractional part.'},
- {p:'That single decision explains a whole family of surprises. Floats store values in binary, and <code>0.1</code> has no exact binary representation any more than <code>1/3</code> has an exact decimal one. So <code>0.1</code> is stored as the nearest representable value, the error compounds when you add, and the total misses <code>0.3</code> by about 5.5×10⁻¹⁷. Integers are safe, but only to 2⁵³−1, because that is where the 52-bit mantissa runs out of room to represent every whole number.'},
+ {p:'Two of those answers will trip you up. <code>typeof null</code> says <code>\'object\'</code>. That is a bug from 1995 that can never be fixed, because fixing it would break millions of existing websites. So check for null with <code>x === null</code> and never with <code>typeof</code>. <code>typeof []</code> also says <code>\'object\'</code>, because an array really <em>is</em> an object. Use <code>Array.isArray()</code> instead.'},
+ {p:'Short version: <code>typeof</code> is good at telling primitives apart and almost useless at telling one kind of object from another. For objects, use <code>Array.isArray</code>, <code>instanceof</code>, or just check whether the property you need exists.'},
+ {h:'Numbers — there is only one kind'},
+ {p:'No <code>int</code>, no <code>float</code>, no <code>long</code>, no <code>double</code>. There is one number type, and it is a 64-bit floating point number — what other languages call a <code>double</code>. When you type <code>5</code>, you get a float that happens to have nothing after the decimal point.'},
+ {p:'That one decision causes a whole family of surprises. Floats are stored in binary, and <code>0.1</code> has no exact binary form — the same way <code>1/3</code> has no exact decimal form. So <code>0.1</code> gets stored as the closest value that fits, the tiny errors add up, and the total misses <code>0.3</code> by about 0.00000000000000006. Whole numbers are exact, but only up to 2⁵³−1. Past that point there are not enough bits left to represent every integer.'},
  {code:`console.log(0.1 + 0.2);                  // 0.30000000000000004
 console.log(0.1 + 0.2 === 0.3);          // false
 console.log(Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON);  // the correct comparison
@@ -371,19 +381,19 @@ console.log(9007199254740993n);          // BigInt is exact
 console.log(7 / 2, Math.trunc(7 / 2));   // 3.5, 3  — no integer division
 console.log(-7 % 3);                     // -1  sign follows the dividend (like C, unlike Python)
 console.log(2 ** 10, 1 / 0, 0 / 0);      // 1024, Infinity, NaN`, run:1},
- {note:'trap', n:'Money', p:'Never store currency in a float. Use integer cents, or a decimal library. <code>0.1 + 0.2</code> is not an academic curiosity — it is a rounding bug in your invoice totals.'},
- {h:'NaN, the value that is not equal to itself'},
- {p:'<code>NaN</code> means "Not a Number" and it is what you get from an arithmetic operation that has no meaningful numeric answer — <code>0/0</code>, <code>Math.sqrt(-1)</code>, <code>Number(\'abc\')</code>. It is not an error and it does not throw; it propagates. Any arithmetic touching a <code>NaN</code> produces another <code>NaN</code>, so one bad parse at the top of a calculation quietly poisons everything downstream. This is the usual reason a number renders as <code>NaN</code> in a UI: the failure happened much earlier than where you noticed it.'},
- {p:'IEEE-754 also specifies that <code>NaN</code> compares unequal to everything, <em>including itself</em>. That means <code>x === NaN</code> is always <code>false</code> and can never be used as a test. Four different comparison semantics exist in the language, and they disagree here:'},
+ {note:'trap', n:'Never store money in a float', p:'Store cents as whole numbers, or use a decimal library. <code>0.1 + 0.2</code> is not a fun fact for class — it is a rounding bug in somebody\'s invoice total.'},
+ {h:'NaN, the value that is not even equal to itself'},
+ {p:'<code>NaN</code> stands for "Not a Number". You get it from math that has no sensible answer: <code>0/0</code>, <code>Math.sqrt(-1)</code>, <code>Number(\'abc\')</code>. It is not an error and it does not crash anything. It just spreads. Any math involving a <code>NaN</code> gives you another <code>NaN</code>, so one bad conversion at the start quietly ruins everything after it. That is almost always why a number shows up as <code>NaN</code> on a page — the real mistake happened much earlier than where you noticed it.'},
+ {p:'There is one more weird rule: <code>NaN</code> is not equal to anything, <em>including itself</em>. So <code>x === NaN</code> is always <code>false</code> and is useless as a test. JavaScript has four different ways to compare values, and they disagree about <code>NaN</code>:'},
  {code:`console.log(NaN === NaN);          // false
 console.log(Number.isNaN(NaN));    // true
 console.log(Object.is(NaN, NaN));  // true
 console.log([NaN].includes(NaN));  // true   — includes uses SameValueZero
 console.log([NaN].indexOf(NaN));   // -1     — indexOf uses ===`, run:1},
  {h:'Strings'},
- {p:'Strings are <strong>immutable</strong>: every method that looks like it edits a string actually returns a new one. <code>s.toUpperCase()</code> does not change <code>s</code>, and <code>s[0] = \'X\'</code> silently does nothing. If you find yourself building a string in a loop with <code>+=</code>, that is fine in practice — engines optimise it — but the mental model should be "produce a new value", not "mutate in place".'},
- {p:'A string is a sequence of <strong>UTF-16 code units</strong>, not characters. For ASCII text the distinction never comes up. For emoji, accented characters, and most non-Latin scripts it does: a single visible character can occupy two code units, so <code>.length</code> is a count of storage slots rather than of things a human would call letters. Anything that iterates the string — spread, <code>for...of</code>, <code>Array.from</code> — walks code <em>points</em> instead and gets closer to the answer you wanted.'},
- {p:'Template literals, written with backticks, are the default way to build strings: they interpolate with <code>${…}</code>, span multiple lines without escapes, and can hold any expression — including a ternary, as below, which is how you get correct pluralisation without an <code>if</code>.'},
+ {p:'Strings <strong>cannot be changed</strong>. Every method that looks like it edits a string actually hands you a new one. <code>s.toUpperCase()</code> leaves <code>s</code> alone, and <code>s[0] = \'X\'</code> does nothing at all — not even an error. Building a string in a loop with <code>+=</code> is fine in practice, since engines handle it well, but think "make a new value" rather than "edit in place".'},
+ {p:'A string is a list of <strong>UTF-16 code units</strong>, not a list of characters. For plain English text you will never notice. For emoji, accented letters, and most non-Latin alphabets you will: one visible character can take up two slots, so <code>.length</code> counts storage slots, not letters. Anything that loops over the string — spread, <code>for...of</code>, <code>Array.from</code> — counts actual characters instead and usually gives you the answer you wanted.'},
+ {p:'Template literals use backticks and are the normal way to build strings now. You drop values in with <code>${…}</code>, you can span multiple lines without escape characters, and you can put any expression inside — including a ternary, like the plural check below.'},
  {code:`const name = 'Ada', n = 3;
 console.log(\`Hello \${name}, you have \${n} message\${n === 1 ? '' : 's'}.\`);
 
@@ -395,21 +405,21 @@ console.log('  pad  '.trim().toUpperCase());
 console.log('👋'.length);              // 2 — emoji is two UTF-16 units
 console.log([...'👋'].length);         // 1 — spreading iterates code points`, run:1},
  {h:'null vs undefined'},
- {p:'Most languages have one way to say "no value". JavaScript has two, and they are not redundant — they encode <em>who</em> decided the value was missing. <code>undefined</code> is the language\'s answer: nobody ever put anything here. <code>null</code> is your answer: something belongs here and I am deliberately marking it empty.'},
- {table:[['Value','Meaning','You see it when'],
-  ['<code>undefined</code>','The engine’s absence','Uninitialised variable, missing property, missing argument, function with no <code>return</code>'],
-  ['<code>null</code>','<em>Your</em> absence','You deliberately set something to nothing']]},
- {p:'Pick one convention and hold it: most codebases use <code>null</code> for intentional emptiness and let <code>undefined</code> mean “not supplied”.'},
+ {p:'Most languages have one way to say "nothing here". JavaScript has two, and they are not the same. The difference is <em>who</em> left it empty. <code>undefined</code> means JavaScript left it empty — nobody ever put a value there. <code>null</code> means <em>you</em> left it empty on purpose.'},
+ {table:[['Value','Who set it','Where you see it'],
+  ['<code>undefined</code>','JavaScript did','A variable you declared but never set, a property that is not there, an argument you did not pass, a function with no <code>return</code>'],
+  ['<code>null</code>','You did','You wrote <code>null</code> yourself to mean "empty on purpose"']]},
+ {p:'Pick one habit and stick with it. Most codebases use <code>null</code> when they mean "deliberately empty" and let <code>undefined</code> mean "never provided".'},
  {quiz:'What does <code>typeof null</code> return?', o:["'null'","'object'","'undefined'",'throws a TypeError'], a:1,
-  w:'<b>\'object\'</b>. A bug in the first implementation, now permanent because fixing it would break the web. Test for null with <code>x === null</code> or <code>x == null</code> (which also catches <code>undefined</code>) — never with <code>typeof</code>.'}
+  w:'<b>\'object\'</b>. A bug from the first version of JavaScript that is now permanent, because fixing it would break the web. Check for null with <code>x === null</code>, or <code>x == null</code> if you also want to catch <code>undefined</code>. Never use <code>typeof</code> for this.'}
 ]},
 
-{id:'coercion', t:'Coercion, equality, <em>truthiness</em>', k:'Where JavaScript earns its reputation. Learn the rules once, then write code that never depends on them.', b:[
- {p:'JavaScript will convert a value to whatever type the surrounding operation needs rather than refuse to run. An <code>if</code> needs a boolean, so it converts. <code>+</code> with a string operand needs strings, so it converts. <code>==</code> needs matching types, so it converts. This is <em class="k">coercion</em>, and it is why almost nothing in JavaScript throws a type error at the point where the types actually stop making sense.'},
- {p:'The rules are deterministic — nothing here is random — but there are a lot of them, and the productive response is not to memorise the tables. It is to learn the three or four places coercion is genuinely useful, and write code that never depends on the rest.'},
+{id:'coercion', t:'Coercion, equality, <em>truthiness</em>', k:'This is where JavaScript got its bad reputation. Learn the rules once, then write code that does not rely on them.', b:[
+ {p:'When JavaScript needs a value of a certain type and you gave it something else, it converts instead of complaining. An <code>if</code> needs a true/false value, so it converts. <code>+</code> next to a string needs strings, so it converts. <code>==</code> needs both sides to match, so it converts. This is called <em class="k">coercion</em>. It is why JavaScript so rarely errors out at the exact spot where your types stopped making sense.'},
+ {p:'The rules are not random — they are written down and always behave the same way. But there are a lot of them, and memorizing the tables is a waste of your time. Learn the handful of places coercion actually helps, and write code that ignores the rest.'},
  {h:'The eight falsy values'},
- {p:'Start with boolean coercion, because you trigger it every time you write an <code>if</code>, a <code>&&</code>, a <code>||</code>, or a <code>!</code>. Instead of a list of what is true, the language defines a short list of what is false, and everything else is true. Eight values are falsy; there are infinitely many truthy ones.'},
- {p:'Everything is truthy <strong>except</strong> <code>false</code>, <code>0</code>, <code>-0</code>, <code>0n</code>, <code>\'\'</code>, <code>null</code>, <code>undefined</code>, and <code>NaN</code>. That means <code>[]</code>, <code>{}</code>, <code>\'0\'</code> and <code>\'false\'</code> are all truthy.'},
+ {p:'Start with true/false conversion, because you trigger it every time you write an <code>if</code>, an <code>&&</code>, an <code>||</code>, or a <code>!</code>. JavaScript does not list what counts as true. It lists what counts as false, and everything else is true. Only eight values are falsy. Everything else — infinitely many things — is truthy.'},
+ {p:'The eight are <code>false</code>, <code>0</code>, <code>-0</code>, <code>0n</code>, <code>\'\'</code>, <code>null</code>, <code>undefined</code>, and <code>NaN</code>. Notice what is <em>not</em> on that list: <code>[]</code>, <code>{}</code>, <code>\'0\'</code> and <code>\'false\'</code> are all truthy, which surprises everyone the first time.'},
  {code:`const cases = [
   ['[]', []], ['{}', {}], ["'0'", '0'], ["'false'", 'false'], ["' '", ' '],
   ['-1', -1], ['[0]', [0]], ['function(){}', function(){}],
@@ -419,7 +429,7 @@ console.log([...'👋'].length);         // 1 — spreading iterates code points
 for (const [label, v] of cases) {
   console.log(label.padEnd(12), v ? 'truthy' : 'falsy  ← one of the eight');
 }`, run:1},
- {p:'Which makes this a real bug, and one you will write:'},
+ {p:'That list causes a very common bug. You will write this one yourself at some point:'},
  {code:`function greet(count) {
   if (!count) return 'nothing to do';   // 0 falls in here. Probably not the intent.
   return count + ' items';
@@ -432,18 +442,18 @@ function greetFixed(count) {
 }
 console.log(greetFixed(0));  // '0 items'`, run:1},
  {h:'=== vs =='},
- {p:'There are two equality operators. <code>===</code> (<em class="k">strict equality</em>) compares type first: different types means <code>false</code>, full stop, no conversion. <code>==</code> (<em class="k">loose equality</em>) coerces the operands toward a common type and <em>then</em> compares, following a table in the specification.'},
- {p:'The problem with <code>==</code> is not that it is unpredictable — it is that the table produces relationships no reasonable person expects. Watch the second line below: <code>0 == \'\'</code> is true and <code>0 == \'0\'</code> is true, but <code>\'\' == \'0\'</code> is false. Equality that is not <em class="k">transitive</em> is not equality in any useful sense, and any mental model you build on it will eventually mislead you.'},
- {p:'So: use <code>===</code> always. The one exception worth keeping is <code>x == null</code>, which is true for exactly <code>null</code> and <code>undefined</code> and nothing else — a concise, safe test for "no value of either kind".'},
+ {p:'There are two equality operators. <code>===</code> checks the type first: if the types differ, the answer is <code>false</code> and nothing gets converted. <code>==</code> converts the two sides to a common type first, then compares.'},
+ {p:'The problem with <code>==</code> is not that it is unpredictable. It is that it produces results nobody would guess. Look at the second line below: <code>0 == \'\'</code> is true, <code>0 == \'0\'</code> is true, but <code>\'\' == \'0\'</code> is false. If A equals B and B equals C but A does not equal C, that is not really equality, and any rule you invent to explain it will let you down later.'},
+ {p:'So use <code>===</code> everywhere. Keep one exception: <code>x == null</code> is true for exactly <code>null</code> and <code>undefined</code> and nothing else, which makes it a short, safe way to ask "is there no value here?"'},
  {code:`console.log(1 === '1', 1 == '1');            // false true
 console.log(0 == '', 0 == '0', '' == '0');   // true true false  ← == is not transitive
 console.log(null == undefined, null === undefined);  // true false
 console.log(null == 0);                      // false — null only loosely equals undefined
 console.log([] == false, [1] == 1, [1,2] == '1,2');  // true true true`, run:1},
- {note:'why', n:'Why this exists', p:'<code>==</code> applies a coercion table before comparing. It is not random, but memorising it is a poor use of your memory. <code>===</code> compares type <em>and</em> value and has no table.'},
- {h:'The operators that save you'},
- {p:'Three pieces of modern syntax exist specifically to stop coercion from causing the bug above. They are the highest-value syntax in the language for everyday code, and you should reach for them by reflex.'},
- {p:'<code>??</code> (<em class="k">nullish coalescing</em>) is <code>||</code> with a narrower trigger: it falls through only on <code>null</code> and <code>undefined</code>, not on every falsy value. <code>?.</code> (<em class="k">optional chaining</em>) evaluates to <code>undefined</code> instead of throwing when the thing on its left is nullish, which collapses defensive <code>a && a.b && a.b.c</code> chains into <code>a?.b?.c</code>. And <code>??=</code> assigns only if the target is currently nullish, which is how you fill in defaults without clobbering a legitimate <code>0</code> or <code>\'\'</code>.'},
+ {note:'why', n:'Why <code>==</code> is like this', p:'<code>==</code> runs a conversion table before comparing. The table is consistent, but remembering it is not worth the space in your head. <code>===</code> compares type <em>and</em> value, and has no table.'},
+ {h:'Three operators that save you'},
+ {p:'Three newer pieces of syntax exist specifically to prevent the bug above. They are the most useful syntax in the language for everyday code, and you should reach for them without thinking.'},
+ {p:'<code>??</code> works like <code>||</code> but is pickier: it only kicks in for <code>null</code> and <code>undefined</code>, not for every falsy value. <code>?.</code> gives you <code>undefined</code> instead of crashing when the thing on its left is missing, so a defensive chain like <code>a && a.b && a.b.c</code> shrinks to <code>a?.b?.c</code>. And <code>??=</code> only assigns when the target is currently <code>null</code> or <code>undefined</code>, which lets you fill in defaults without wiping out a real <code>0</code> or <code>\'\'</code>.'},
  {code:`// || coalesces on ALL falsy values
 console.log(0 || 'default', '' || 'default');   // 'default' 'default'
 
@@ -468,34 +478,34 @@ console.log(opts);`, run:1},
 }
 console.log(connect());
 console.log(connect({ port: 0, pool: { max: 1 } }));   // port 0 survives`, run:1},
- {p:'That <code>port: 0</code> surviving is the whole point. With <code>||</code> it would have been silently replaced by 5432.'},
+ {p:'The important part is that <code>port: 0</code> survived. With <code>||</code> it would have been quietly replaced by 5432.'},
  {quiz:'What is the value of <code>0 || \'fallback\'</code> and <code>0 ?? \'fallback\'</code>?',
   o:["both 'fallback'",'both <code>0</code>',"<code>'fallback'</code> then <code>0</code>","<code>0</code> then <code>'fallback'</code>"], a:2,
-  w:'<b><code>\'fallback\'</code>, then <code>0</code>.</b> <code>||</code> triggers on any falsy value, so a legitimate <code>0</code> gets replaced. <code>??</code> triggers only on <code>null</code>/<code>undefined</code>. For numeric config — port, retries, timeout, quantity — <code>??</code> is almost always the one you want.'},
- {h:'Explicit conversion'},
+  w:'<b><code>\'fallback\'</code>, then <code>0</code>.</b> <code>||</code> fires on any falsy value, so a real <code>0</code> gets thrown away. <code>??</code> only fires on <code>null</code> and <code>undefined</code>. For settings that are numbers — port, retries, timeout, quantity — <code>??</code> is nearly always the one you want.'},
+ {h:'Converting types on purpose'},
  {code:`console.log(Number('42'), Number('42abc'), Number(''));   // 42 NaN 0
 console.log(parseInt('42abc'), parseFloat('3.9kg'));      // 42 3.9
 console.log(+'42', String(42), Boolean(''));              // 42 '42' false
 console.log('5' + 1, '5' - 1);                            // '51' 4  ← + is overloaded`, run:1},
- {p:'Use <code>Number()</code> when the whole string must be valid; <code>parseInt</code> only when trailing junk is expected.'}
+ {p:'Use <code>Number()</code> when the whole string has to be a valid number. Use <code>parseInt</code> only when you expect junk at the end, like <code>\'42px\'</code>.'}
 ]},
 
-{id:'scope', t:'Variables, scope, hoisting', k:'Three declaration keywords. You need two.', b:[
- {p:'<em class="k">Scope</em> is the region of code where a name is visible. JavaScript has two kinds, and which one you get depends on the keyword you declared with — not on where the variable sits. <code>let</code> and <code>const</code> are <strong>block-scoped</strong>: they live inside the nearest <code>{ }</code>, which is the behaviour you already expect from Java or C++. <code>var</code> is <strong>function-scoped</strong>: it ignores blocks entirely and hoists to the top of the enclosing function, so a <code>var</code> declared inside an <code>if</code> is visible before the <code>if</code> and after it.'},
- {p:'That is the whole reason <code>var</code> is obsolete rather than merely unfashionable. It is not a style preference — <code>var</code> has different semantics, and those semantics produce bugs that <code>let</code> cannot produce. Use <code>const</code> by default, <code>let</code> when you genuinely need to reassign, and <code>var</code> never.'},
- {table:[['Keyword','Scope','Reassignable','Use it?'],
-  ['<code>const</code>','block','no','<strong>Default choice</strong>'],
-  ['<code>let</code>','block','yes','When you must mutate'],
-  ['<code>var</code>','function','yes','Never, in new code']]},
- {p:'One clarification that catches nearly everyone: <code>const</code> is not <code>final</code> in the deep sense and it is nothing like C++\'s <code>const</code>. It freezes the <strong>binding</strong> — the association between the name and the value — and says nothing about the value itself. A <code>const</code> array can be pushed to, sorted, and emptied; you simply cannot point the name at a <em>different</em> array.'},
+{id:'scope', t:'Variables, scope, hoisting', k:'There are three keywords for declaring variables. You only need two of them.', b:[
+ {p:'<em class="k">Scope</em> means: where in your code can this name be seen? JavaScript has two kinds of scope, and which one you get depends on the keyword you used. <code>let</code> and <code>const</code> live inside the nearest pair of curly braces — the same behavior you are used to from Java or C++. <code>var</code> ignores curly braces completely and belongs to the whole function. So a <code>var</code> declared inside an <code>if</code> block is visible before the <code>if</code> and after it too.'},
+ {p:'That is why <code>var</code> is out of date, and it is not just a style opinion. <code>var</code> behaves differently, and that behavior causes bugs that <code>let</code> simply cannot cause. Use <code>const</code> by default, <code>let</code> when you really need to reassign, and <code>var</code> never.'},
+ {table:[['Keyword','Visible in','Can reassign','Use it?'],
+  ['<code>const</code>','the nearest <code>{ }</code>','no','<strong>Your default</strong>'],
+  ['<code>let</code>','the nearest <code>{ }</code>','yes','When the value has to change'],
+  ['<code>var</code>','the whole function','yes','Never, in new code']]},
+ {p:'Here is the part that confuses almost everyone: <code>const</code> is not like <code>final</code> in Java or <code>const</code> in C++. It locks the <strong>name</strong> to one value. It says nothing about whether that value can be changed. You can push to a <code>const</code> array, sort it, and empty it out. The only thing you cannot do is point that name at a <em>different</em> array.'},
  {code:`const arr = [1, 2];
 arr.push(3);
 console.log(arr);          // [1,2,3] — contents are still mutable
 try { arr = []; } catch (e) { console.log(e.constructor.name, '—', e.message); }`, run:1},
- {h:'Hoisting and the temporal dead zone'},
- {p:'Before a scope runs, the engine scans it and registers every declaration it contains. That scan is what <em class="k">hoisting</em> means: by the time the first line executes, the engine already knows every name the scope will declare. What differs between keywords is the <em>state</em> each name starts in.'},
- {p:'A <code>var</code> is registered <em>and</em> initialised to <code>undefined</code>, so reading it before its declaration line is legal and gives you <code>undefined</code> — a silent wrong value rather than an error. A <code>let</code> or <code>const</code> is registered but left uninitialised, and touching it before its declaration throws a <code>ReferenceError</code>. That window between entering the scope and reaching the declaration is the <em class="k">temporal dead zone</em>, and the error it produces is a feature: it converts a class of silent bug into a loud one.'},
- {p:'Function declarations are the exception worth remembering — they hoist <em>completely</em>, body included, which is why you can call a function defined further down the file. A function stored in a variable is not a declaration; it obeys the rules of whichever keyword holds it.'},
+ {h:'Hoisting and the "dead zone"'},
+ {p:'Before running a block of code, JavaScript scans it and makes a note of every variable declared inside. That scan is what people mean by <em class="k">hoisting</em>. By the time line one runs, JavaScript already knows every name that block will declare. What differs between keywords is what state those names start in.'},
+ {p:'A <code>var</code> gets registered <em>and</em> set to <code>undefined</code> right away. So reading it before its declaration line is legal and gives you <code>undefined</code> — a wrong value with no warning. A <code>let</code> or <code>const</code> gets registered but left empty, and touching it before its declaration line throws a <code>ReferenceError</code>. That gap between entering the block and reaching the declaration is called the <em class="k">temporal dead zone</em>. The error is a good thing: it turns a silent bug into a loud one.'},
+ {p:'One exception to remember: a function declaration hoists <em>completely</em>, body included. That is why you can call a function that is defined further down the file. A function stored in a variable is not a declaration, so it follows the rules of whatever keyword holds it.'},
  {code:`console.log('var before declaration:', typeof varThing, varThing);
 var varThing = 1;
 
@@ -508,8 +518,8 @@ function hoistedFn() { console.log('declarations hoist'); }
 try { exprFn(); } catch (e) { console.log('expressions do not:', e.message); }
 var exprFn = function () {};`, run:1},
  {h:'The classic loop bug'},
- {p:'Here is where the scoping difference stops being academic. A closure captures a <em>variable</em>, not a snapshot of its value — so what matters is how many variables the loop actually created.'},
- {p:'<code>for (var i …)</code> creates <strong>one</strong> <code>i</code> for the entire loop, shared by every iteration. Three closures are created, all three point at that single variable, and by the time anyone calls them the loop has finished and left it at <code>3</code>. <code>for (let j …)</code> is special-cased by the specification to create a <strong>fresh binding per iteration</strong>, copying the current value into it, so each closure captures a different variable holding a different number.'},
+ {p:'This is where the scope difference stops being theoretical. When a function remembers a variable from outside itself, it remembers the <em>variable</em>, not a snapshot of what was in it. So the question that matters is: how many variables did the loop actually create?'},
+ {p:'<code>for (var i …)</code> creates <strong>one</strong> <code>i</code> for the whole loop, shared by every pass. You end up with three functions all pointing at that one variable, and by the time anybody calls them, the loop has finished and left it at <code>3</code>. <code>for (let j …)</code> is special: it creates a <strong>brand-new variable each pass</strong> and copies the current value into it. Now each function is looking at a different variable holding a different number.'},
  {code:`const withVar = [];
 for (var i = 0; i < 3; i++) withVar.push(() => i);
 console.log(withVar.map(f => f()));   // [3,3,3] — one shared binding
@@ -517,15 +527,15 @@ console.log(withVar.map(f => f()));   // [3,3,3] — one shared binding
 const withLet = [];
 for (let j = 0; j < 3; j++) withLet.push(() => j);
 console.log(withLet.map(f => f()));   // [0,1,2] — a fresh binding per iteration`, run:1},
- {note:'why', n:'Why let exists', p:'That difference is the single best justification for <code>let</code>. Every callback registered inside a <code>var</code> loop captures the same variable, and by the time the callbacks run the loop has finished.'},
+ {note:'why', n:'This is why let exists', p:'That one difference is the best argument for <code>let</code>. Every callback created inside a <code>var</code> loop grabs the same variable, and by the time those callbacks actually run, the loop is already over.'},
  {quiz:'What does <code>withVar.map(f => f())</code> log above, and why?',
-  o:['<code>[0,1,2]</code> — each arrow captured its own <code>i</code>','<code>[3,3,3]</code> — all three arrows share one <code>i</code>, which ended at 3','<code>[2,2,2]</code> — the loop stops at the last valid index','A <code>ReferenceError</code> — <code>i</code> is out of scope'], a:1,
-  w:'<b><code>[3,3,3]</code>.</b> <code>var i</code> is function-scoped, so there is exactly one <code>i</code>. All three closures reference it, and after the loop exits it holds <code>3</code>. <code>let</code> creates a new binding per iteration, so each closure captures a different variable.'}
+  o:['<code>[0,1,2]</code> — each arrow got its own <code>i</code>','<code>[3,3,3]</code> — all three arrows share one <code>i</code>, which ended at 3','<code>[2,2,2]</code> — the loop stops at the last valid index','A <code>ReferenceError</code> — <code>i</code> is out of scope'], a:1,
+  w:'<b><code>[3,3,3]</code>.</b> <code>var i</code> belongs to the whole function, so there is only one <code>i</code> in existence. All three functions point at it, and once the loop ends it holds <code>3</code>. <code>let</code> makes a new variable each pass, so each function sees a different one.'}
 ]},
 
-{id:'functions', t:'Functions', k:'Four ways to declare one, and they are not interchangeable.', b:[
- {p:'A function in JavaScript is a <strong>value</strong>, in the same ordinary sense that <code>42</code> is a value. It can be stored in a variable, held in an array, passed as an argument, returned from another function, and given properties. There is no separate category of "method" in the language — a method is just a function that happens to be sitting in an object property. Everything in the next four sections follows from that one fact.'},
- {p:'There are four ways to write one, and the syntax choice is not cosmetic. It changes two things: whether the function <strong>hoists</strong>, and whether it gets its own <strong><code>this</code></strong> (covered in the next section). An arrow function is not "a shorter <code>function</code>" — it is a function with the <code>this</code> mechanism removed, which makes it the right choice for callbacks and the wrong choice for methods.'},
+{id:'functions', t:'Functions', k:'There are four ways to write one, and they are not interchangeable.', b:[
+ {p:'In JavaScript a function is a <strong>value</strong>, in exactly the same way that <code>42</code> is a value. You can put it in a variable, stick it in an array, pass it as an argument, return it from another function, and even hang properties off it. There is no separate "method" concept in the language. A method is just a function that happens to be stored in an object property. The next four sections all follow from that one fact.'},
+ {p:'There are four ways to write a function, and the choice is not just style. It changes two things: whether the function hoists, and whether it gets its own <code>this</code> (the next section). An arrow function is not "a shorter <code>function</code>". It is a function with the <code>this</code> machinery removed — which makes it great for callbacks and wrong for methods.'},
  {code:`function declared(a, b) { return a + b; }        // hoisted, has its own \`this\`
 const expr = function (a, b) { return a + b; };  // not hoisted
 const arrow = (a, b) => a + b;                   // concise, inherits \`this\`
@@ -535,9 +545,9 @@ console.log(declared(1,2), expr(1,2), arrow(1,2), obj.method(1,2));
 const double   = n => n * 2;
 const asObject = n => ({ value: n });   // parens required, or {} parses as a block
 console.log(double(4), asObject(4));`, run:1},
- {h:'Parameters are forgiving — sometimes too forgiving'},
- {p:'A parameter list is a <em>suggestion</em>. Nothing checks how many arguments you pass or what types they are. Pass too few and the missing ones are <code>undefined</code>; pass too many and the extras are dropped. No error either way. Combined with the absence of overloading — one name holds one function, and redefining it replaces it — this means an entire category of mistake that a compiler would catch instead surfaces later as <code>undefined</code> flowing through your logic.'},
- {p:'Default parameter values fire on <code>undefined</code> only, <em>not</em> on <code>null</code>. This is deliberate and consistent with <code>??</code>: <code>undefined</code> means "not supplied", so a default is appropriate, whereas <code>null</code> is a value you chose and the language will not second-guess it.'},
+ {h:'Parameters are forgiving — too forgiving'},
+ {p:'A parameter list is more of a suggestion than a rule. Nothing checks how many arguments you pass or what types they are. Pass too few and the missing ones are <code>undefined</code>. Pass too many and the extras get dropped. Either way, no error. There is also no overloading: one name holds one function, and defining it again replaces it. So mistakes that a compiler would catch in Java show up here much later, as <code>undefined</code> quietly moving through your code.'},
+ {p:'Default parameter values only kick in for <code>undefined</code>, <em>not</em> for <code>null</code>. That is on purpose and matches how <code>??</code> works: <code>undefined</code> means "you did not pass anything", so a default makes sense. <code>null</code> is a value you chose, and JavaScript will not override your choice.'},
  {code:`function two(a, b) { return [a, b]; }
 console.log(two(1));         // [1, undefined] — no arity check
 console.log(two(1, 2, 3));   // [1, 2] — extras silently dropped
@@ -547,16 +557,16 @@ console.log(f(), f(undefined), f(null));   // 10 10 null  ← defaults fire only
 
 function sum(first, ...rest) { return rest.reduce((a, b) => a + b, first); }
 console.log(sum(1, 2, 3, 4));   // 10 — rest is a real array`, run:1},
- {note:'trap', n:'No overloading', p:'There is one function per name. Passing the wrong number of arguments is not an error — it is <code>undefined</code> leaking through your logic. This is the class of bug TypeScript exists to catch.'},
- {h:'Destructured parameters = named arguments'},
- {p:'JavaScript has no named arguments, so the community adopted a convention that works just as well: take a single options object and destructure it in the parameter list. Callers get self-documenting call sites and can pass options in any order; you get defaults declared right where the parameter is named. The trailing <code>= {}</code> matters — without it, calling the function with no second argument tries to destructure <code>undefined</code> and throws.'},
+ {note:'trap', n:'No overloading', p:'One name, one function. Passing the wrong number of arguments is not an error — it is <code>undefined</code> leaking into your logic. This is exactly the kind of bug TypeScript was invented to catch.'},
+ {h:'Options objects instead of named arguments'},
+ {p:'JavaScript has no named arguments, so developers settled on a convention that works about as well: take one options object and unpack it right in the parameter list. Whoever calls your function gets a readable call site and can pass options in any order, and you get to declare defaults next to the names. The <code>= {}</code> at the end matters — without it, calling the function with no second argument tries to unpack <code>undefined</code> and crashes.'},
  {code:`function fetchPage(url, { retries = 3, timeout = 5000 } = {}) {
   return \`\${url} retries=\${retries} timeout=\${timeout}\`;
 }
 console.log(fetchPage('/a'));
 console.log(fetchPage('/a', { retries: 1 }));`, run:1},
  {h:'Functions are values'},
- {p:'Because functions are values, a function can return another function. That is the mechanism behind almost every pattern that looks clever in JavaScript. <code>multiplyBy(3)</code> below does not multiply anything — it builds and returns a <em>new</em> function that remembers <code>factor</code> is 3. <code>compose</code> goes further and folds a list of functions into a single one. Both are ordinary uses of a first-class value; see <a href="#closures">Closures</a> for why the returned function can still see <code>factor</code> after <code>multiplyBy</code> has returned.'},
+ {p:'Since functions are values, a function can return another function. That is the trick behind almost every pattern in JavaScript that looks clever. <code>multiplyBy(3)</code> below does not multiply anything. It builds and hands back a <em>new</em> function that remembers <code>factor</code> is 3. <code>compose</code> takes that further and squashes a list of functions into one. Both are normal things to do with a value. See <a href="#closures">Closures</a> for why the returned function can still see <code>factor</code> after <code>multiplyBy</code> already finished.'},
  {code:`const multiplyBy = factor => n => n * factor;   // returns a function
 const triple = multiplyBy(3);
 console.log(triple(5));
@@ -566,17 +576,17 @@ const slugify = compose(s => s.replaceAll(' ', '-'), s => s.toLowerCase(), s => 
 console.log(slugify('   Hello Brave World  '));`, run:1}
 ]},
 
-{id:'this', t:'<em>this</em> — the big one', k:'In Java, this is the instance. In JavaScript, this is decided by HOW a function is called, not where it is written.', b:[
- {p:'In Java or C++, <code>this</code> is settled at compile time: it is the instance whose class encloses the method, and nothing at runtime can change that. JavaScript cannot work that way, because <strong>a method is not welded to its object</strong>. It is an ordinary function value that happens to be stored in a property. You can pull it out, pass it to <code>setTimeout</code>, stash it in an array, and attach it to a different object — the function does not know or care.'},
- {p:'So the language postpones the decision. <code>this</code> is not part of the function; it is an <em class="k">invisible extra argument</em>, supplied fresh on every call, and what gets supplied is determined by the shape of the call expression.'},
- {note:'tip', n:'The one rule', p:'To work out <code>this</code>, do not look at where the function was <em>written</em>. Look at how it was <em>called</em> — specifically at what sits immediately to the left of the parentheses. That is the receiver.'},
- {p:'There are four shapes a call can take, and each supplies <code>this</code> differently:'},
- {table:[['The call looks like','<code>this</code> becomes','Because'],
-  ['<code>fn()</code>','<code>undefined</code> in strict mode, <code>globalThis</code> in sloppy mode','Nothing sits to the left of the parens, so no receiver was supplied'],
-  ['<code>obj.fn()</code>','<code>obj</code>','The object to the left of the dot is handed in as the receiver'],
-  ['<code>fn.call(x)</code>, <code>fn.apply(x)</code>, <code>fn.bind(x)()</code>','<code>x</code>','You named the receiver yourself, overriding the call shape'],
-  ['<code>new Fn()</code>','a brand-new object linked to <code>Fn.prototype</code>','<code>new</code> creates the receiver, then runs the function against it']]},
- {p:'The same function body, called four ways, sees four different values:'},
+{id:'this', t:'<em>this</em> — the big one', k:'In Java, this is the object you are inside. In JavaScript, this depends on HOW the function was called, not where you wrote it.', b:[
+ {p:'In Java or C++, <code>this</code> is decided when the code compiles. It is the object whose class contains the method, and nothing can change that later. JavaScript cannot work that way, because <strong>a method is not attached to its object</strong>. It is just a function value sitting in a property. You can pull it out, hand it to <code>setTimeout</code>, put it in an array, or stick it on a completely different object. The function neither knows nor cares.'},
+ {p:'So JavaScript waits to decide. Think of <code>this</code> as a <em class="k">hidden extra argument</em> that gets passed in fresh on every single call. What gets passed depends on what the call looks like.'},
+ {note:'tip', n:'The one rule', p:'To figure out <code>this</code>, do not look at where the function was <em>written</em>. Look at how it was <em>called</em> — specifically, at whatever is immediately to the left of the parentheses. That is the object <code>this</code> will be.'},
+ {p:'A call can have four shapes, and each one passes a different <code>this</code>:'},
+ {table:[['The call looks like','<code>this</code> becomes','Why'],
+  ['<code>fn()</code>','<code>undefined</code> in strict mode, <code>globalThis</code> otherwise','Nothing is to the left of the parentheses, so no object was passed'],
+  ['<code>obj.fn()</code>','<code>obj</code>','The object to the left of the dot gets passed in'],
+  ['<code>fn.call(x)</code>, <code>fn.apply(x)</code>, <code>fn.bind(x)()</code>','<code>x</code>','You picked the object yourself'],
+  ['<code>new Fn()</code>','a brand-new object linked to <code>Fn.prototype</code>','<code>new</code> creates the object, then runs the function on it']]},
+ {p:'Here is one function body, called four ways, seeing four different values:'},
  {code:`function show() { return this; }
 
 // 1. PLAIN CALL — no receiver
@@ -599,11 +609,11 @@ console.log('3 bind   →', show.bind({ name: 'bound' })().name);
 // 4. NEW — the receiver is created for you
 function Thing() { this.kind = 'thing'; }
 console.log('4 new    →', new Thing().kind);`, run:1},
- {p:'Notice what happened between patterns 1 and 2: <em>one single function</em> produced <code>undefined</code> and then <code>\'o\'</code>. Nothing about <code>show</code> changed. Only the call site did. Once you accept that, <code>this</code> stops being mysterious and becomes mechanical — read the call, find the receiver.'},
- {p:'Pattern 3 is worth a second look because <code>bind</code> behaves differently from the other two. <code>call</code> and <code>apply</code> invoke the function right now with a receiver you supply; they differ only in how you pass the remaining arguments (<code>call</code> takes them separately, <code>apply</code> takes an array). <code>bind</code> invokes nothing — it hands back a <em>new function</em> whose receiver is locked in permanently and cannot be overridden again, even by another <code>bind</code>.'},
- {h:'The trap: a detached method loses its receiver'},
- {p:'This is the consequence that actually bites, and it follows directly from the rule. Because the receiver comes from the call site, <strong>the instant you separate a method from its object, the receiver is gone.</strong> Assigning it to a variable does it. So does passing it as a callback — which is the common case, because <code>setTimeout(c.increment, 0)</code>, <code>arr.map(obj.format)</code>, and <code>button.onclick = c.handle</code> all pass the bare function and later invoke it as a plain call.'},
- {p:'The method still exists and still works. It just has no object to act on, so <code>this</code> is <code>undefined</code> and the first property access throws.'},
+ {p:'Look at what happened between cases 1 and 2. The <em>exact same function</em> gave <code>undefined</code> and then <code>\'o\'</code>. Nothing about <code>show</code> changed — only the call did. Once that clicks, <code>this</code> stops being mysterious. Read the call, find the object on the left.'},
+ {p:'Case 3 deserves a second look, because <code>bind</code> works differently from the other two. <code>call</code> and <code>apply</code> run the function immediately with the object you name; they only differ in how you pass the other arguments (<code>call</code> takes them one by one, <code>apply</code> takes an array). <code>bind</code> runs nothing. It gives you back a <em>new function</em> that is permanently locked to that object — you cannot change it later, not even with another <code>bind</code>.'},
+ {h:'The trap: pulling a method off its object breaks it'},
+ {p:'This is the part that actually causes bugs, and it follows straight from the rule. Since <code>this</code> comes from the call, <strong>the moment you separate a method from its object, it loses track of that object.</strong> Assigning it to a variable does it. So does passing it as a callback — which is the common case. <code>setTimeout(c.increment, 0)</code>, <code>arr.map(obj.format)</code>, and <code>button.onclick = c.handle</code> all hand over the bare function, and later it gets called with nothing on the left.'},
+ {p:'The method still exists and still works fine. It just has no object to work on, so <code>this</code> is <code>undefined</code> and the first property access crashes.'},
  {code:`class Counter {
   count = 0;
   increment() { this.count++; return this.count; }
@@ -615,7 +625,7 @@ const detached = c.increment;          // same function, no receiver
 try { detached(); } catch (e) { console.log('detached →', e.message); }
 
 // setTimeout(c.increment, 0) fails for exactly the same reason.`, run:1},
- {p:'There are three ways out. All of them work by making sure a receiver is attached <em>before</em> the function reaches whoever will call it:'},
+ {p:'There are three fixes. All three work the same way: attach the object <em>before</em> the function gets handed to whoever will call it.'},
  {code:`class A {
   count = 0;
   increment = () => { this.count++; };   // 1. arrow class field, bound at construction
@@ -627,9 +637,9 @@ const c = { count: 0, increment() { this.count++; } };
 setTimeout(() => c.increment(), 0);      // 2. wrap at the call site
 setTimeout(c.increment.bind(c), 0);      // 3. bind (older style)
 setTimeout(() => console.log('a.count =', a.count, '· c.count =', c.count), 10);`, run:1},
- {h:'Arrow functions opt out of the whole system'},
- {p:'Everything above describes ordinary functions. Arrow functions are the exception, and they are the exception in a useful way: <strong>an arrow function has no <code>this</code> of its own at all.</strong> It is not that arrows get a different receiver — they have no receiver slot. When you write <code>this</code> inside an arrow, it resolves the same way any other variable would: by looking outward to the enclosing scope, at the point the arrow was <em>written</em>.'},
- {p:'That makes <code>this</code> inside an arrow <em class="k">lexical</em> — fixed by position in the source, immune to how the arrow is later called. Which is exactly what a callback needs, since the whole problem with callbacks is that someone else calls them. It is also exactly wrong for a method, because a method needs the receiver it was called with, and an arrow will never accept one.'},
+ {h:'Arrow functions skip this whole system'},
+ {p:'Everything above is about normal functions. Arrow functions are the exception, and it is a useful exception: <strong>an arrow function has no <code>this</code> of its own.</strong> Not a different one — none at all. So when you write <code>this</code> inside an arrow, JavaScript treats it like any other variable and looks outward to the surrounding code, at the spot where you <em>wrote</em> the arrow.'},
+ {p:'That means <code>this</code> inside an arrow is fixed by where it sits in your file, and no call can change it. That is exactly what a callback needs, since the whole problem with callbacks is that somebody else calls them. It is also exactly wrong for a method, because a method needs the object it was called on, and an arrow will never accept one.'},
  {code:`const timer = {
   seconds: 0,
   tickBroken() {
@@ -645,16 +655,16 @@ console.log('working →', timer.seconds);
 
 const bad = { name: 'bad', getName: () => this?.name };  // arrow at literal level
 console.log('arrow as method →', bad.getName());         // undefined`, run:1},
- {note:'tip', n:'Rule of thumb', p:'<strong>Arrow functions for callbacks. Regular functions and methods for anything that needs a receiver.</strong> That one line resolves nearly every <code>this</code> question you will hit.'},
+ {note:'tip', n:'Rule of thumb', p:'<strong>Arrow functions for callbacks. Normal functions for methods.</strong> That one line answers almost every <code>this</code> question you will run into.'},
  {quiz:'<code>const f = obj.method; f();</code> — what is <code>this</code> inside <code>f</code> in strict mode?',
-  o:['<code>obj</code>, because that is where the method was defined','<code>globalThis</code>','<code>undefined</code> — the receiver was lost at the call site','A new empty object'], a:2,
-  w:'<b><code>undefined</code>.</b> <code>this</code> is bound at call time by the call pattern. <code>f()</code> is a plain call, so there is no receiver — and in strict mode that means <code>undefined</code> rather than the global object. Any property access on it throws a <code>TypeError</code>. This is why React class components were full of <code>this.handleClick = this.handleClick.bind(this)</code>.'}
+  o:['<code>obj</code>, because that is where the method was defined','<code>globalThis</code>','<code>undefined</code> — nothing was to the left of the parentheses','A new empty object'], a:2,
+  w:'<b><code>undefined</code>.</b> <code>this</code> is decided by the call, and <code>f()</code> is a plain call with nothing to its left. In strict mode that gives you <code>undefined</code> instead of the global object, so the first property access throws a <code>TypeError</code>. This is why old React class components were full of <code>this.handleClick = this.handleClick.bind(this)</code>.'}
 ]},
 
-{id:'objects', t:'Objects', k:'An ordered map of string and symbol keys to values, plus a link to a prototype.', b:[
- {p:'An object is a bag of key/value pairs plus a hidden link to another object (its prototype). That is all. There is no class required to create one, no fixed set of fields, and no declaration step — you write a literal and you have an object. Keys are always strings or symbols; write <code>{ 1: \'a\' }</code> and the key is the string <code>\'1\'</code>.'},
- {p:'Because there is no schema, objects are used for two jobs that other languages keep separate: as <em class="k">records</em> with a known, fixed shape (a user, a config), and as <em class="k">dictionaries</em> with arbitrary runtime keys. They are good at the first and mediocre at the second — which is what <a href="#collections">Map</a> is for.'},
- {p:'Two access syntaxes: <code>obj.key</code> when you know the name as you type it, and <code>obj[expr]</code> when the name is computed at runtime or is not a valid identifier. Getters and setters let a property run a function while still <em>looking</em> like a plain field to the caller — note that <code>user.initials</code> below is read without parentheses.'},
+{id:'objects', t:'Objects', k:'A bag of key/value pairs, plus a hidden link to another object.', b:[
+ {p:'An object is a bag of key/value pairs plus a hidden link to another object (its prototype). That is the whole thing. You do not need a class to make one, there is no fixed list of fields, and there is no declaration step — you write a literal and you have an object. Keys are always strings or symbols, so <code>{ 1: \'a\' }</code> actually stores the key as the string <code>\'1\'</code>.'},
+ {p:'Because there is no fixed shape, objects get used for two different jobs that other languages keep apart. One is a <em class="k">record</em>: a thing with known fields, like a user or a config. The other is a <em class="k">dictionary</em>: keys you do not know until the program runs. Objects are good at the first job and mediocre at the second, which is what <a href="#collections">Map</a> is for.'},
+ {p:'There are two ways to reach a property. Use <code>obj.key</code> when you know the name while typing. Use <code>obj[expr]</code> when the name gets computed while running, or when it is not a valid variable name. Getters and setters let a property run a function while still <em>looking</em> like a plain field — notice that <code>user.initials</code> below is read with no parentheses.'},
  {code:`const user = {
   id: 1,
   name: 'Ada',
@@ -671,7 +681,7 @@ const key = 'name';
 console.log(user[key]);                          // computed access
 const k = 'dynamic';
 console.log({ [k + 'Key']: 1 });                 // computed key in a literal`, run:1},
- {p:'For inspecting an object, the four <code>Object.*</code> statics below cover almost everything you will need. <code>Object.keys</code>/<code>values</code>/<code>entries</code> give you arrays you can then treat with array methods, and <code>Object.fromEntries</code> converts back — the pair is how you map or filter an object in practice, since objects have no <code>.map()</code>. Note the difference between <code>in</code>, which also finds inherited keys, and <code>Object.hasOwn</code>, which does not.'},
+ {p:'A handful of <code>Object.*</code> helpers cover almost everything you need. <code>Object.keys</code>, <code>values</code> and <code>entries</code> hand you arrays, which you can then run array methods on, and <code>Object.fromEntries</code> turns an array of pairs back into an object. That pair of moves is how you "map" or "filter" an object in practice, since objects have no <code>.map()</code> of their own. Also note the difference between <code>in</code>, which finds inherited keys too, and <code>Object.hasOwn</code>, which does not.'},
  {code:`const rec = { id: 7, name: 'Bo' };
 console.log('id' in rec, Object.hasOwn(rec, 'id'));
 delete rec.name;
@@ -688,11 +698,11 @@ console.log(frozen.id);`, run:1},
  {code:`const scores = { alice: 90, bob: 72 };
 for (const [name, score] of Object.entries(scores)) console.log(name, score);
 for (const key in scores) console.log('for-in also walks inherited keys:', key);`, run:1},
- {p:'Prefer <code>for...of</code> over <code>Object.entries()</code>. Reserve <code>for...in</code> for the rare case you genuinely want inherited keys.'},
+ {p:'Use <code>for...of</code> over <code>Object.entries()</code>. Save <code>for...in</code> for the rare times you actually want inherited keys.'},
  {h:'JSON'},
- {p:'JSON looks like JavaScript object syntax and is often described as a subset of it, which makes it easy to forget that it is a <em>different, smaller</em> format. It has six types: string, number, boolean, null, array, object. It has no functions, no <code>undefined</code>, no <code>Date</code>, no <code>Map</code>, no <code>BigInt</code>, and no cycles.'},
- {p:'So <code>JSON.stringify</code> has to decide what to do with everything JSON cannot express, and its choices are <strong>silent</strong>: functions and <code>undefined</code> values are dropped from objects without warning, and a <code>Date</code> becomes an ISO string that <code>JSON.parse</code> will hand back as a string, not a <code>Date</code>. A round-trip through JSON is therefore lossy, which is why it is a poor deep-clone (use <code>structuredClone</code>) and why date fields need explicit revival after parsing.'},
- {p:'The one thing <code>stringify</code> does <em>not</em> do quietly is a cycle — that throws. And <code>JSON.parse</code> throws on any malformed input, including an empty string, which is the single most common cause in real code: a response body you assumed had content.'},
+ {p:'JSON looks like JavaScript object syntax, which makes it easy to forget that it is a <em>different and smaller</em> format. It has six types: string, number, boolean, null, array, object. No functions, no <code>undefined</code>, no <code>Date</code>, no <code>Map</code>, no <code>BigInt</code>, and no objects that point back at themselves.'},
+ {p:'So <code>JSON.stringify</code> has to decide what to do with everything JSON cannot hold, and it decides <strong>silently</strong>. Functions and <code>undefined</code> values get dropped with no warning. A <code>Date</code> turns into a string, and <code>JSON.parse</code> gives you back a string, not a <code>Date</code>. That means going out to JSON and back loses information, which is why it is a bad way to deep-copy something (use <code>structuredClone</code>) and why date fields need converting again after you parse.'},
+ {p:'The one case <code>stringify</code> does not handle quietly is an object that contains itself — that throws. And <code>JSON.parse</code> throws on anything malformed, including an empty string. That last one is the most common cause in real code: a response body you assumed had something in it.'},
  {code:`const obj = { a: 1, when: new Date('2026-01-01'), fn() {}, u: undefined, nested: { b: [1,2] } };
 console.log(JSON.stringify(obj));        // functions & undefined dropped, Date → string
 console.log(JSON.stringify(obj, ['a'])); // allowlist of keys
@@ -701,27 +711,27 @@ console.log(JSON.parse('{"a":1}').a);
 try { JSON.parse('{oops}'); } catch (e) { console.log('parse →', e.constructor.name); }
 const cyclic = {}; cyclic.self = cyclic;
 try { JSON.stringify(cyclic); } catch (e) { console.log('stringify →', e.constructor.name); }`, run:1},
- {note:'trap', n:'Always wrap JSON.parse', p:'It throws a <code>SyntaxError</code> on any malformed input — including an empty response body, which is the most common source in practice.'}
+ {note:'trap', n:'Always wrap JSON.parse in try/catch', p:'It throws a <code>SyntaxError</code> on anything malformed, including an empty response body. That is the case that will actually get you.'}
 ]},
 
-{id:'classes', t:'Prototypes and classes', k:'Every object has a hidden prototype link. Property lookup walks the chain. class is sugar over exactly that.', b:[
- {p:'JavaScript has inheritance, but not the kind you learned. There are no classes underneath — there is one mechanism, and it works between <strong>objects</strong>. Every object holds a hidden link to another object, called its <em class="k">prototype</em>. When you read a property, the engine performs this lookup:'},
- {ol:['Does the object have this property itself? Return it.',
-  'No — follow the prototype link and ask the same question of that object.',
-  'Repeat, walking up the chain.',
-  'The chain ends at <code>null</code>. Return <code>undefined</code>.']},
- {p:'That walk is the whole of inheritance in JavaScript, and it is called the <em class="k">prototype chain</em>. Nothing is copied: <code>dog</code> below does not contain <code>speak</code>, it merely has a route to an object that does. Add a method to <code>animal</code> tomorrow and every object linked to it can call it immediately.'},
- {p:'Two consequences worth holding onto. First, because lookup stops at the first match, defining a property on the object itself <em>shadows</em> the inherited one rather than replacing it — the original is still up the chain. Second, the method found on the prototype runs with <code>this</code> bound to the object you called it on, not to the prototype it was found on. That is why one shared <code>speak</code> can produce a different sentence for every object: <code>this.name</code> is resolved on the receiver.'},
+{id:'classes', t:'Prototypes and classes', k:'Every object has a hidden link to another object. Looking up a property follows that chain. class is a nicer way to write it.', b:[
+ {p:'JavaScript has inheritance, but not the kind you learned in your OOP class. Underneath there are no classes at all. There is one mechanism, and it works between <strong>objects</strong>. Every object holds a hidden link to another object, called its <em class="k">prototype</em>. When you read a property, JavaScript does this:'},
+ {ol:['Does this object have the property itself? If yes, return it.',
+  'If no, follow the hidden link and ask that object the same question.',
+  'Keep going up.',
+  'The links end at <code>null</code>. Return <code>undefined</code>.']},
+ {p:'That walk up the links is all inheritance is in JavaScript, and it is called the <em class="k">prototype chain</em>. Nothing gets copied. The <code>dog</code> below does not contain <code>speak</code> — it just has a path to an object that does. Add a method to <code>animal</code> tomorrow and every object linked to it can use it right away.'},
+ {p:'Two things worth remembering. First, the search stops at the first match, so putting a property directly on an object <em>hides</em> the inherited one instead of replacing it. The original is still up the chain. Second, a method found on the prototype runs with <code>this</code> set to the object you called it on, not the prototype where it was found. That is why one shared <code>speak</code> can produce a different sentence for each object: <code>this.name</code> is looked up on whoever you called it on.'},
  {code:`const animal = { speak() { return \`\${this.name} makes a sound\`; } };
 const dog = Object.create(animal);
 dog.name = 'Rex';
 console.log(dog.speak());                        // found on the prototype
 console.log(Object.hasOwn(dog, 'speak'));        // false — it is not its own
 console.log(Object.getPrototypeOf(dog) === animal);`, run:1},
- {h:'class is sugar over that chain'},
- {p:'ES2015 added <code>class</code>. It introduced no new object model — it is a cleaner syntax for building exactly the structure above, and knowing what it desugars to is what lets you debug it. When you write <code>class Account { deposit() {} }</code>, you get a function named <code>Account</code> whose <code>.prototype</code> object holds <code>deposit</code>.'},
- {p:'And <code>new Account(…)</code> does four mechanical things: create a fresh empty object; set its prototype link to <code>Account.prototype</code>; run the constructor body with <code>this</code> bound to that new object; return it. This is why methods are shared — they live on the one <code>prototype</code> object, not copied into each instance — while fields assigned in the constructor are per-instance. It is also why forgetting <code>new</code> is so destructive: the function still runs, but <code>this</code> is not your new object.'},
- {p:'Fields declared with <code>#</code> are genuinely private — not a naming convention like Python\'s underscore, but a hard syntactic guarantee. Code outside the class body cannot read <code>#balance</code> at all; the attempt is a syntax error, not a runtime one. Returning <code>this</code> from a mutating method, as <code>deposit</code> does below, is the standard way to enable chaining.'},
+ {h:'class is just nicer syntax for that chain'},
+ {p:'ES2015 added <code>class</code>. It did not add a new object model. It is cleaner syntax for building exactly the structure above, and knowing what it turns into is what lets you debug it. When you write <code>class Account { deposit() {} }</code>, you get a function called <code>Account</code> whose <code>.prototype</code> object holds <code>deposit</code>.'},
+ {p:'And <code>new Account(…)</code> does four things, in order: make a fresh empty object, point its hidden link at <code>Account.prototype</code>, run the constructor body with <code>this</code> set to that new object, and return it. This is why methods are shared rather than copied — they live on the one <code>prototype</code> object — while fields you set in the constructor belong to each instance. It is also why forgetting <code>new</code> is so bad: the function still runs, but <code>this</code> is not your new object.'},
+ {p:'Fields written with <code>#</code> are truly private. This is not a naming convention like the underscore in Python — code outside the class body cannot read <code>#balance</code> at all, and trying is a syntax error before the program even runs. Returning <code>this</code> from a method that changes something, like <code>deposit</code> below, is the normal way to allow chaining.'},
  {code:`class Account {
   static #count = 0;          // static private field
   #balance;                   // instance private — truly private, not a naming convention
@@ -748,8 +758,8 @@ acct.deposit(50).deposit(25);
 console.log(acct.balance, String(acct), Account.created);
 console.log(Account.from({ owner: 'Bo', balance: 5 }).balance);`, run:1},
  {h:'extends and super'},
- {p:'<code>extends</code> links one prototype to another, making the chain longer: an instance of <code>Savings</code> finds <code>addInterest</code> on <code>Savings.prototype</code> and <code>deposit</code> one step further up on <code>Account.prototype</code>. <code>super.toString()</code> is how you reach past a method you have shadowed to the one you shadowed it with.'},
- {p:'<code>super(…)</code> in a constructor is mandatory in a subclass and must run <em>before</em> you touch <code>this</code> — not by convention, but because in a derived class the instance does not exist until <code>super</code> returns. Touching <code>this</code> first throws a <code>ReferenceError</code>.'},
+ {p:'<code>extends</code> links one prototype to another, which makes the chain one step longer. An instance of <code>Savings</code> finds <code>addInterest</code> on <code>Savings.prototype</code>, then finds <code>deposit</code> one step further up on <code>Account.prototype</code>. <code>super.toString()</code> is how you reach past a method you overrode to get the one underneath.'},
+ {p:'In a subclass, <code>super(…)</code> is required, and it has to run <em>before</em> you touch <code>this</code>. That is not just a style rule: in a subclass the object does not exist yet until <code>super</code> returns. Touch <code>this</code> first and you get a <code>ReferenceError</code>.'},
  {code:`class Account {
   #balance;
   constructor(owner, initial = 0) { this.owner = owner; this.#balance = initial; }
@@ -768,24 +778,24 @@ class Savings extends Account {
 const s = new Savings('Cy', 1000, 0.05);
 s.addInterest();
 console.log(String(s), s instanceof Savings, s instanceof Account);`, run:1},
- {h:'For the Java-trained'},
+ {h:'If you are coming from Java'},
  {ul:['No interfaces, no abstract classes, no overloading, no <code>final</code>, no package-private.',
-  'Everything is public unless prefixed <code>#</code>.',
-  'Exactly one constructor. Use static factory methods for alternatives.',
-  'Duck typing is the norm: if it has <code>.write()</code>, it is writable.',
-  '<strong>Idiomatic modern JS uses far fewer classes than idiomatic Java.</strong> Prefer plain functions over plain objects unless you truly need instance state bundled with behaviour.']}
+  'Everything is public unless you put <code>#</code> in front of it.',
+  'You get exactly one constructor. For alternatives, write static factory methods.',
+  'Nobody checks types, so if an object has a <code>.write()</code> method, it counts as writable.',
+  '<strong>Modern JavaScript uses far fewer classes than Java does.</strong> Reach for plain functions and plain objects first. Use a class when you really do need state and behavior bundled together.']}
 ]},
 
-{id:'arrays', t:'Arrays and the methods you use <em>daily</em>', k:'Objects with integer-ish keys and a length. The method set replaces most explicit loops.', b:[
- {p:'An array is an object whose keys happen to be numeric strings, with a <code>length</code> that the engine maintains for you. It is not a contiguous block of memory and has no fixed size or element type: one array can hold a number, a string and an object at once, and writing to index 6 of a three-element array is legal — the gap fills with <em class="k">holes</em> that read as <code>undefined</code>.'},
- {p:'What you actually spend your time on is the method set, and it divides into two groups that you must keep straight: methods that <strong>return a new array</strong> and methods that <strong>mutate the one you called them on</strong>. Nearly every array bug that is not an off-by-one is a mutation you did not expect — <code>sort</code> and <code>reverse</code> both reorder in place and return the <em>same</em> array, so passing a caller\'s array to <code>sort</code> silently rearranges their data too.'},
+{id:'arrays', t:'Arrays and the methods you use <em>daily</em>', k:'An array is an object with number-ish keys and a length. Its methods replace most of the loops you would write by hand.', b:[
+ {p:'An array is an object whose keys happen to be numbers as strings, with a <code>length</code> that JavaScript keeps updated for you. It is not one solid block of memory, it has no fixed size, and it does not care what you put in it. One array can hold a number, a string, and an object at the same time. Writing to index 6 of a three-item array is allowed too — the gap fills with <em class="k">holes</em> that read back as <code>undefined</code>.'},
+ {p:'Most of your time goes into the methods, and they split into two groups you have to keep straight: ones that <strong>give you a new array</strong> and ones that <strong>change the array you called them on</strong>. Almost every array bug that is not an off-by-one is a change you did not expect. <code>sort</code> and <code>reverse</code> both reorder in place and hand back the <em>same</em> array, so sorting an array someone else passed you quietly rearranges their data too.'},
  {code:`console.log(Array.from({ length: 4 }, (_, i) => i * i));   // [0,1,4,9]
 console.log(Array.from('abc'), [...'abc']);
 console.log(new Array(3).fill(0));
 const a = [1,2,3]; a[6] = 7;
 console.log(a, a.length);                                  // holes are undefined`, run:1},
- {h:'Non-mutating: transform and query'},
- {p:'These take a function and leave the original array alone. The three worth internalising first, because everything else is a variation: <code>map</code> transforms each element and always returns an array of the <em>same length</em>; <code>filter</code> keeps elements whose test passes and returns a <em>shorter or equal</em> array; <code>reduce</code> collapses the whole array down to a single value of any shape you like. Reach for <code>map</code> when the count should not change and <code>filter</code> when it should — using one where the other belongs is the usual tell of unfamiliarity.'},
+ {h:'Methods that leave the original alone'},
+ {p:'These take a function and do not touch the original array. Learn these three first, because everything else is a variation on them. <code>map</code> changes each item and always gives back an array of the <em>same length</em>. <code>filter</code> keeps the items that pass a test, so you get the same length or shorter. <code>reduce</code> squashes the whole array down to one value of any shape you want. Use <code>map</code> when the count should stay the same and <code>filter</code> when it should shrink. Mixing those two up is the clearest sign someone is new to this.'},
  {code:`const nums = [5, 1, 4, 2, 3];
 console.log('map     ', nums.map(n => n * 2));
 console.log('filter  ', nums.filter(n => n % 2 === 1));
@@ -797,7 +807,7 @@ console.log('at      ', nums.at(-1));
 console.log('flat    ', [[1,2],[3,[4]]].flat(), [[1,2],[3,[4]]].flat(2));
 console.log('flatMap ', ['a b','c'].flatMap(s => s.split(' ')));
 console.log('toSorted', nums.toSorted((x,y) => x - y), '· original:', nums);`, run:1},
- {h:'Mutating — know which these are'},
+ {h:'Methods that change the array — memorize this list'},
  {code:`const m = [1,2,3];
 console.log(m.push(4), m);      // returns new length
 console.log(m.pop(), m);
@@ -807,18 +817,18 @@ console.log(m.splice(1, 1, 'x'), m);   // returns removed items
 // reverse() sort() fill() copyWithin() also mutate.
 // The ES2023 copies: toSorted() toReversed() toSpliced() with()`, run:1},
  {h:'sort will surprise you'},
- {p:'<code>sort</code> with no argument does not sort numerically. It converts every element to a string and compares those, so <code>\'100\'</code> sorts before <code>\'9\'</code> for the same reason <code>"apple"</code> sorts before <code>"b"</code>. This is specified behaviour, not a bug, and it means a numeric array almost always needs a comparator.'},
- {p:'A comparator is a function of two elements that must return a <strong>number</strong>: negative if the first should come first, positive if the second should, zero if they tie. <code>(a, b) => a - b</code> works because subtraction naturally produces exactly those three cases. Returning a boolean — <code>(a, b) => a > b</code> — is the classic mistake: <code>true</code> coerces to 1 and <code>false</code> to 0, so the "second element first" case never fires and you get a plausible-looking but wrong order. Because zero means "tied", you can chain tiebreakers with <code>||</code>, as in the second example.'},
+ {p:'<code>sort</code> with no argument does not sort numbers as numbers. It turns every item into a string and compares those, so <code>\'100\'</code> comes before <code>\'9\'</code> for the same reason <code>"apple"</code> comes before <code>"b"</code>. That is the documented behavior, not a bug. It means an array of numbers almost always needs a compare function.'},
+ {p:'A compare function takes two items and must return a <strong>number</strong>: negative if the first should come first, positive if the second should, and zero if they tie. <code>(a, b) => a - b</code> works because subtraction naturally gives you those three cases. The classic mistake is returning true/false — <code>(a, b) => a > b</code>. <code>true</code> becomes 1 and <code>false</code> becomes 0, so the "second one first" case never happens and you get an order that looks plausible and is wrong. Since zero means "tied", you can add tiebreakers with <code>||</code>, like the second example does.'},
  {code:`console.log([10, 9, 100].sort());                  // [10,100,9] — lexicographic!
 console.log([10, 9, 100].sort((a, b) => a - b));   // [9,10,100]
 
 const people = [{n:'B',age:30},{n:'A',age:30},{n:'C',age:25}];
 console.log(people.toSorted((x, y) => x.age - y.age || x.n.localeCompare(y.n)));
 // \`||\` chains tiebreakers: age ascending, then name`, run:1},
- {note:'trap', n:'Default sort is a string sort', p:'<code>[10,9,100].sort()</code> gives <code>[10,100,9]</code> because every element is converted to a string first. Always pass a comparator for numbers. Comparators must return a number — <code>a > b</code> returning a boolean silently produces garbage.'},
- {h:'reduce, in real use'},
- {p:'<code>reduce</code> confuses people because it is usually taught as "sum an array", which makes it look like a worse <code>for</code> loop. The real idea: you supply a starting value (the <em class="k">accumulator</em>) and a function that takes the accumulator plus one element and returns <strong>the next accumulator</strong>. Whatever that function returns becomes the first argument on the following call, and the last return value is the result. Forgetting to return it is the number one <code>reduce</code> bug, because the next iteration then receives <code>undefined</code>.'},
- {p:'The accumulator does not have to be a number, and that is where <code>reduce</code> earns its place. Start with <code>0</code> and you get a sum; start with <code>{}</code> and you get grouping; start with <code>[]</code> and you get a filter-and-transform in one pass. The accumulator is yours alone — nothing else can see it — so mutating it inside the reducer is safe and fast, which is the point of the trap below.'},
+ {note:'trap', n:'Plain sort() sorts as text', p:'<code>[10,9,100].sort()</code> gives you <code>[10,100,9]</code>, because every item becomes a string first. Always pass a compare function for numbers, and always return a number from it — returning true/false quietly produces garbage.'},
+ {h:'reduce, for real work'},
+ {p:'<code>reduce</code> confuses people because it is usually taught as "add up an array", which makes it look like a worse <code>for</code> loop. Here is the real idea. You give it a starting value, called the <em class="k">accumulator</em>, and a function that takes the accumulator plus one item and returns <strong>the next accumulator</strong>. Whatever your function returns becomes the first argument next time around, and the final return value is the answer. Forgetting to return it is the number one <code>reduce</code> bug, because the next round then gets <code>undefined</code>.'},
+ {p:'The accumulator does not have to be a number, and that is the whole reason <code>reduce</code> is worth knowing. Start with <code>0</code> and you get a total. Start with <code>{}</code> and you get grouping. Start with <code>[]</code> and you filter and transform in a single pass. The accumulator belongs only to you and nothing else can see it, so changing it inside the function is safe and fast — which is what the note below is about.'},
  {code:`const orders = [
   { id: 1, customer: 'ada', total: 30, status: 'paid' },
   { id: 2, customer: 'bo',  total: 20, status: 'open' },
@@ -844,21 +854,21 @@ console.log(
         .map(o => o.customer)
         .filter((c, i, arr) => arr.indexOf(c) === i)
 );`, run:1},
- {note:'trap', n:'The O(n²) reduce', p:'<code>reduce((acc, x) => ({ ...acc, [x.k]: x }), {})</code> allocates a whole new object per element. Fine for 100 items, catastrophic for 100,000. Mutate the accumulator you own instead — it is private to the reduce.'},
- {p:'Method chaining is not always the answer. The array methods always visit every element, and none of them can be stopped early — <code>return</code> inside a <code>forEach</code> callback skips one element, it does not break the loop. So when you need to stop as soon as you find something, skip ahead, or <code>await</code> inside the body, write the loop. <code>for...of</code> over <code>.entries()</code> gives you the index as well:'},
+ {note:'trap', n:'The slow reduce', p:'<code>reduce((acc, x) => ({ ...acc, [x.k]: x }), {})</code> builds a brand-new object for every single item. Fine for 100 items, terrible for 100,000. Change the accumulator directly instead — nobody outside the reduce can see it anyway.'},
+ {p:'Chaining methods is not always the right answer. Array methods always visit every item, and none of them can stop early — a <code>return</code> inside a <code>forEach</code> callback skips one item, it does not break out. So when you need to stop as soon as you find something, skip ahead, or <code>await</code> inside the body, write a real loop. <code>for...of</code> over <code>.entries()</code> gives you the index too:'},
  {code:`const orders = [{id:1,total:10},{id:2,total:40},{id:3,total:5}];
 for (const [i, o] of orders.entries()) {
   if (o.total > 25) { console.log(\`first big order at index \${i}: #\${o.id}\`); break; }
 }`, run:1},
  {quiz:'What does <code>[1, 5, 10, 20].sort()</code> evaluate to?',
   o:['<code>[1,5,10,20]</code>','<code>[1,10,20,5]</code>','<code>[20,10,5,1]</code>','<code>[1,5,10,20]</code> but the array is copied'], a:1,
-  w:'<b><code>[1,10,20,5]</code>.</b> Without a comparator, <code>sort</code> converts each element to a string and compares UTF-16 code units — so <code>\'10\'</code> sorts before <code>\'5\'</code>. Pass <code>(a,b) => a - b</code>. Also note <code>sort</code> mutates in place and returns the same array; use <code>toSorted()</code> when you need a copy.'}
+  w:'<b><code>[1,10,20,5]</code>.</b> With no compare function, <code>sort</code> turns each item into a string and compares character by character, so <code>\'10\'</code> lands before <code>\'5\'</code>. Pass <code>(a,b) => a - b</code>. Remember too that <code>sort</code> reorders the original array and returns that same array — use <code>toSorted()</code> when you want a copy.'}
 ]},
 
-{id:'modern', t:'Destructuring, spread, modern syntax', k:'The syntax that makes idiomatic JS look nothing like the JS from 2012.', b:[
- {p:'<em class="k">Destructuring</em> is pattern matching on shape. You write a pattern on the left of <code>=</code> that <em>looks like</em> the structure you expect on the right, and the engine pulls the pieces out and binds them to names. Read <code>const { name, age } = user</code> as "I expect an object with these two keys; give me each under its own name".'},
- {p:'Two patterns, matching the two shapes. <code>[]</code> destructures <strong>by position</strong> — arrays, and anything iterable. <code>{}</code> destructures <strong>by key</strong> — objects. Both nest arbitrarily, both take defaults with <code>=</code> (which fire on <code>undefined</code> only, same rule as function parameters), both can rename with <code>key: newName</code>, and both can sweep up the remainder with <code>...rest</code>.'},
- {p:'It is worth learning properly rather than treating it as shorthand, because it is not optional in modern code: import statements, React hooks, function options objects, and <code>for...of</code> over <code>Object.entries()</code> all rely on it.'},
+{id:'modern', t:'Destructuring, spread, modern syntax', k:'The syntax that makes today\'s JavaScript look nothing like the JavaScript from 2012.', b:[
+ {p:'<em class="k">Destructuring</em> means unpacking. On the left of the <code>=</code> you draw a shape that <em>looks like</em> the thing on the right, and JavaScript pulls the pieces out and gives each one a name. Read <code>const { name, age } = user</code> as: "I expect an object with these two keys — give me each one as its own variable."'},
+ {p:'There are two shapes to draw. Square brackets unpack <strong>by position</strong>, which works on arrays and anything else you can loop over. Curly braces unpack <strong>by key</strong>, which works on objects. Both can nest as deep as you want, both accept defaults with <code>=</code> (which only kick in for <code>undefined</code>, same as function parameters), both can rename with <code>key: newName</code>, and both can scoop up whatever is left with <code>...rest</code>.'},
+ {p:'Learn this properly instead of treating it as a shortcut, because you cannot avoid it. Import statements, React hooks, options objects, and <code>for...of</code> over <code>Object.entries()</code> all depend on it.'},
  {code:`const [first, second = 0, ...others] = [1];
 console.log(first, second, others);      // 1 0 []
 
@@ -875,9 +885,9 @@ console.log(name, age, city, rest);
 
 const { name: userName } = { name: 'Bo' };   // rename
 console.log(userName);`, run:1},
- {h:'Spread — the same syntax, running the other way'},
- {p:'<code>...</code> means two opposite things depending on which side of the <code>=</code> it appears on. In a pattern it <strong>collects</strong> the leftovers into a new array or object. In a literal or an argument list it <strong>expands</strong> a value into individual elements. Same three dots, mirrored operation — <code>...rest</code> gathers, <code>...arr</code> scatters.'},
- {p:'Expanding is how you write updates without mutating: <code>{ ...base, port: 443 }</code> builds a new object by copying <code>base</code>\'s properties and then overriding <code>port</code>, because later keys win. That last-wins rule is what makes the conditional-key trick on the final line work — <code>false && {…}</code> evaluates to <code>false</code>, and spreading a boolean contributes nothing at all.'},
+ {h:'Spread — the same three dots, running backwards'},
+ {p:'<code>...</code> does two opposite things depending on which side of the <code>=</code> it is on. On the left, it <strong>gathers</strong> the leftovers into a new array or object. Inside a literal or an argument list, it <strong>spreads</strong> a value out into individual items. Same three dots: <code>...rest</code> collects, <code>...arr</code> scatters.'},
+ {p:'Spreading is how you update something without changing the original. <code>{ ...base, port: 443 }</code> makes a new object by copying everything from <code>base</code> and then overriding <code>port</code>, because later keys win. That last-wins rule is also the trick on the final line below: <code>false && {…}</code> evaluates to <code>false</code>, and spreading <code>false</code> adds nothing at all.'},
  {code:`const base = { host: 'localhost', port: 80 };
 console.log({ ...base, port: 443, tls: true });      // later keys win
 
@@ -886,7 +896,7 @@ console.log(Math.max(...[3, 1, 4]));                 // spread into arguments
 
 const includeDebug = true;
 console.log({ level: 'info', ...(includeDebug && { debug: true }) });  // conditional key`, run:1},
- {note:'trap', n:'Spread is shallow', p:'Nested objects are shared between the copy and the original. Mutating <code>copy.nested.x</code> changes <code>original.nested.x</code>. Use <code>structuredClone()</code> when you need a real deep copy.'},
+ {note:'trap', n:'Spread only copies one level deep', p:'Objects inside the object are shared between the copy and the original. Changing <code>copy.nested.x</code> also changes <code>original.nested.x</code>. Use <code>structuredClone()</code> when you need a real independent copy.'},
  {code:`const original = { id: 1, nested: { n: 1 } };
 const shallow = { ...original };
 shallow.nested.n = 99;
@@ -897,11 +907,11 @@ deep.nested.n = 0;
 console.log('structuredClone does not:', original.nested.n);`, run:1}
 ]},
 
-{id:'closures', t:'Closures', k:'A function plus the variables it captured from where it was defined. The mechanism behind privacy, memoisation, and every callback you will write.', b:[
- {p:'Normally a function\'s local variables die when it returns. A <em class="k">closure</em> is what happens when they do not: if a function defined inside another function still exists after the outer one has returned, the variables it referred to stay alive with it. The inner function carries its birthplace around.'},
- {p:'The mechanical version: when a function is created, it stores a hidden reference to the scope it was created in. Calling it looks up any name it does not define itself along that stored chain. So a returned inner function has a live route back to the outer function\'s locals, and the engine simply cannot collect them while that route exists.'},
- {note:'tip', n:'A reference, not a copy', p:'The closure captures the <strong>variable</strong>, not its value at capture time. Two closures over the same variable see each other\'s writes, and a closure created in a loop sees whatever that variable holds when it eventually runs — which is exactly the <code>var</code> loop bug in <a href="#scope">Variables, scope, hoisting</a>.'},
- {p:'That single mechanism is why <code>makeCounter</code> below gives you real encapsulation with no class and no <code>#</code> field. <code>count</code> is an ordinary local variable; the three returned functions can reach it because they were defined alongside it, and nothing else in the program has a path to it. Each call to <code>makeCounter</code> runs afresh and creates a <em>separate</em> <code>count</code>, which is why the two counters are independent.'},
+{id:'closures', t:'Closures', k:'A function that remembers the variables around it from where it was written. This is how you get private data, caching, and almost every callback.', b:[
+ {p:'Normally a function\'s local variables disappear when it returns. A <em class="k">closure</em> is when they do not. If you define a function inside another function and that inner function is still around after the outer one returns, the variables it used stay alive too. The inner function carries its home with it.'},
+ {p:'Here is how it works. When a function is created, JavaScript quietly remembers which scope it was created in. Later, when you call it, any name it does not define itself is looked up in that remembered scope. So a returned inner function still has a working path back to the outer function\'s variables, and the garbage collector cannot throw them away while that path exists.'},
+ {note:'tip', n:'It remembers the variable, not the value', p:'A closure remembers the <strong>variable itself</strong>, not a snapshot of what was in it. Two closures over the same variable see each other\'s changes, and a closure made inside a loop sees whatever the variable holds at the moment it actually runs — that is exactly the <code>var</code> loop bug from <a href="#scope">Variables, scope, hoisting</a>.'},
+ {p:'This is why <code>makeCounter</code> below gives you real private data with no class and no <code>#</code> field. <code>count</code> is just a local variable. The three returned functions can reach it because they were written next to it, and nothing else in the program can get to it at all. Every call to <code>makeCounter</code> starts over and makes its own <code>count</code>, which is why the two counters do not interfere.'},
  {code:`function makeCounter(start = 0) {
   let count = start;                    // captured; unreachable from outside
   return {
@@ -916,8 +926,8 @@ console.log(counter.value, '· counter.count is', counter.count);   // 12 · und
 
 const other = makeCounter(10);
 console.log('independent state:', other.value);`, run:1},
- {h:'Memoisation'},
- {p:'Same mechanism, different use. <code>memoize</code> wraps a function in a new one that owns a private <code>Map</code>. The cache is created once, when <code>memoize</code> runs; the returned function closes over it and consults it on every call. Nothing outside can inspect or corrupt the cache, and each memoised function gets its own — which is the real advantage over a module-level cache object.'},
+ {h:'Caching results (memoization)'},
+ {p:'Same idea, different job. <code>memoize</code> wraps a function in a new function that owns a private <code>Map</code>. The <code>Map</code> is created once, when <code>memoize</code> runs, and the returned function checks it on every call. Nothing outside can see or mess with the cache, and each wrapped function gets its own — that is the advantage over one shared cache object sitting at the top of the file.'},
  {code:`function memoize(fn) {
   const cache = new Map();
   return (...args) => {
@@ -930,8 +940,8 @@ let calls = 0;
 const square = memoize(n => { calls++; return n * n; });
 square(4); square(4); square(4);
 console.log('result', square(4), '· underlying calls:', calls);`, run:1},
- {h:'Partial application and debounce'},
- {p:'<code>partial</code> captures some arguments now and waits for the rest — useful whenever you have a general function and want a specialised version of it. <code>debounce</code> is the one you will reach for most: it captures a mutable <code>timer</code> and, on every call, cancels the pending timer before scheduling a new one, so a burst of calls collapses into a single execution after the burst stops. Each debounced function gets its own <code>timer</code>, which is why calling <code>debounce</code> twice gives you two independent throttles rather than two functions fighting over one variable.'},
+ {h:'Locking in arguments, and debounce'},
+ {p:'<code>partial</code> locks in some arguments now and waits for the rest. It is handy when you have a general function and want a more specific version of it. <code>debounce</code> is the one you will actually use: it remembers a <code>timer</code> variable, and every call cancels the timer that is waiting and starts a new one. A burst of calls therefore turns into a single run, once the burst stops. Each debounced function gets its own <code>timer</code>, so calling <code>debounce</code> twice gives you two independent ones instead of two functions fighting over one variable.'},
  {code:`const partial = (fn, ...preset) => (...later) => fn(...preset, ...later);
 const log = (level, msg) => \`[\${level}] \${msg}\`;
 console.log(partial(log, 'WARN')('disk almost full'));
@@ -945,13 +955,13 @@ function debounce(fn, ms) {
 }
 const save = debounce(() => console.log('saved (once, 200ms after the last call)'), 200);
 save(); save(); save();`, run:1},
- {note:'trap', n:'Closures keep things alive', p:'A captured variable lives as long as the closure does. A long-lived event handler that captured a 50 MB array keeps that array out of the garbage collector forever. This is the most common memory leak in JS applications.'}
+ {note:'trap', n:'Closures keep things in memory', p:'A remembered variable lives as long as the closure does. An event handler that never gets removed and happened to capture a 50 MB array keeps that array in memory forever. This is the most common memory leak in JavaScript apps.'}
 ]},
 
-{id:'errors', t:'Errors', k:'throw accepts any value. Always throw an Error, so you get a stack trace.', b:[
- {p:'There are no checked exceptions, no <code>throws</code> clause, and nothing in a function signature tells you what it can throw. There is also no type restriction on what you throw: <code>throw \'broke\'</code> and <code>throw 42</code> are legal. They are also useless, because the stack trace is captured by the <code>Error</code> constructor — throw anything else and you have thrown away the only record of where the problem happened.'},
- {p:'So: <strong>always throw an <code>Error</code></strong>, and prefer a subclass. Subclassing buys you two things. <code>instanceof</code> becomes a reliable way to distinguish "the user gave me bad input" from "the database is down", which matters because those want different handling. And you get somewhere to put structured data — <code>err.field</code> below — instead of encoding it into the message and parsing it back out at the catch site.'},
- {p:'One discipline that matters more than the syntax: a <code>catch</code> block should handle the errors it recognises and <strong>re-throw everything else</strong>. A catch that swallows unknown errors converts a loud failure into a wrong result, which is strictly worse. Note also that <code>finally</code> runs on every exit path — normal completion, <code>return</code>, and an in-flight throw — which is what makes it the right place for cleanup.'},
+{id:'errors', t:'Errors', k:'You can throw any value at all. Always throw an Error anyway, so you get a stack trace.', b:[
+ {p:'JavaScript has no checked exceptions and no <code>throws</code> clause. Nothing in a function\'s signature tells you what it might throw. There is also no rule about <em>what</em> you can throw — <code>throw \'broke\'</code> and <code>throw 42</code> both run fine. But they are useless, because the stack trace is created by the <code>Error</code> constructor. Throw anything else and you have thrown away the only record of where the problem came from.'},
+ {p:'So <strong>always throw an <code>Error</code></strong>, and ideally your own subclass of it. A subclass gives you two things. First, <code>instanceof</code> becomes a reliable way to tell "the user typed something wrong" apart from "the database is down" — you want to handle those very differently. Second, you get a place to put real data, like <code>err.field</code> below, instead of jamming it into the message text and pulling it back out with string parsing later.'},
+ {p:'One habit matters more than any of the syntax: a <code>catch</code> block should handle the errors it actually recognizes and <strong>re-throw everything else</strong>. A catch that quietly swallows errors it does not understand turns a loud crash into a silently wrong answer, which is worse. Also note that <code>finally</code> runs no matter how the block exits — normal finish, <code>return</code>, or a throw on its way out. That is what makes it the right place for cleanup.'},
  {code:`class ValidationError extends Error {
   constructor(field, message) {
     super(message);
@@ -973,8 +983,8 @@ try {
 } finally {
   console.log('finally always runs — on return, throw, and normal exit');
 }`, run:1},
- {h:'Wrapping: keep the original'},
- {p:'When you catch a low-level error and want to throw something more meaningful, you face a choice that used to be lossy: re-throw the original and the caller gets an unhelpful <code>SyntaxError</code>, or throw your own and lose the details. The <code>cause</code> option solves it — <code>new Error(msg, { cause })</code> attaches the original error to the new one, so you add context without discarding evidence. Runtimes print the chain. <code>AggregateError</code> does the same job for the plural case: several operations failed and you need to report all of them, which is what <code>Promise.any</code> throws when every input rejects.'},
+ {h:'Wrapping an error without losing it'},
+ {p:'Say you catch a low-level error and want to throw something more useful. You used to have to pick: re-throw the original and the caller gets a confusing <code>SyntaxError</code>, or throw your own and lose the details. The <code>cause</code> option fixes that. <code>new Error(msg, { cause })</code> attaches the original error to the new one, so you add context without throwing away evidence, and runtimes print the whole chain. <code>AggregateError</code> does the same for the plural case — several things failed and you want to report all of them. That is what <code>Promise.any</code> throws when every promise you gave it fails.'},
  {code:`try { JSON.parse('{oops}'); }
 catch (cause) {
   const wrapped = new Error('config file is not valid JSON', { cause });
@@ -986,24 +996,24 @@ try { risky(); } catch { console.log('the catch binding is optional'); }
 
 const agg = new AggregateError([new Error('a'), new Error('b')], 'all sources failed');
 console.log(agg.message, '·', agg.errors.length, 'inner errors');`, run:1},
- {table:[['Type','Thrown when'],
-  ['<code>TypeError</code>','Wrong type, or a property access on <code>null</code>/<code>undefined</code>. The most common by far.'],
-  ['<code>RangeError</code>','Value out of the allowed range'],
-  ['<code>ReferenceError</code>','Name does not exist, or TDZ access'],
-  ['<code>SyntaxError</code>','Unparseable code — usually from <code>JSON.parse</code>']]},
- {note:'trap', n:'Three anti-patterns', p:'<code>catch (e) {}</code> — a silent swallow, the worst bug class in JS. <code>catch (e) { console.log(e) }</code> — logged and ignored; the caller still thinks it succeeded. <code>throw \'broke\'</code> — a string has no stack trace.'}
+ {table:[['Type','You get it when'],
+  ['<code>TypeError</code>','Wrong type, or you read a property off <code>null</code>/<code>undefined</code>. Far and away the most common.'],
+  ['<code>RangeError</code>','A value is outside the allowed range'],
+  ['<code>ReferenceError</code>','The name does not exist, or you touched a <code>let</code> before its line ran'],
+  ['<code>SyntaxError</code>','Code that cannot be parsed — usually from <code>JSON.parse</code>']]},
+ {note:'trap', n:'Three things never to do', p:'<code>catch (e) {}</code> — silently ignoring the error. This is the worst bug you can write in JavaScript. <code>catch (e) { console.log(e) }</code> — logged, then ignored anyway; the caller still thinks it worked. <code>throw \'broke\'</code> — a string has no stack trace.'}
 ]},
 
-{id:'loop', t:'The event loop', k:'One thread, one call stack. Understanding the loop is the difference between writing async code and writing CORRECT async code.', b:[
- {p:'JavaScript runs your code on <strong>one thread</strong>. There is no parallelism, no preemption, and no way for another piece of your code to interrupt a function midway through. That last part is a genuine gift — it means you never need a mutex, and any sequence of synchronous statements is effectively atomic.'},
- {p:'It also means blocking is fatal. With one thread, a function that takes two seconds does not merely delay itself: nothing else happens for two seconds. No clicks, no rendering, no timers, no incoming requests. This is why every slow operation in JavaScript — network, disk, timers — is asynchronous rather than blocking, and why the language needs a scheduler to decide what to run next.'},
- {p:'That scheduler is the <em class="k">event loop</em>, and it works by draining queues of pending callbacks. There are two queues, which is the part that actually matters:'},
- {ol:['Run the current synchronous code to completion — the stack empties.',
-  'Drain the <strong>microtask queue</strong> entirely: promise callbacks, <code>queueMicrotask</code>.',
+{id:'loop', t:'The event loop', k:'One thread, one call stack. Understanding this is the difference between async code that works and async code that works by accident.', b:[
+ {p:'JavaScript runs your code on <strong>one thread</strong>. Nothing runs in parallel, and no other part of your code can interrupt a function halfway through. That last part is genuinely nice: you never need a lock, and a run of ordinary statements can never be broken up partway.'},
+ {p:'The flip side is that blocking is fatal. With one thread, a function that takes two seconds does not just delay itself — nothing at all happens for two seconds. No clicks, no rendering, no timers, no incoming requests. That is why every slow thing in JavaScript (network, disk, timers) is asynchronous instead of blocking, and why the language needs something to decide what runs next.'},
+ {p:'That something is the <em class="k">event loop</em>. It works through queues of waiting callbacks. There are two queues, and that is the part that really matters:'},
+ {ol:['Run the current normal code until it finishes — the call stack empties.',
+  'Empty the <strong>microtask queue</strong> completely: promise callbacks, <code>queueMicrotask</code>.',
   'Take <strong>one macrotask</strong> — a timer, an I/O callback, an event — and run it.',
-  'Drain microtasks again. Repeat.']},
- {p:'The distinction to hold onto: <strong>microtasks</strong> are promise callbacks (and therefore everything after an <code>await</code>), and the loop drains that queue <em>completely</em> before touching anything else. <strong>Macrotasks</strong> are timers, I/O completions and events, and the loop takes exactly <em>one</em> per turn. So microtasks always beat macrotasks — and because a microtask can enqueue another microtask, a chain of promises will always finish ahead of a <code>setTimeout(…, 0)</code> queued before it.'},
- {p:'This is why the ordering below is not the order the lines are written in, and why the same reasoning explains an entire class of "why did my callback run after the other one" confusion. Two rules cover nearly every case: nothing async runs until the current synchronous code is finished, and promises jump the timer queue.'},
+  'Empty the microtask queue again. Repeat.']},
+ {p:'The thing to remember: <strong>microtasks</strong> are promise callbacks, which means everything after an <code>await</code> too, and the loop empties that queue <em>completely</em> before it touches anything else. <strong>Macrotasks</strong> are timers, finished I/O, and events, and the loop takes exactly <em>one</em> per round. So microtasks always go first. And because a microtask can add another microtask, a chain of promises will finish before a <code>setTimeout(…, 0)</code> that was queued earlier.'},
+ {p:'That is why the output below is not in the order the lines are written. The same reasoning clears up almost every "why did this callback run after that one" question. Two rules cover nearly all of it: nothing async runs until the current normal code is done, and promises cut in front of timers.'},
  {code:`console.log('1 · sync');
 setTimeout(() => console.log('5 · timeout (macrotask)'), 0);
 Promise.resolve().then(() => console.log('3 · promise (microtask)'));
@@ -1024,14 +1034,14 @@ Promise.resolve()
 queueMicrotask(() => console.log('e'));
 (async () => { console.log('f'); await null; console.log('g'); })();
 console.log('h');`,
-  w:'<b>a f h c e g d b.</b> Sync first (<code>a</code>, <code>f</code> up to the await, <code>h</code>). Then the microtask queue in FIFO order: <code>c</code>, <code>e</code>, <code>g</code>. Returning a promise from <code>.then</code> costs <em>two extra microtask ticks</em> to adopt it, which pushes <code>d</code> behind <code>g</code>. The timer <code>b</code> is a macrotask and runs last. Run it and check.'},
- {note:'trap', n:'Timers are a floor, not a promise', p:'<code>setTimeout(fn, 0)</code> means “after the current task and all pending microtasks”, not “now”. A 2-second synchronous loop delays every timer by 2 seconds, blocks rendering, and stalls incoming requests. CPU-heavy work belongs in a worker or chunked across tasks.'}
+  w:'<b>a f h c e g d b.</b> The normal code goes first (<code>a</code>, then <code>f</code> up to the await, then <code>h</code>). Then the microtask queue in the order things were added: <code>c</code>, <code>e</code>, <code>g</code>. Returning a promise from <code>.then</code> costs <em>two extra trips through the queue</em>, which is what pushes <code>d</code> behind <code>g</code>. The timer <code>b</code> is a macrotask, so it goes last. Run it and see.'},
+ {note:'trap', n:'A timer is a minimum wait, not an appointment', p:'<code>setTimeout(fn, 0)</code> means "after the current task and every waiting microtask", not "right now". A 2-second loop of normal code delays every timer by 2 seconds, freezes rendering, and holds up incoming requests. Heavy computation belongs in a worker, or split into small pieces.'}
 ]},
 
-{id:'promises', t:'Promises', k:'An object representing a value that is not ready yet. Pending → fulfilled or rejected. The state changes once and is permanent.', b:[
- {p:'A promise is an object that stands in for a value you do not have yet. It is a <em>placeholder you can hold and pass around immediately</em> — which is the whole advance over callbacks, where the pending result was not a value at all and so could not be stored, returned, or collected in an array.'},
- {p:'It has exactly three states. It starts <em class="k">pending</em>, and then settles either <em class="k">fulfilled</em> with a value or <em class="k">rejected</em> with a reason. Settling happens <strong>once</strong> and is permanent: a promise cannot un-settle, cannot change its value, and cannot reject after fulfilling. That immutability is what makes promises safe to hand to several consumers, and it means attaching a handler to an already-settled promise still works — you get the stored result, asynchronously, rather than nothing.'},
- {p:'You consume one with <code>.then</code> for the value, <code>.catch</code> for the failure, and <code>.finally</code> for cleanup that must happen either way. The rule that makes chains work: <strong><code>.then</code> returns a new promise</strong>, so each link is itself something you can attach to.'},
+{id:'promises', t:'Promises', k:'An object that stands in for a value that is not ready yet. Pending, then either fulfilled or rejected. It settles once and never changes again.', b:[
+ {p:'A promise is an object that stands in for a value you do not have yet. The important part is that it is a <em>placeholder you can hold and pass around right now</em>. That is the whole improvement over callbacks, where the not-yet-finished result was not a value at all, so you could not store it, return it, or put it in an array.'},
+ {p:'A promise has exactly three states. It starts out <em class="k">pending</em>, then it settles — either <em class="k">fulfilled</em> with a value or <em class="k">rejected</em> with a reason. Settling happens <strong>once</strong> and is permanent. A promise cannot un-settle, cannot change its value, and cannot fail after it has already succeeded. Because it never changes, it is safe to hand the same promise to several different pieces of code. It also means attaching a handler to a promise that already finished still works — you get the stored result, a moment later, instead of nothing.'},
+ {p:'You read a promise with <code>.then</code> for the value, <code>.catch</code> for the failure, and <code>.finally</code> for cleanup that has to happen either way. The rule that makes chains work is this: <strong><code>.then</code> gives you back a new promise</strong>, so every link in the chain is itself something you can attach to.'},
  {code:`const delay = (ms, value) => new Promise(resolve => setTimeout(() => resolve(value), ms));
 
 delay(30, 'data')
@@ -1039,10 +1049,10 @@ delay(30, 'data')
   .then(v => console.log('got', v))
   .catch(e => console.error(e.message))
   .finally(() => console.log('cleanup runs either way'));`, run:1},
- {ul:['<code>.then</code> always returns a <em>new</em> promise.',
-  'Returning a value fulfills it; returning a promise <em>adopts</em> it; throwing rejects it.',
-  'One <code>.catch</code> at the end handles rejections from any earlier step — and recovers the chain.']},
- {p:'Those three rules together are why a chain reads as a flat sequence instead of nesting. A rejection anywhere <em>skips every subsequent <code>.then</code></em> and falls through to the nearest <code>.catch</code>, which is the promise equivalent of unwinding a stack to a <code>try/catch</code>. And because <code>.catch</code> itself returns a promise, handling an error without re-throwing puts the chain back into a fulfilled state — so work after the <code>.catch</code> resumes, as the last line below shows.'},
+ {ul:['<code>.then</code> always gives you a <em>new</em> promise.',
+  'Returning a value fulfills it. Returning a promise makes it wait for that one. Throwing rejects it.',
+  'One <code>.catch</code> at the end catches failures from any earlier step — and puts the chain back on track.']},
+ {p:'Those three rules are why a chain stays flat instead of nesting deeper and deeper. A failure anywhere <em>skips every <code>.then</code> after it</em> and drops into the nearest <code>.catch</code>, the same way a thrown error skips ahead to a <code>try/catch</code>. And since <code>.catch</code> also returns a promise, handling an error without re-throwing puts the chain back into a successful state, so work after the <code>.catch</code> keeps going. The last line below shows that.'},
  {code:`Promise.resolve(1)
   .then(n => n + 1)                            // 2
   .then(n => new Promise(r => setTimeout(() => r(n * 10), 10)))   // 20
@@ -1050,9 +1060,9 @@ delay(30, 'data')
   .then(() => console.log('skipped — chain is rejecting'))
   .catch(e => e.message)                       // handled: chain is fulfilled again
   .then(m => console.log('recovered:', m));`, run:1},
- {h:'The four combinators'},
- {p:'Because a promise is a value, you can put several in an array and wait on the collection. The four statics that do this differ along two axes: whether they want <em>every</em> result or just the <em>first</em>, and how they treat failure. Picking the wrong one is one of the more common real-world async bugs, so it is worth knowing all four rather than reaching for <code>Promise.all</code> every time.'},
- {p:'Note that the promises start running when you <em>create</em> them, not when you await them. <code>Promise.all</code> does not launch anything — by the time it receives the array, all three calls are already in flight. It only decides how to wait.'},
+ {h:'The four ways to wait on several promises'},
+ {p:'Since a promise is a value, you can put a few of them in an array and wait on the whole group. There are four methods for that, and they differ in two ways: do you want <em>every</em> result or just the <em>first</em>, and what should happen when one fails. Picking the wrong one is a common bug, so learn all four instead of reaching for <code>Promise.all</code> every time.'},
+ {p:'One thing to be clear about: a promise starts working the moment you <em>create</em> it, not when you await it. <code>Promise.all</code> does not start anything. By the time it gets the array, all three calls are already running. All it does is decide how to wait.'},
  {code:`const delay = (ms, v) => new Promise(r => setTimeout(() => r(v), ms));
 const boom = () => Promise.reject(new Error('x'));
 
@@ -1063,12 +1073,12 @@ const boom = () => Promise.reject(new Error('x'));
   console.log('race      ', await Promise.race([delay(30,'slow'), delay(10,'fast')]));
   console.log('any       ', await Promise.any([boom(), delay(10,'survivor')]));
 })();`, run:1},
- {table:[['Combinator','Use when'],
-  ['<code>Promise.all</code>','You need every result. Rejects immediately on the first failure.'],
-  ['<code>Promise.allSettled</code>','You want a per-item outcome report and no early exit.'],
-  ['<code>Promise.race</code>','First to settle wins — success <em>or</em> failure. This is how you build timeouts.'],
-  ['<code>Promise.any</code>','First <em>success</em> wins. <code>AggregateError</code> if all fail. Fallback sources.']]},
- {p:'<code>Promise.race</code> deserves a concrete use, because "first to settle wins" sounds academic until you need a timeout. JavaScript has no built-in way to cancel a slow promise — but you can race it against a timer that rejects, and take whichever settles first. The slow operation keeps running in the background (racing does not cancel it; that needs an <code>AbortController</code>), but your code stops waiting:'},
+ {table:[['Method','Use it when'],
+  ['<code>Promise.all</code>','You need every result. Fails right away if any one of them fails.'],
+  ['<code>Promise.allSettled</code>','You want a win/lose report for each one and never want to bail out early.'],
+  ['<code>Promise.race</code>','First one to finish wins, whether it succeeded <em>or</em> failed. This is how you build timeouts.'],
+  ['<code>Promise.any</code>','First <em>success</em> wins. You get an <code>AggregateError</code> if they all fail. Good for backup sources.']]},
+ {p:'<code>Promise.race</code> deserves a real example, because "first one to finish wins" sounds abstract until you need a timeout. JavaScript has no built-in way to cancel a slow promise, but you can race it against a timer that fails, and take whichever finishes first. The slow operation keeps running in the background — racing does not cancel it, that takes an <code>AbortController</code> — but your code stops waiting on it:'},
  {code:`function withTimeout(promise, ms) {
   const timeout = new Promise((_, reject) =>
     setTimeout(() => reject(new Error(\`timed out after \${ms}ms\`)), ms));
@@ -1076,16 +1086,16 @@ const boom = () => Promise.reject(new Error('x'));
 }
 const slow = new Promise(r => setTimeout(r, 1000));
 withTimeout(slow, 50).catch(e => console.log(e.message));`, run:1},
- {note:'trap', n:'The promise constructor anti-pattern', p:'If you already have a promise, do not wrap it. <code>new Promise(res => fetchThing().then(res))</code> loses rejections; just <code>return fetchThing()</code>. Reach for <code>new Promise</code> only to adapt a callback or event API.'},
+ {note:'trap', n:'Do not wrap a promise in a new promise', p:'If you already have a promise, leave it alone. <code>new Promise(res => fetchThing().then(res))</code> silently drops failures — just write <code>return fetchThing()</code>. Only use <code>new Promise</code> when you are converting a callback or event API into a promise.'},
  {quiz:'You need three independent API calls and all three results. Which is right?',
   o:['<code>await a(); await b(); await c();</code>','<code>await Promise.all([a(), b(), c()])</code>','<code>await Promise.race([a(), b(), c()])</code>','<code>await Promise.allSettled([a(), b(), c()])</code>'], a:1,
-  w:'<b><code>Promise.all</code>.</b> The three calls start immediately and you wait once, so total time is the slowest call rather than the sum. Sequential <code>await</code>s are correct only when each call needs the previous result. <code>race</code> gives you one result; <code>allSettled</code> never rejects, so a failure would pass through as a <code>{status:\'rejected\'}</code> entry you have to check by hand.'}
+  w:'<b><code>Promise.all</code>.</b> All three calls start right away and you wait once, so the total time is the slowest call instead of all three added together. Awaiting them one at a time is only right when each call needs the previous result. <code>race</code> gives you just one result. <code>allSettled</code> never fails, so a broken call would quietly come back as a <code>{status:\'rejected\'}</code> entry you have to remember to check yourself.'}
 ]},
 
-{id:'async', t:'async / await', k:'Syntax over promises. An async function always returns a promise; await pauses that function, never the thread.', b:[
- {p:'<code>async</code>/<code>await</code> introduces no new capability. It is syntax over the promises you just saw, and everything it does could be written with <code>.then</code>. What it buys is that asynchronous code regains the shape of ordinary code: sequential statements, normal <code>try/catch</code>, normal <code>return</code>, normal loops.'},
- {p:'Two rules cover the semantics. <strong><code>async</code> makes a function return a promise</strong>, always — <code>return 5</code> from an async function gives the caller a promise that fulfills with 5, and throwing gives them one that rejects. <strong><code>await</code> unwraps a promise</strong>, evaluating to its fulfilled value or throwing its rejection reason, which is why a rejected promise can be caught by a plain <code>try/catch</code>.'},
- {p:'The word "pause" in the second rule is the part that misleads people. <code>await</code> suspends <em>this function</em> and returns control to the event loop; the thread carries on running other work. Nothing is blocked. Concretely, the function\'s remaining body is packaged as a microtask that resumes when the awaited promise settles — which is exactly the mechanism from the <a href="#loop">event loop</a> section, and why code after an <code>await</code> runs later than code that follows the call.'},
+{id:'async', t:'async / await', k:'Nicer syntax for promises. An async function always returns a promise, and await pauses that one function, not the whole thread.', b:[
+ {p:'<code>async</code>/<code>await</code> does not let you do anything new. It is just nicer syntax for the promises you just saw, and anything you write with it could be written with <code>.then</code>. What you get in exchange is that async code looks like ordinary code again: statements in order, regular <code>try/catch</code>, regular <code>return</code>, regular loops.'},
+ {p:'Two rules cover all of it. <strong><code>async</code> makes a function return a promise</strong>, always. <code>return 5</code> from an async function hands the caller a promise that fulfills with 5, and throwing hands them one that fails. <strong><code>await</code> unwraps a promise</strong> — it gives you the fulfilled value, or throws the failure reason. That is why a failed promise can be caught by a plain <code>try/catch</code>.'},
+ {p:'The word "pause" in that second rule trips people up. <code>await</code> pauses <em>this one function</em> and hands control back to the event loop. The thread keeps right on doing other work; nothing is blocked. What actually happens is that the rest of the function body becomes a microtask that resumes once the awaited promise settles — the exact mechanism from the <a href="#loop">event loop</a> section, and the reason code after an <code>await</code> runs later than code that comes after the call.'},
  {code:`const delay = (ms, v) => new Promise(r => setTimeout(() => r(v), ms));
 
 async function load(id) {
@@ -1099,9 +1109,9 @@ async function load(id) {
   try { await load(-1); } catch (e) { console.log('caught:', e.message); }
   console.log('load(1) returns a promise:', load(1) instanceof Promise);
 })();`, run:1},
- {h:'Sequential vs parallel — the most common async mistake'},
- {p:'Because <code>await</code> makes async code look synchronous, it also makes it easy to write code that <em>behaves</em> synchronously when it did not need to. Three <code>await</code>s in a row do not overlap: each one waits for its operation to finish before the next even starts, so three 100 ms calls take 300 ms. This is the single most common performance bug in JavaScript codebases, and it is invisible on reading because the code looks perfectly reasonable.'},
- {p:'The fix follows from the earlier point that a promise starts running when created. Create all three promises <em>first</em>, then await the collection — so the waits overlap and the total is the slowest call rather than the sum. Sequential awaits are correct only when a later call genuinely needs an earlier result; if the calls are independent, they should be started together.'},
+ {h:'One at a time vs all at once — the most common async mistake'},
+ {p:'Because <code>await</code> makes async code look like normal code, it is easy to accidentally write code that <em>waits</em> like normal code when it did not have to. Three <code>await</code>s in a row do not overlap. Each one waits for its call to finish before the next one even starts, so three 100 ms calls take 300 ms. This is the most common performance bug in JavaScript, and you cannot spot it by reading, because the code looks completely reasonable.'},
+ {p:'The fix comes straight from the earlier point that a promise starts running as soon as you create it. Create all three promises <em>first</em>, then await the group. The waits overlap, and the total is the slowest call instead of all of them added up. Awaiting one at a time is only right when a later call actually needs an earlier result. If the calls do not depend on each other, start them together.'},
  {code:`const delay = (ms, v) => new Promise(r => setTimeout(() => r(v), ms));
 
 async function slow() {                        // ~300ms
@@ -1117,7 +1127,7 @@ async function fast() {                        // ~100ms
   let t = Date.now(); await slow(); console.log('sequential:', Date.now() - t, 'ms');
   t = Date.now();     await fast(); console.log('parallel:  ', Date.now() - t, 'ms');
 })();`, run:1},
- {p:'Inside a loop the same trade-off appears, with a third option that is the one you actually want in production. <code>await</code> inside <code>for...of</code> serialises — correct, but slow for 500 items. <code>Promise.all(ids.map(load))</code> fires all 500 at once — fast, but it will exhaust a connection pool, trip a rate limit, or get you throttled. <strong>Bounded concurrency</strong> is the middle path: run a fixed number of workers that each pull the next item when they finish, so exactly <em>N</em> requests are in flight at any moment. <code>mapLimit</code> below is about fifteen lines and worth keeping in your toolkit.'},
+ {p:'The same choice comes up inside loops, plus a third option that is the one you actually want in real code. <code>await</code> inside a <code>for...of</code> loop does one at a time — correct, but painfully slow for 500 items. <code>Promise.all(ids.map(load))</code> fires all 500 at once — fast, but it will run out of database connections or get you rate-limited. <strong>Limiting how many run at once</strong> is the middle ground: start a fixed number of workers, and each one grabs the next item as soon as it finishes, so exactly <em>N</em> requests are ever in flight. <code>mapLimit</code> below is about fifteen lines and worth keeping around.'},
  {code:`const ids = [1,2,3,4,5,6,7];
 const load = async id => { await new Promise(r => setTimeout(r, 20)); return id * 10; };
 
@@ -1146,13 +1156,13 @@ const load = async id => { await new Promise(r => setTimeout(r, 20)); return id 
   }
   console.log('limited ', await mapLimit(ids, 3, load));
 })();`, run:1},
- {note:'trap', n:'forEach does not await', p:'<code>arr.forEach(async x => await work(x))</code> fires everything off and returns immediately — <code>forEach</code> ignores the returned promises. Use <code>for...of</code> for serial, or <code>Promise.all(arr.map(...))</code> for parallel.'},
+ {note:'trap', n:'forEach ignores await', p:'<code>arr.forEach(async x => await work(x))</code> starts everything and returns immediately, because <code>forEach</code> throws away the promises your callback returns. Use <code>for...of</code> to go one at a time, or <code>Promise.all(arr.map(...))</code> to go all at once.'},
  {code:`const work = async n => { await new Promise(r => setTimeout(r, 10)); console.log('  done', n); };
 [1,2,3].forEach(async n => await work(n));
 console.log('forEach returned already — nothing was awaited');`, run:1},
- {h:'for await, and cancellation'},
- {p:'<code>for await...of</code> is the async counterpart to <code>for...of</code>: it awaits each value before running the body, which is how you consume a stream, a paginated API, or a line-by-line file read without loading everything into memory first. The loop drives the source, so the next page is only requested when you are ready for it — and <code>break</code> stops the source rather than merely abandoning the results.'},
- {p:'Cancellation is the gap <code>async</code>/<code>await</code> does not fill. A promise, once started, cannot be called off; <code>await</code> gives you no way to withdraw. <code>AbortController</code> is the standard answer — you create one, pass its <code>signal</code> to whatever supports it (<code>fetch</code> does), and calling <code>abort()</code> causes the operation to reject with an <code>AbortError</code>. It is cooperative: the signal only works if the thing you are calling agrees to watch it.'},
+ {h:'for await, and cancelling things'},
+ {p:'<code>for await...of</code> is the async version of <code>for...of</code>. It waits for each value before running the loop body, which is how you read a stream, a paginated API, or a file line by line without loading the whole thing into memory. The loop drives the source, so the next page is only requested once you are ready for it, and <code>break</code> actually shuts the source down instead of just ignoring what comes back.'},
+ {p:'Cancelling is the one thing <code>async</code>/<code>await</code> does not give you. Once a promise has started you cannot call it off, and <code>await</code> has no way to back out. <code>AbortController</code> is the standard answer. You create one, pass its <code>signal</code> to anything that supports it (<code>fetch</code> does), and calling <code>abort()</code> makes the operation fail with an <code>AbortError</code>. It only works if the thing you called agreed to watch the signal — nothing forces it to.'},
  {code:`async function* pages() {
   for (let p = 1; p <= 3; p++) {
     await new Promise(r => setTimeout(r, 10));
@@ -1172,15 +1182,15 @@ console.log('forEach returned already — nothing was awaited');`, run:1},
   try { await cancellable; } catch (e) { console.log('cancelled via AbortController:', e.name); }
 })();`, run:1},
  {quiz:'<code>[1,2,3].forEach(async n => { await work(n); }); console.log(\'done\');</code> — when does <code>\'done\'</code> print?',
-  o:['After all three <code>work</code> calls finish','Immediately — <code>forEach</code> discards the returned promises','After the first <code>work</code> call finishes','It is a syntax error'], a:1,
-  w:'<b>Immediately.</b> Each callback returns a promise, and <code>forEach</code> throws those away — it has no notion of awaiting. The three <code>work</code> calls run concurrently and unordered, and any rejection becomes an unhandled rejection that can crash a Node process. Use <code>for (const n of arr) await work(n)</code> or <code>await Promise.all(arr.map(work))</code>.'}
+  o:['After all three <code>work</code> calls finish','Immediately — <code>forEach</code> throws away the promises','After the first <code>work</code> call finishes','It is a syntax error'], a:1,
+  w:'<b>Immediately.</b> Each callback returns a promise and <code>forEach</code> drops it on the floor — it has no idea what awaiting is. The three <code>work</code> calls run at the same time in no particular order, and if one of them fails you get an unhandled rejection that can crash a Node process. Use <code>for (const n of arr) await work(n)</code> or <code>await Promise.all(arr.map(work))</code>.'}
 ]},
 
-{id:'modules', t:'Modules', k:'Two systems coexist. Write ESM in new code.', b:[
- {p:'JavaScript had no module system for its first twenty years, so the ecosystem built two. Node invented <em class="k">CommonJS</em> (<code>require</code>/<code>module.exports</code>) in 2009; the language standardised <em class="k">ES Modules</em> (<code>import</code>/<code>export</code>) in 2015. Both are still in active use, and the friction between them is the reason for a large share of confusing build errors. Write ESM in new code; recognise CJS because most of npm is still built on it.'},
- {p:'Every module gets its own scope — nothing leaks to the global object, and a name is only visible elsewhere if you <code>export</code> it. Modules are also <strong>singletons</strong>: a module is evaluated once no matter how many files import it, and everyone shares that single instance. This is what makes a module-level cache or counter work across your whole app, and also what makes import-time side effects so hard to test around.'},
- {h:'ESM — the standard'},
- {p:'The defining property of ESM is that imports are <strong>static</strong>: they must appear at the top level with literal paths, so a tool can determine the entire dependency graph without running anything. That is what makes tree-shaking possible — a bundler can prove a function is never imported and drop it. When you genuinely need a runtime decision, <code>await import()</code> is the dynamic escape hatch, and it is also how code-splitting works.'},
+{id:'modules', t:'Modules', k:'There are two competing systems. Write the modern one (ESM) in new code.', b:[
+ {p:'JavaScript had no way to split code into files for its first twenty years, so the community built two. Node made up <em class="k">CommonJS</em> (<code>require</code>/<code>module.exports</code>) in 2009, and the language itself standardized <em class="k">ES Modules</em> (<code>import</code>/<code>export</code>) in 2015. Both are still everywhere, and the friction between them causes a lot of confusing build errors. Write ESM in anything new, but learn to recognize CommonJS, because most of npm is still built on it.'},
+ {p:'Every module has its own scope. Nothing leaks out into the global object, and a name is only visible to other files if you <code>export</code> it. Modules are also <strong>shared single copies</strong>: a module runs once no matter how many files import it, and everyone gets that same one instance. That is what makes a cache or counter at the top of a module work across your whole app — and also what makes code that does real work at import time so painful to test.'},
+ {h:'ESM — the modern standard'},
+ {p:'The key thing about ESM is that imports are <strong>fixed</strong>: they have to be at the top of the file with plain string paths. That means a tool can figure out your whole dependency graph without running any code. And that is what makes tree-shaking possible — a bundler can prove nobody imports a function and delete it. When you truly need to decide at runtime, <code>await import()</code> is the escape hatch, and it is also how code-splitting works.'},
  {code:`// math.js
 export const PI = 3.14159;
 export function area(r) { return PI * r * r; }
@@ -1190,23 +1200,23 @@ export default class Circle { constructor(r) { this.r = r; } }
 import Circle, { area, PI as Pi } from './math.js';
 import * as math from './math.js';
 const { area: lazy } = await import('./math.js');   // dynamic, code-split friendly`},
- {ul:['Static, hoisted and analysable — this is what enables tree-shaking.',
-  'Bindings are live views, not copies.',
-  'File extensions are required in Node ESM. Opt in with <code>"type": "module"</code> or an <code>.mjs</code> extension.',
-  'Always strict mode; top-level <code>await</code> is allowed.']},
- {h:'CommonJS — Node’s legacy default'},
- {p:'CommonJS is the opposite on every axis: <code>require</code> is an ordinary function call, so it is dynamic and synchronous — you can call it conditionally, inside a function, with a computed path. Convenient, and the reason CJS cannot be tree-shaken: no tool can know what you will require until the code runs. The asymmetry that follows matters in practice: ESM can usually import CJS, but CJS cannot <code>require</code> ESM at all, because <code>require</code> is synchronous and ESM loading is not. From CJS, reach for <code>await import()</code>.'},
+ {ul:['Fixed and readable by tools without running the code — this is what makes tree-shaking work.',
+  'An imported name is a live view of the original, not a copy of its value.',
+  'File extensions are required in Node. Turn ESM on with <code>"type": "module"</code> in package.json, or use an <code>.mjs</code> extension.',
+  'Always strict mode, and <code>await</code> is allowed at the top level of a file.']},
+ {h:'CommonJS — Node’s older default'},
+ {p:'CommonJS is the opposite in every way. <code>require</code> is just a function call, so it is dynamic and synchronous — you can call it inside an <code>if</code>, inside a function, with a path you built at runtime. Convenient, and also exactly why CommonJS cannot be tree-shaken: no tool can know what you will require until the code runs. That leads to a lopsided situation worth remembering: ESM can usually import CommonJS, but CommonJS cannot <code>require</code> ESM at all, because <code>require</code> is synchronous and loading ESM is not. From CommonJS you have to use <code>await import()</code>.'},
  {code:`const { area } = require('./math.js');
 module.exports = { area };
 module.exports.helper = () => {};`},
- {p:'Dynamic, synchronous, and still the majority of npm. You can <code>import</code> CJS from ESM in most cases, but you cannot <code>require</code> ESM — use <code>await import()</code>.'},
- {note:'tip', n:'Practical guidance', p:'Prefer named exports over default exports — better refactoring and autocomplete, no naming drift. Keep modules single-purpose. Avoid side effects at import time (no network calls, no global mutation); it makes testing miserable. Circular imports “work” but hand you <code>undefined</code> at the wrong moment — break the cycle instead.'}
+ {p:'Dynamic, synchronous, and still most of npm. You can usually <code>import</code> CommonJS from ESM, but you cannot <code>require</code> ESM — use <code>await import()</code> for that.'},
+ {note:'tip', n:'Practical advice', p:'Prefer named exports over default exports: renaming works properly, autocomplete works, and the same thing does not end up with three different names across your codebase. Keep each module about one thing. Do not do real work at import time (no network calls, no changing globals) — it makes tests miserable. Circular imports technically "work" but hand you <code>undefined</code> at the worst possible moment, so break the cycle instead.'}
 ]},
 
-{id:'iterators', t:'Iterators and generators', k:'An object is iterable if it has a [Symbol.iterator]() method. That contract powers for...of, spread, destructuring, Map, Set, and Promise.all.', b:[
- {p:'<code>for...of</code>, spread, array destructuring, <code>Array.from</code>, <code>Promise.all</code> and the <code>Map</code>/<code>Set</code> constructors all accept "anything you can loop over". That phrase is a real, small protocol rather than a list of blessed types, and once you can implement it your own objects work with every one of those features.'},
- {p:'The <em class="k">iterable</em> half: an object is iterable if it has a method under the key <code>Symbol.iterator</code> that returns an iterator. The <em class="k">iterator</em> half: an object is an iterator if it has a <code>next()</code> method returning <code>{ value, done }</code> — <code>done: false</code> means "here is a value, ask again", and <code>done: true</code> means "finished, stop". That is the entire contract. <code>for...of</code> is nothing more than a loop that calls <code>next()</code> until <code>done</code> is true.'},
- {p:'Notice what the protocol does <em>not</em> require: no length, no index, and no need for the values to exist in advance. Each one is computed when asked for, which is why an iterator can describe a stream, a paginated API, or an infinite sequence.'},
+{id:'iterators', t:'Iterators and generators', k:'An object is loopable if it has a [Symbol.iterator]() method. That one small rule is what makes for...of, spread, destructuring, Map, Set, and Promise.all work.', b:[
+ {p:'<code>for...of</code>, spread, array destructuring, <code>Array.from</code>, <code>Promise.all</code> and the <code>Map</code>/<code>Set</code> constructors all accept "anything you can loop over". That is not a hardcoded list of approved types — it is a small set of rules any object can follow. Once you know the rules, your own objects work with every one of those features.'},
+ {p:'Half one, being <em class="k">iterable</em>: an object is iterable if it has a method stored under the key <code>Symbol.iterator</code> that returns an iterator. Half two, being an <em class="k">iterator</em>: an object is an iterator if it has a <code>next()</code> method that returns <code>{ value, done }</code>. <code>done: false</code> means "here is a value, ask me again" and <code>done: true</code> means "I am out, stop". That is the whole thing. <code>for...of</code> is just a loop that calls <code>next()</code> until <code>done</code> is true.'},
+ {p:'Notice what is <em>not</em> required: no length, no indexes, and the values do not have to exist ahead of time. Each one is worked out when it is asked for, which is why an iterator can represent a stream, a paginated API, or a sequence that never ends.'},
  {code:`const manual = {
   [Symbol.iterator]() {
     let n = 0;
@@ -1222,10 +1232,10 @@ class Range {
 console.log([...new Range(1, 6)]);
 const [head, ...tail] = new Range(0, 4);
 console.log(head, tail);`, run:1},
- {h:'Generators: lazy, pausable functions'},
- {p:'Writing that <code>next()</code> machinery by hand gets tedious fast, and the state you have to track manually is exactly what a <code>function*</code> tracks for you. A <strong>generator</strong> is a function that can suspend itself: <code>yield</code> hands a value to the caller and freezes the function mid-execution — locals, loop counters, position in the body, all preserved — until someone asks for the next value, at which point it resumes on the line after the <code>yield</code>.'},
- {p:'Calling a generator function runs <em>none</em> of its body. It returns an object that is both an iterator and iterable, and the body advances only as values are pulled out of it. This is what makes <code>fib()</code> below legal despite its <code>while (true)</code>: the infinite loop never runs to completion because nobody ever asks it to. <code>take(9, fib())</code> requests nine values and the generator stops mid-loop, holding its place forever.'},
- {p:'That inversion — the consumer drives, the producer is suspended — is what makes generators worth learning. It lets you compose <code>map</code>, <code>filter</code> and <code>take</code> into a pipeline over an infinite sequence where no intermediate array is ever built and only the values actually demanded get computed. <code>yield*</code> delegates to another iterable, which turns recursive traversal of a tree into three lines.'},
+ {h:'Generators: functions that can pause'},
+ {p:'Writing that <code>next()</code> machinery by hand gets old fast, and the bookkeeping you have to do manually is exactly what <code>function*</code> does for you. A <strong>generator</strong> is a function that can pause itself. <code>yield</code> hands a value to the caller and freezes the function right where it is — local variables, loop counters, position in the body, all kept — until someone asks for the next value, at which point it picks up on the line after the <code>yield</code>.'},
+ {p:'Calling a generator function runs <em>none</em> of the body. It gives you back an object that is both an iterator and iterable, and the body only moves forward as you pull values out. That is why <code>fib()</code> below is fine even though it contains <code>while (true)</code>: the infinite loop never finishes because nobody ever asks it to. <code>take(9, fib())</code> asks for nine values, and the generator stops in the middle of the loop and stays there.'},
+ {p:'That flip — the code asking for values is in charge, the code producing them is paused — is the reason generators are worth learning. You can stack <code>map</code>, <code>filter</code> and <code>take</code> into a pipeline over an endless sequence where no in-between array is ever created and only the values you actually asked for get computed. <code>yield*</code> hands off to another iterable, which turns walking a whole tree into three lines.'},
  {code:`function* fib() {
   let [a, b] = [0, 1];
   while (true) { yield a; [a, b] = [b, a + b]; }   // infinite, but lazy
@@ -1235,7 +1245,7 @@ function* map(fn, it) { for (const v of it) yield fn(v); }
 function* filter(p, it) { for (const v of it) if (p(v)) yield v; }
 
 console.log([...take(9, fib())]);
-// a lazy pipeline over an infinite sequence — nothing is materialised
+// a lazy pipeline over an endless sequence — no array is ever built
 console.log([...take(4, filter(n => n % 2 === 0, map(n => n * n, fib())))]);`, run:1},
  {code:`function* walk(node) {
   yield node.value;
@@ -1243,40 +1253,41 @@ console.log([...take(4, filter(n => n % 2 === 0, map(n => n * n, fib())))]);`, r
 }
 const tree = { value: 1, children: [{ value: 2, children: [{ value: 3 }] }, { value: 4 }] };
 console.log([...walk(tree)]);`, run:1},
- {h:'Two-way channels'},
+ {h:'Values can go back in, too'},
+ {p:'<code>yield</code> works in both directions. Whatever you pass to <code>next(value)</code> becomes the result of the <code>yield</code> expression that the generator is currently paused on. So the generator can ask a question, pause, and receive an answer — which is how libraries build step-by-step conversations and test scripts.'},
  {code:`function* dialogue() {
   const name = yield 'What is your name?';
-  const lang = yield \`Hi \${name}. Favourite language?\`;
+  const lang = yield \`Hi \${name}. Favorite language?\`;
   return \`\${name} likes \${lang}\`;
 }
 const d = dialogue();
 console.log(d.next().value);
 console.log(d.next('Ada').value);
 console.log(d.next('JS').value);`, run:1},
- {p:'Where you will actually use them: walking trees without building an intermediate array, paginated API traversal via <code>async function*</code>, test-data factories, and effect systems like Redux-Saga.'}
+ {p:'Where you will actually use these: walking a tree without building an array first, paging through an API with <code>async function*</code>, generating test data, and libraries like Redux-Saga.'}
 ]},
 
-{id:'collections', t:'Map, Set, and friends', k:'Plain objects are for records with known keys. Map and Set are for collections.', b:[
- {p:'A plain object can be used as a dictionary, and for years that was the only option. <code>Map</code> and <code>Set</code> exist because an object is genuinely bad at the job in four specific ways, and knowing them tells you when to switch.'},
- {ul:['<strong>Keys are coerced to strings.</strong> <code>obj[1]</code> and <code>obj[\'1\']</code> are the same key, and an object used as a key becomes the useless string <code>\'[object Object]\'</code>. A <code>Map</code> accepts any value as a key — objects, numbers, functions — and compares them by identity.',
-  '<strong>You inherit keys you did not create.</strong> An object literal already has <code>constructor</code>, <code>toString</code> and <code>__proto__</code> somewhere in its prototype chain, so a user-supplied key can collide with them. A <code>Map</code> starts genuinely empty.',
-  '<strong>There is no size, and iteration is awkward.</strong> <code>Object.keys(o).length</code> versus <code>map.size</code>; <code>Object.entries()</code> allocates an array versus a <code>Map</code> that is directly iterable in insertion order.',
-  '<strong>Frequent insertion and deletion is not what objects are optimised for.</strong> Engines specialise objects around a stable set of properties; a <code>Map</code> is built for churn.']},
- {p:'So the dividing line is: object or <code>class</code> for a <em>record</em> whose keys you write in the source, <code>Map</code> for a <em>collection</em> whose keys arrive at runtime.'},
+{id:'collections', t:'Map, Set, and friends', k:'Use plain objects when you know the key names as you write the code. Use Map and Set for collections.', b:[
+ {p:'You can use a plain object as a dictionary, and for years that was the only choice. <code>Map</code> and <code>Set</code> exist because objects are genuinely bad at that job in four specific ways. Knowing the four tells you when to switch.'},
+ {ul:['<strong>Keys get turned into strings.</strong> <code>obj[1]</code> and <code>obj[\'1\']</code> are the same key, and using an object as a key turns it into the useless string <code>\'[object Object]\'</code>. A <code>Map</code> takes any value as a key — objects, numbers, functions — and keeps them distinct.',
+  '<strong>You get keys you never added.</strong> Every object literal already inherits <code>constructor</code>, <code>toString</code> and <code>__proto__</code> from its prototype, so a key that came from a user can collide with them. A <code>Map</code> really does start empty.',
+  '<strong>There is no size, and looping is clumsy.</strong> Compare <code>Object.keys(o).length</code> to <code>map.size</code>, or <code>Object.entries()</code> building a whole array to a <code>Map</code> you can just loop over, in the order things were added.',
+  '<strong>Objects are not built for constant adding and removing.</strong> JavaScript engines optimize objects around a fixed set of properties. A <code>Map</code> is designed for keys coming and going.']},
+ {p:'So the rule is: use an object or a <code>class</code> for a <em>record</em> whose key names you type into the source code, and a <code>Map</code> for a <em>collection</em> whose keys only show up while the program is running.'},
  {code:`const m = new Map([['a', 1]]);
 const objKey = { id: 1 };
 m.set('b', 2).set(objKey, 'objects can be keys');
 console.log(m.get('a'), m.get(objKey), m.has('a'), m.size);
 console.log([...m.keys()]);               // insertion order, guaranteed
 for (const [k, v] of m) console.log('  ', typeof k === 'object' ? '{obj}' : k, '→', v);`, run:1},
- {table:[['Need','Reach for'],
-  ['Fixed-shape record','object literal, or a <code>class</code>'],
-  ['Keyed collection with dynamic or non-string keys','<code>Map</code>'],
-  ['Uniqueness / membership test','<code>Set</code>'],
-  ['Ordered sequence','<code>Array</code>'],
-  ['Object-keyed cache that must not leak','<code>WeakMap</code>'],
-  ['Binary data','<code>Uint8Array</code> / <code>ArrayBuffer</code>']]},
- {p:'A <code>Set</code> is the same idea with the values removed — a collection of unique items with O(1) membership testing. Two uses dominate: deduplication, where <code>[...new Set(arr)]</code> is the idiomatic one-liner, and replacing <code>arr.includes(x)</code> inside a loop, which is O(n) per check and turns an innocent-looking nested loop into O(n²). Uniqueness is by the same identity rule as <code>Map</code> keys, so two structurally identical objects count as two distinct members.'},
+ {table:[['What you need','Use'],
+  ['A record with a fixed set of fields','an object literal, or a <code>class</code>'],
+  ['Keys that are decided at runtime, or are not strings','<code>Map</code>'],
+  ['Unique items, or fast "is this in here?" checks','<code>Set</code>'],
+  ['An ordered list','<code>Array</code>'],
+  ['A cache keyed by objects that should not leak memory','<code>WeakMap</code>'],
+  ['Raw bytes','<code>Uint8Array</code> / <code>ArrayBuffer</code>']]},
+ {p:'A <code>Set</code> is the same idea as a <code>Map</code> with the values stripped out — a bag of unique items where checking membership is fast no matter how big it gets. Two uses cover almost everything: removing duplicates, where <code>[...new Set(arr)]</code> is the standard one-liner, and replacing <code>arr.includes(x)</code> inside a loop. That <code>includes</code> has to scan the whole array every time, which quietly turns an innocent-looking loop into O(n²). Uniqueness follows the same rule as <code>Map</code> keys, so two objects that look identical still count as two separate items.'},
  {code:`const s = new Set([1, 2, 2, 3]);
 console.log(s.size, s.has(2));
 console.log([...new Set(['a','a','b'])]);        // idiomatic dedupe
@@ -1284,13 +1295,13 @@ console.log([...new Set(['a','a','b'])]);        // idiomatic dedupe
 // ES2025 set operations
 const A = new Set([1,2,3]), B = new Set([2,3,4]);
 console.log([...A.intersection(B)], [...A.union(B)], [...A.difference(B)]);`, run:1},
- {note:'tip', n:'Why Map over object', p:'Use <code>Map</code> when keys are user-supplied (an object key like <code>"__proto__"</code> or <code>"constructor"</code> is a real hazard), when keys are not strings, when you insert and delete often, or when you want <code>.size</code> and clean iteration. <code>WeakMap</code> holds keys weakly — entries disappear when the key is collected, which is how you attach metadata to objects you do not own without leaking.'}
+ {note:'tip', n:'When to pick Map over an object', p:'Use <code>Map</code> when the keys come from users (a key like <code>"__proto__"</code> or <code>"constructor"</code> is a real problem), when the keys are not strings, when you add and remove a lot, or when you just want <code>.size</code> and easy looping. <code>WeakMap</code> is the special case: it does not keep its keys alive, so an entry disappears once the key object is garbage collected. That is how you attach extra data to objects you do not own without leaking memory.'}
 ]},
 
-{id:'copies', t:'Copying, references, immutability', k:'Primitives copy by value. Objects and arrays copy by reference. Every aliasing bug traces back to this line.', b:[
- {p:'A variable holding a primitive holds the value itself. A variable holding an object holds a <strong>reference</strong> — the object lives elsewhere and the variable is a pointer to it. Assignment always copies what the variable holds, which means assigning an object copies the pointer and leaves you with two names for <em>one</em> object. Mutate through either name and both see it.'},
- {p:'Function arguments follow exactly the same rule, and the distinction that trips people up is between <em>reassigning</em> a parameter and <em>mutating</em> it. Reassigning (<code>o = {…}</code>) points the local parameter at something new and the caller sees nothing. Mutating (<code>o.n = 2</code>) reaches through the shared reference and changes the caller\'s object. So JavaScript is strictly pass-by-value — but when the value is a reference, mutation escapes the function.'},
- {p:'The same rule explains why <code>{a:1} === {a:1}</code> is <code>false</code>. Object comparison compares references, not contents; two separately constructed objects are two objects, however identical they look. There is no structural equality operator in the language.'},
+{id:'copies', t:'Copying, references, immutability', k:'Primitives get copied. Objects and arrays get shared. Almost every "why did that change?" bug comes back to this.', b:[
+ {p:'A variable holding a primitive holds the actual value. A variable holding an object holds a <strong>reference</strong> — the object lives somewhere else and the variable is a pointer to it. Assignment always copies whatever the variable holds, so assigning an object copies the pointer and leaves you with two names for <em>one</em> object. Change it through either name and both names see the change.'},
+ {p:'Function arguments work exactly the same way, and the part that catches people is the difference between <em>replacing</em> a parameter and <em>changing</em> it. Replacing (<code>o = {…}</code>) just points the local parameter at something new, and the caller never knows. Changing (<code>o.n = 2</code>) goes through the shared pointer and edits the caller\'s object. So JavaScript really does pass by value — but when the value is a pointer, your changes get out.'},
+ {p:'The same rule explains why <code>{a:1} === {a:1}</code> is <code>false</code>. Comparing objects compares pointers, not contents. Two objects you built separately are two objects, no matter how identical they look. JavaScript has no operator that compares contents.'},
  {code:`let p = 1, q = p; q++;
 console.log('primitive:', p, q);            // 1 2 — independent
 
@@ -1304,9 +1315,9 @@ function mutate(o)   { o.n = 2; }           // reaches the caller's object
 const t = { n: 1 };
 reassign(t); console.log('after reassign:', t.n);
 mutate(t);   console.log('after mutate:  ', t.n);`, run:1},
- {h:'Shallow versus deep'},
- {p:'Copying an object therefore has two meanings. A <strong>shallow copy</strong> — <code>{ ...obj }</code>, <code>Object.assign</code>, <code>arr.slice()</code> — creates one new object and copies the top-level values across. But any value that was a reference is still the same reference, so nested objects and arrays remain <em>shared</em> between the copy and the original. This is the bug: you spread an object, feel safe, mutate <code>copy.tags</code>, and change the original.'},
- {p:'A <strong>deep copy</strong> recurses, producing new objects all the way down. <code>structuredClone()</code> is the built-in way to do it and it handles what JSON cannot — <code>Date</code>, <code>Map</code>, <code>Set</code>, <code>RegExp</code>, typed arrays, and cycles. <code>JSON.parse(JSON.stringify(x))</code> is the old trick and is still common, but it silently drops functions and <code>undefined</code>, flattens a <code>Date</code> to a string, and throws on a cycle. Prefer <code>structuredClone</code>.'},
+ {h:'One level deep, or all the way down'},
+ {p:'So "copying an object" means two different things. A <strong>shallow copy</strong> — <code>{ ...obj }</code>, <code>Object.assign</code>, <code>arr.slice()</code> — makes one new object and copies the top-level values into it. But any value that was a pointer is still the same pointer, so objects and arrays nested inside stay <em>shared</em> between the copy and the original. That is the bug: you spread an object, feel safe, change <code>copy.tags</code>, and change the original too.'},
+ {p:'A <strong>deep copy</strong> goes all the way down, making new objects at every level. <code>structuredClone()</code> is the built-in way, and it handles things JSON cannot: <code>Date</code>, <code>Map</code>, <code>Set</code>, <code>RegExp</code>, typed arrays, and objects that point back at themselves. <code>JSON.parse(JSON.stringify(x))</code> is the old trick and you will still see it everywhere, but it silently drops functions and <code>undefined</code>, turns a <code>Date</code> into a plain string, and crashes on a circular reference. Use <code>structuredClone</code>.'},
  {code:`const original = { id: 1, tags: ['a'], meta: { seen: false }, when: new Date('2026-01-01') };
 
 const shallow = { ...original };
@@ -1319,9 +1330,9 @@ console.log('deep is independent:', original.meta.seen, '· Date survives:', dee
 
 const viaJson = JSON.parse(JSON.stringify(original));
 console.log('JSON round-trip loses the Date type:', typeof viaJson.when);`, run:1},
- {h:'Immutable update patterns'},
- {p:'React, Redux and most state libraries detect change by comparing references: if <code>state.user</code> is the same object it was before, they assume nothing changed and skip the re-render. Mutating in place therefore produces the classic "my data updated but the UI did not". The fix is to build a new object for every level you touched, and reuse the references for everything you did not — that is what the spreads below are doing, and why a nested update needs a spread at each depth.'},
- {p:'Also note what these patterns replace: <code>push</code>, <code>splice</code> and index assignment all mutate, so the array equivalents are <code>[...items, x]</code> to append, <code>filter</code> to remove, and <code>map</code> to replace. Learn these five shapes; you will write them daily.'},
+ {h:'Updating state without changing it'},
+ {p:'React, Redux and most state libraries notice changes by comparing pointers. If <code>state.user</code> is the same object it was before, they assume nothing changed and skip re-rendering. Editing an object in place therefore gives you the classic "my data updated but the screen did not". The fix is to build a new object at every level you touched and reuse the old pointers for everything you did not. That is all the spreads below are doing, and it is why updating something nested needs a spread at each level.'},
+ {p:'Notice what these patterns replace. <code>push</code>, <code>splice</code> and assigning to an index all change the array in place, so the replacements are <code>[...items, x]</code> to add, <code>filter</code> to remove, and <code>map</code> to change one item. Learn these five shapes — you will write them constantly.'},
  {code:`const state = { user: { name: 'Ada', prefs: { theme: 'dark' } }, items: [1, 2, 3] };
 
 const renamed  = { ...state, user: { ...state.user, name: 'Grace' } };
@@ -1332,14 +1343,16 @@ const replaced = { ...state, items: state.items.map(n => (n === 2 ? 20 : n)) };
 
 console.log(renamed.user.name, themed.user.prefs.theme, appended.items, removed.items, replaced.items);
 console.log('original untouched:', state.user.name, state.items);`, run:1},
+ {p:'<code>Object.freeze</code> looks like the answer to all of this, but it only freezes one level, exactly like a shallow copy. The top-level properties become read-only, and everything nested inside stays fully editable — and outside strict mode, the blocked assignment fails silently instead of throwing, which is why it makes a poor safety net.'},
  {code:`const frozen = Object.freeze({ a: 1, nested: { b: 2 } });
 frozen.a = 9;              // ignored
 frozen.nested.b = 9;       // succeeds — freeze is shallow
 console.log(frozen.a, frozen.nested.b, Object.isFrozen(frozen));`, run:1}
 ]},
 
-{id:'gotchas', t:'Gotchas that <em>will</em> bite you', k:'A checklist worth rereading after your first week on a real codebase.', b:[
- {code:`console.log(1, [1,5,10].sort());                   // default sort is lexicographic
+{id:'gotchas', t:'Gotchas that <em>will</em> bite you', k:'A list worth rereading after your first week on a real codebase.', b:[
+ {p:'None of these are obscure trivia. Every one of them has shipped a real bug to production, and you will hit most of them in your first year. Read the output next to each line rather than the code — the code all looks perfectly reasonable, which is precisely the problem.'},
+ {code:`console.log(1, [1,5,10].sort());                   // sort compares as text by default
 console.log(2, typeof null, Array.isArray([]));    // typeof lies about null and arrays
 console.log(3, 0.1 + 0.2 === 0.3);                 // floating point
 
@@ -1367,10 +1380,11 @@ console.log('2026-01-31T00:00  →', new Date('2026-01-31T00:00').toISOString(),
 try { obj.method(); } catch (e) { console.log('obj.method()   →', e.message); }
 console.log('obj.method?.() →', obj.method?.());   // safe optional CALL
 // obj?.method() only guards obj, not method. You usually want obj?.method?.()`, run:1},
- {note:'trap', n:'Comparing objects', p:'<code>{a:1} === {a:1}</code> is <code>false</code>. There is no built-in structural equality. Use a deep-equal helper, or <code>JSON.stringify</code> comparison if you control the key order and there are no <code>undefined</code>/functions/Dates involved.'}
+ {note:'trap', n:'Comparing objects', p:'<code>{a:1} === {a:1}</code> is <code>false</code>. Nothing built in compares objects by their contents. Use a deep-equal helper from a library, or compare <code>JSON.stringify</code> output if you control the key order and there are no functions, <code>undefined</code> values or <code>Date</code>s involved.'}
 ]},
 
-{id:'tooling', t:'Tooling and the ecosystem', k:'What the files in a real repository are for.', b:[
+{id:'tooling', t:'Tooling and the ecosystem', k:'What all those files in a real repository are actually for.', b:[
+ {p:'Clone a real JavaScript project and most of the top-level files will be configuration, not code. Here is what the important one, <code>package.json</code>, is doing. <code>scripts</code> is the part you use daily: <code>npm run dev</code> runs whatever string is under <code>dev</code>, which means the team only has to agree on the script names, not the commands.'},
  {code:`{
   "name": "my-app",
   "version": "1.0.0",
@@ -1385,25 +1399,26 @@ console.log('obj.method?.() →', obj.method?.());   // safe optional CALL
   "dependencies":    { "express": "^4.19.2" },
   "devDependencies": { "eslint": "^9.0.0", "prettier": "^3.3.0" }
 }`},
- {ul:['<code>dependencies</code> ship to production; <code>devDependencies</code> do not.',
-  '<code>^4.19.2</code> allows minor + patch · <code>~4.19.2</code> patch only · <code>4.19.2</code> pins exactly.',
-  '<strong>Commit your lockfile.</strong> Use <code>npm ci</code> in CI for reproducible installs.',
-  '<code>npx &lt;tool&gt;</code> runs a package without a global install.']},
- {table:[['Category','Options','Note'],
-  ['Runtime','Node · Deno · Bun','Node is the default; Bun is fast and mostly compatible'],
-  ['Package manager','npm · pnpm · yarn','pnpm saves disk and is strict about phantom dependencies'],
-  ['Linter','ESLint','Catches real bugs, not just style. Configure once per repo.'],
-  ['Formatter','Prettier · Biome','Never argue about style again'],
-  ['Types','TypeScript · JSDoc + <code>checkJs</code>','Adopt for anything you will maintain past a week'],
-  ['Bundler','Vite · esbuild · Rollup · webpack','Vite for apps, Rollup/tsup for libraries'],
-  ['Tests','<code>node --test</code> · Vitest · Jest','The built-in runner is enough for many projects']]},
+ {ul:['<code>dependencies</code> get shipped to production. <code>devDependencies</code> do not — they are only for building and testing.',
+  'The version prefix matters: <code>^4.19.2</code> allows any 4.x update, <code>~4.19.2</code> allows only 4.19.x, and a bare <code>4.19.2</code> means exactly that version.',
+  '<strong>Commit your lockfile.</strong> It is what makes everyone install identical versions. Use <code>npm ci</code> instead of <code>npm install</code> on a build server.',
+  '<code>npx &lt;tool&gt;</code> runs a package once without installing it globally.']},
+ {table:[['What it is','Common choices','Notes'],
+  ['Runtime','Node · Deno · Bun','Node is the default everywhere. Bun is faster and mostly compatible.'],
+  ['Package manager','npm · pnpm · yarn','pnpm uses much less disk space and stops you using packages you never declared'],
+  ['Linter','ESLint','Catches real bugs, not just formatting. Set it up once per project.'],
+  ['Formatter','Prettier · Biome','So nobody ever argues about indentation again'],
+  ['Types','TypeScript · JSDoc with <code>checkJs</code>','Worth it for anything you will still be working on next month'],
+  ['Bundler','Vite · esbuild · Rollup · webpack','Vite for apps, Rollup or tsup for libraries'],
+  ['Tests','<code>node --test</code> · Vitest · Jest','Node\'s built-in runner is plenty for a lot of projects']]},
  {h:'Node flags worth knowing'},
+ {p:'Node has picked up several features that used to require extra packages. These four save you real setup time:'},
  {code:`node --watch src/index.js      # restart on change — no nodemon needed
 node --env-file=.env app.js    # load env vars natively
 node --inspect app.js          # attach Chrome devtools or the VS Code debugger
 node --test --experimental-test-coverage`},
- {h:'TypeScript, briefly'},
- {p:'You will end up on a TypeScript codebase. It is JavaScript plus compile-time types, erased at runtime — every semantic in this course still holds.'},
+ {h:'A quick word on TypeScript'},
+ {p:'Sooner or later you will land on a TypeScript codebase. It is JavaScript plus type annotations that are checked when you build and then thrown away — the running code is plain JavaScript, so everything in this guide still applies exactly as written.'},
  {code:`type User = { id: number; name: string; email?: string };
 
 function greet(user: User): string {
@@ -1412,10 +1427,11 @@ function greet(user: User): string {
 function firstOrNull<T>(items: T[]): T | null {
   return items.length > 0 ? items[0] : null;
 }`},
- {p:'Types catch precisely the class of bug that the coercion rules in §3 create.'}
+ {p:'Types catch exactly the kind of bug that the automatic conversion rules in <a href="#coercion">Coercion</a> create — the ones where the code runs happily and gives you the wrong answer.'}
 ]},
 
-{id:'testing', t:'Testing', k:'Node has a built-in runner. No dependencies required.', b:[
+{id:'testing', t:'Testing', k:'Node has a test runner built in. You do not need to install anything.', b:[
+ {p:'You do not need Jest to start testing. Node ships a runner: name your files <code>*.test.js</code>, import <code>test</code> from <code>node:test</code> and <code>assert</code> from <code>node:assert/strict</code>, and run <code>node --test</code>. Use the <code>/strict</code> version of assert — the plain one uses <code>==</code>, so <code>assert.equal(1, \'1\')</code> passes, which is not what you want from a test.'},
  {code:`// math.test.js  ·  run with: node --test
 import { test, describe, mock } from 'node:test';
 import assert from 'node:assert/strict';
@@ -1445,11 +1461,12 @@ test('mocking a collaborator', () => {
   assert.equal(logger.mock.callCount(), 1);
   assert.deepEqual(logger.mock.calls[0].arguments, ['hello']);
 });`},
- {p:'What to test, in priority order: <strong>every branch in both directions</strong>, boundary values (<code>0</code>, <code>-1</code>, empty array, empty string, <code>null</code>), thrown errors, and async rejection paths.'},
- {note:'tip', n:'Assert on behaviour', p:'A test that calls a function and asserts nothing proves nothing — coverage tools will still count the line as covered. Assert the return value, the state change, or the interaction.'}
+ {p:'What to test, most important first: <strong>every <code>if</code> in both directions</strong>, edge values (<code>0</code>, <code>-1</code>, an empty array, an empty string, <code>null</code>), the errors you throw on purpose, and the failure path of every async function. That last one is the one people skip, and it is where the bugs live.'},
+ {note:'tip', n:'Check what the code actually did', p:'A test that calls a function and checks nothing proves nothing — but a coverage tool will still happily mark those lines as covered. Always assert something real: the value returned, the state that changed, or the call that was made.'}
 ]},
 
-{id:'program', t:'A short, <em>real</em> program', k:'A CLI that fetches GitHub repositories with concurrency limits, timeouts, retries and aggregation. Every concept above appears here.', b:[
+{id:'program', t:'A short, <em>real</em> program', k:'A command-line tool that pulls GitHub repositories, with timeouts, retries, a concurrency limit, and a summary at the end. Almost everything above shows up here.', b:[
+ {p:'Everything so far has been one idea at a time. This is what it looks like when the ideas are stacked in one file doing a real job. Read it once for the shape, then read the list underneath to see which piece is which. If you understand this program, you can read most production JavaScript.'},
  {code:`// repos.js — run: node repos.js nodejs
 const API = 'https://api.github.com';
 const CONCURRENCY = 4;
@@ -1562,14 +1579,14 @@ main().catch(err => {
   process.exitCode = 1;
 });`},
  {h:'What to notice'},
- {ul:['A custom error carrying <strong>structured data</strong> (<code>status</code>, <code>retryable</code>) instead of a parseable string.',
-  '<code>AbortController</code> plus <code>finally</code>, so the timer is cleared on every path.',
-  'Exponential backoff via <code>2 ** attempt</code>.',
-  '<code>async function*</code> for pagination, consumed with <code>for await...of</code>.',
-  '<strong>Bounded</strong> concurrency rather than <code>Promise.all</code> over an unbounded list.',
-  '<code>?? \'unknown\'</code> so a missing language is labelled, not dropped.',
-  'A single top-level <code>.catch</code> that sets <code>process.exitCode</code> instead of throwing.']},
- {p:'Here is the aggregation half, running on fixture data:'},
+ {ul:['A custom error class carrying <strong>real data</strong> (<code>status</code>, <code>retryable</code>) instead of details buried in a message string.',
+  '<code>AbortController</code> together with <code>finally</code>, so the timer gets cleared no matter how the attempt ends.',
+  'Waiting longer after each failure, using <code>2 ** attempt</code>. Hammering a struggling server makes things worse.',
+  'An <code>async function*</code> to walk through pages, read with <code>for await...of</code>. Pages are fetched only as needed.',
+  'A <strong>limit</strong> on how many requests run at once, instead of <code>Promise.all</code> over a list of unknown length.',
+  '<code>?? \'unknown\'</code> so a repo with no language gets counted under a label instead of vanishing.',
+  'One <code>.catch</code> at the very top that sets <code>process.exitCode</code>, so the shell knows the command failed.']},
+ {p:'Here is the summarizing half on its own, with fake data so you can run it:'},
  {code:`const repos = [
   { name: 'node',    stargazers_count: 106000, language: 'JavaScript', fork: false },
   { name: 'undici',  stargazers_count: 6200,   language: 'JavaScript', fork: false },
@@ -1604,42 +1621,43 @@ for (const [lang, n] of byLanguage) {
 }`, run:1}
 ]},
 
-{id:'next', t:'Where to go next', k:'Reference material, a practice order that works, and the habits to start today.', b:[
- {h:'Reference, by usefulness'},
- {ul:['<strong>MDN Web Docs</strong> — the authoritative reference for the language and browser APIs.',
-  '<strong>JavaScript for Impatient Programmers</strong> (Axel Rauschmayer) — free online, precise.',
-  '<strong>You Don’t Know JS Yet</strong> (Kyle Simpson) — free, deep on scope, closures, <code>this</code>.',
-  '<strong>Node.js API docs</strong> — the runtime half of your job.',
-  '<strong>TC39 proposals repo</strong> — what is coming.']},
- {h:'Practice order'},
- {ol:['Rebuild a data structure you already know — LRU cache, trie — in idiomatic JS. Get a feel for <code>Map</code> and closures.',
-  'Write a small CLI that hits a public API. Get a feel for async, errors, and modules.',
-  'Write a tiny HTTP server with <code>node:http</code> or Express. Feel the event loop under load.',
-  'Pick a frontend framework — React is the pragmatic default — <em>after</em> the above, not before.',
-  'Add TypeScript to one of your own projects and fix everything it finds.']},
- {h:'Habits to start now'},
- {ul:['<code>const</code> by default, <code>let</code> when needed, never <code>var</code>.',
-  '<code>===</code> always; <code>x == null</code> as the single exception.',
-  '<code>async</code>/<code>await</code> over <code>.then</code> chains; <code>Promise.all</code> when work is independent.',
-  'Small pure functions; push side effects to the edges.',
-  'Every <code>catch</code> either handles the error meaningfully or rethrows it.',
-  'Run a linter and a formatter from day one.']}
+{id:'next', t:'Where to go next', k:'Places to look things up, an order to practice in, and the habits worth starting today.', b:[
+ {h:'Where to look things up'},
+ {ul:['<strong>MDN Web Docs</strong> — the reference for the language and everything in the browser. Start here every time.',
+  '<strong>JavaScript for Impatient Programmers</strong> (Axel Rauschmayer) — free online, and precise about the details.',
+  '<strong>You Don’t Know JS Yet</strong> (Kyle Simpson) — free, and goes deep on scope, closures and <code>this</code>.',
+  '<strong>Node.js API docs</strong> — the other half of the job if you write any backend code.',
+  '<strong>The TC39 proposals repo</strong> — what is coming to the language next.']},
+ {h:'An order to practice in'},
+ {ol:['Rebuild a data structure you already know — an LRU cache, a trie — the JavaScript way. This gets you comfortable with <code>Map</code> and closures.',
+  'Write a small command-line tool that calls a public API. This gets you comfortable with async code, errors, and modules.',
+  'Write a tiny HTTP server with <code>node:http</code> or Express. Now you can feel the event loop when it is busy.',
+  'Pick a frontend framework — React is the practical default — <em>after</em> the three above, not before.',
+  'Add TypeScript to one of your own projects and fix every error it reports.']},
+ {h:'Habits to start today'},
+ {ul:['<code>const</code> unless you need to reassign, then <code>let</code>. Never <code>var</code>.',
+  'Always <code>===</code>. The one exception is <code>x == null</code>, to catch both <code>null</code> and <code>undefined</code>.',
+  'Use <code>async</code>/<code>await</code> instead of <code>.then</code> chains, and <code>Promise.all</code> when the work does not depend on itself.',
+  'Write small functions that just take input and return output. Keep the parts that touch the outside world at the edges.',
+  'Every <code>catch</code> either does something useful about the error or re-throws it. Never nothing.',
+  'Set up a linter and a formatter on day one, not once the project is a mess.']}
 ]},
 
-{id:'exercises', t:'Exercises', k:'In order. Each targets a specific section. Use the editable blocks above as your scratchpad.', b:[
- {ol:['<strong>Coercion audit</strong> (§3) — predict then verify: <code>[] + {}</code>, <code>\'5\' - 3</code>, <code>null >= 0</code>, <code>NaN === NaN</code>, <code>[] == ![]</code>, <code>0 ?? \'x\'</code>, <code>\'\' || \'x\'</code>. One sentence of explanation each.',
-  '<strong>Scope</strong> (§4, §11) — write <code>makeIdGenerator(prefix)</code> yielding <code>\'user-1\'</code>, <code>\'user-2\'</code>… Then explain why two generators do not share a counter.',
-  '<strong>this</strong> (§6) — given <code>{ n: 1, delayed() { setTimeout(function () { console.log(this.n); }, 0); } }</code>, fix it three ways and state each trade-off.',
-  '<strong>Array pipeline</strong> (§9) — from <code>{name, department, salary, startYear}</code> records, produce average salary per department, sorted descending, excluding anyone who started this year. No explicit <code>for</code> loops.',
-  '<strong>Group and index</strong> (§9, §18) — implement <code>groupBy(items, keyFn)</code> returning a <code>Map</code>. Then a version returning a plain object. When would you want each?',
-  '<strong>Deep equality</strong> (§19) — write <code>deepEqual(a, b)</code> handling nested objects, arrays, <code>null</code>, <code>NaN</code>, and differing key counts. Tests first.',
+{id:'exercises', t:'Exercises', k:'Do them in order. Each one targets a specific section. Every code block above is editable, so use them as scratch paper.', b:[
+ {p:'Reading about JavaScript is not the same as writing it. Work through these in order — each one leans on a specific section, and the section number is there so you know where to look when you get stuck. Write the answer before you run it.'},
+ {ol:['<strong>Conversion check</strong> (§3) — guess the answer, then run it: <code>[] + {}</code>, <code>\'5\' - 3</code>, <code>null >= 0</code>, <code>NaN === NaN</code>, <code>[] == ![]</code>, <code>0 ?? \'x\'</code>, <code>\'\' || \'x\'</code>. Write one sentence explaining each.',
+  '<strong>Scope</strong> (§4, §11) — write <code>makeIdGenerator(prefix)</code> that returns <code>\'user-1\'</code>, <code>\'user-2\'</code>, and so on. Then explain why two of them do not share a counter.',
+  '<strong>this</strong> (§6) — take <code>{ n: 1, delayed() { setTimeout(function () { console.log(this.n); }, 0); } }</code>, fix it three different ways, and say what the downside of each fix is.',
+  '<strong>Array pipeline</strong> (§9) — starting from records shaped like <code>{name, department, salary, startYear}</code>, work out the average salary per department, sorted highest first, leaving out anyone who started this year. No <code>for</code> loops allowed.',
+  '<strong>Grouping</strong> (§9, §18) — write <code>groupBy(items, keyFn)</code> that returns a <code>Map</code>. Then write a version that returns a plain object. When would you want each one?',
+  '<strong>Deep equality</strong> (§19) — write <code>deepEqual(a, b)</code> that handles nested objects, arrays, <code>null</code>, <code>NaN</code>, and objects with different numbers of keys. Write the tests first.',
   '<strong>Event loop</strong> (§13) — do the predict-the-output exercise in that section without running it.',
-  '<strong>Promise combinators</strong> (§14) — implement <code>promiseAll(promises)</code> from scratch using only <code>new Promise</code>. Preserve input order; reject on the first failure.',
-  '<strong>Retry with backoff</strong> (§12, §15) — write <code>retry(fn, { attempts, baseDelayMs, isRetryable })</code>. Test with a function that fails twice then succeeds; assert the call count.',
-  '<strong>Bounded concurrency</strong> (§15) — write <code>mapLimit</code> without looking, then prove no more than <code>limit</code> calls are ever in flight.',
-  '<strong>Generators</strong> (§17) — write a lazy <code>chunk(iterable, size)</code> and batch an infinite sequence with it. Confirm nothing computes until consumed.',
-  '<strong>Put it together</strong> — an LRU cache class with <code>get</code>, <code>set</code> and <code>maxSize</code>, backed by a <code>Map</code> (which preserves insertion order). O(1) both operations. Test eviction, re-access reordering, and overwriting an existing key.']},
- {p:'A starting point for the last one — fill in the gaps and make the assertions pass:'},
+  '<strong>Build Promise.all</strong> (§14) — write <code>promiseAll(promises)</code> yourself using only <code>new Promise</code>. Keep the results in the original order, and fail as soon as any one fails.',
+  '<strong>Retrying</strong> (§12, §15) — write <code>retry(fn, { attempts, baseDelayMs, isRetryable })</code>. Test it with a function that fails twice and then succeeds, and check how many times it was called.',
+  '<strong>Limiting concurrency</strong> (§15) — write <code>mapLimit</code> from memory, then prove that no more than <code>limit</code> calls are ever running at once.',
+  '<strong>Generators</strong> (§17) — write a lazy <code>chunk(iterable, size)</code> and use it on an endless sequence. Check that nothing is computed until you ask for it.',
+  '<strong>Put it all together</strong> — an LRU cache class with <code>get</code>, <code>set</code> and <code>maxSize</code>, built on a <code>Map</code> (which remembers insertion order for you). Both operations should be O(1). Test that the right item gets evicted, that reading an item makes it recent again, and that overwriting an existing key works.']},
+ {p:'Here is a start on the last one. Read it, then break it and fix it — try a size of 1, or setting the same key twice:'},
  {code:`class LRU {
   #max; #map = new Map();
   constructor(max) { this.#max = max; }
