@@ -182,6 +182,13 @@ html[data-theme="paper"] .cb{background:#15161a}
 .qa .ans .lb{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.17em; text-transform:uppercase; color:var(--ink3); margin:14px 0 5px}
 .qa .ans .lb:first-child{margin-top:12px}
 .qa .ans p{max-width:none}
+.qa.study > button{grid-template-columns:30px 1fr 18px}
+.qa.study > button i{color:var(--acc-dim)}
+.qa.study .ans{padding-top:14px}
+.qa .ans p:first-child{margin-top:0}
+.qa .ans pre{margin:0 0 14px; padding:13px 15px; overflow-x:auto; border:1px solid var(--rule); border-radius:var(--r); background:#0e0f12; font-family:var(--mono); font-size:12.6px; line-height:1.7; color:#dcd8cf; tab-size:2; white-space:pre-wrap; word-break:break-word}
+.qa .ans pre::-webkit-scrollbar{height:8px} .qa .ans pre::-webkit-scrollbar-thumb{background:#2e3035; border-radius:9px}
+.qa .ans s{color:var(--ink3)}
 
 .ck{margin:0 0 26px; border:1px solid var(--rule); border-radius:var(--r); background:var(--bg2); max-width:74ch; padding:6px 0}
 .ck button{
@@ -237,7 +244,7 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); borde
 <div class="shell">
   <aside>
     <div class="brand">
-      <b>IRL Developer<br><i>preparation</i></b>
+      <b>IRL Developer<br><i>study guide</i></b>
       <span>ASUCD · UC Davis · 0043-6793-2026</span>
     </div>
     <div class="tools">
@@ -255,27 +262,27 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); borde
 
   <div>
     <div class="mobinav">
-      <b>IRL prep</b>
+      <b>IRL study guide</b>
       <a class="tool" href="index.html" style="flex:none;padding:6px 10px">Course</a>
       <button class="tool" id="theme2" style="flex:none;padding:6px 10px">Theme</button>
       <button class="tool" id="find2" style="flex:none;padding:6px 10px">Search</button>
     </div>
     <main>
       <header class="hero">
-        <div class="eyebrow">Application &amp; interview preparation</div>
-        <h1>Innovation &amp; Research Lab: <i>Developer</i></h1>
-        <p class="sub">A student-run software and research agency inside ASUCD, hiring a developer at $18/hr for 10 hrs/week through June 2027. The technical bar is deliberately low — one language, basic Git. That means the hiring decision turns on everything <em>around</em> the code. This is how to win it.</p>
+        <div class="eyebrow">A study guide for the IRL Developer role</div>
+        <h1>Learn the <i>job</i>, not the interview.</h1>
+        <p class="sub">ASUCD's Innovation &amp; Research Lab is hiring a student developer. It asks for one language, some frontend or backend, and basic Git — so the useful preparation is not interview theatre, it is actually knowing this material. Fifteen sections of JavaScript, the web platform, accessibility, Git, debugging and documentation, with drills and a self-test. The application and interview parts are at the end, and they are short.</p>
         <div class="facts">
-          <div><b>$18</b><span>Per hour</span></div>
-          <div><b>10</b><span>Hours / week</span></div>
+          <div><b>15</b><span>Study sections</span></div>
+          <div><b>50+</b><span>Self-test questions</span></div>
+          <div><b>15</b><span>Hours, start to finish</span></div>
           <div><b>Oct 1</b><span>Last day to apply</span></div>
-          <div><b>3</b><span>Supplemental answers</span></div>
         </div>
       </header>
       <div id="doc"></div>
       <footer>
-        <h2>The gap between applicants is not skill.</h2>
-        <p>Every applicant for this role will claim JavaScript and Git. Almost none will have read the accessibility requirement, prepared a code-review answer, shipped something deployed, or be able to say in one sentence why <em>this</em> lab rather than any internship. Do those four things and the interview stops being a competition.</p>
+        <h2>None of this expires with the deadline.</h2>
+        <p>The application closes on October 1. The material above does not. A deployed project, an accessibility habit, a Git workflow you do not have to think about, and the ability to explain closures and the event loop out loud are worth considerably more than any single ten-hour-a-week job — and they transfer intact to every application after this one. Study it for the role. Keep it because it is the job.</p>
         <p style="color:var(--ink3);font-family:var(--mono);font-size:11px;letter-spacing:.08em;margin-top:34px">Press <kbd>Cmd K</kbd> to jump · checklist state is saved locally · <a href="index.html">back to the course</a></p>
       </footer>
     </main>
@@ -296,323 +303,733 @@ const JS = 'index.html';
 
 const C = [
 
-{id:'posting', g:'The role', t:'What the posting <em>actually</em> says', k:'Read before anything else. Every later section is built on these facts, and several of them are unusual.', b:[
- {p:'This is a paid student position inside <strong>ASUCD</strong> — the Associated Students of UC Davis, the student government — in a unit called the <strong>Innovation and Research Lab (IRL)</strong>. IRL describes itself as a student-run software and research agency with two branches, Research and Software. You would join the Software branch, reporting to the Associate Director and working alongside the Software branch lead and other student developers.'},
+{id:'plan', g:'Start here', t:'How to study this, and in what order', k:'The order matters more than the hours. Web fundamentals first, because everything else in the job sits on top of them.', b:[
+ {p:'This guide is mostly study material. The job asks for one programming language, some frontend or backend familiarity, and basic Git — so the useful preparation is not interview theatre, it is actually knowing the web platform well enough to build something and explain it. The application and interview sections are at the end, and they are short on purpose.'},
+ {p:'Work through it in this order. Each block assumes the one before it.'},
+ {table:[['Order','What to study','Why it comes here'],
+  ['1','<a href="#js-core">Core JavaScript</a> — scope, types, equality, <code>this</code>','Every question you will be asked starts here, and every bug you will write starts here too'],
+  ['2','<a href="#js-func">Functions, closures, arrays</a>','This is the shape of real application code: take data, reshape it, render it'],
+  ['3','<a href="#js-async">Async and fetch</a>','The moment your page talks to a server you are in this territory, and it is where juniors lose the most time'],
+  ['4','<a href="#html">HTML</a> and <a href="#css">CSS</a>','Unglamorous and constantly needed. Also where accessibility actually lives.'],
+  ['5','<a href="#dom">The DOM</a>','The glue. Fetch data, put it on the screen, respond to a click.'],
+  ['6','<a href="#a11y">Accessibility</a>','A listed duty and a legal obligation at a public university. Do not skip it.'],
+  ['7','<a href="#debug">Debugging</a>, <a href="#git">Git</a>, <a href="#review">code review</a>, <a href="#docs">documentation</a>','How you work with other people. Listed as duties, and rarely prepared.'],
+  ['8','<a href="#project">Build one small thing</a>','Everything above becomes real, or it does not stick'],
+  ['9','<a href="#selftest">Self-test</a>, then the <a href="#apply">application</a>','Say the answers out loud before you write anything down']]},
+ {h:'A realistic schedule'},
+ {p:'Two hours a day for a week gets you through all of it with time to build something small. If you have less, the table below is ordered by how much it changes your chances per hour spent.'},
+ {check:['<strong>Hour 1</strong> — Read <a href="#skills">what the job needs</a>, then the core JavaScript section, and answer its self-test questions out loud.',
+  '<strong>Hour 2</strong> — Functions, closures and arrays. Do the array drills in an editor, not in your head.',
+  '<strong>Hour 3</strong> — Async and fetch. Write the load-render-handle-failure snippet from memory.',
+  '<strong>Hour 4</strong> — HTML semantics and forms, then the CSS layout section. Build one responsive card list from scratch.',
+  '<strong>Hour 5</strong> — The DOM section. Render a list from an array, handle a click with event delegation.',
+  '<strong>Hour 6</strong> — Accessibility. Run the checklist against something you have already built, and fix what you find.',
+  '<strong>Hour 7</strong> — Git drill end to end: branch, two commits, pull request, merge, then cause a conflict on purpose and resolve it.',
+  '<strong>Hour 8</strong> — Debugging and code review. Review a friend\'s code, or one open pull request on any public repository.',
+  '<strong>Hours 9-14</strong> — Build and deploy one small thing. Write its README.',
+  '<strong>Hour 15</strong> — The <a href="#selftest">self-test</a>, out loud, then write the application.']},
+ {note:'tip', n:'If you only have one evening', p:'Do these four things and nothing else: the <a href="#js-async">async and fetch</a> section, the <a href="#a11y">accessibility</a> checklist applied to something you already built, one Git branch-to-merge round trip, and the <a href="#selftest">self-test</a> out loud. Then submit the application. An application that exists beats a perfect one you did not send.'},
+ {note:'trap', n:'Do not grind algorithm puzzles for this', p:'Nothing in the posting points at a coding screen: it asks for one language, basic Git, and interest in public-facing products. Hours spent on dynamic programming here are hours not spent on the things this particular role is actually asking about.'}
+]},
+
+{id:'skills', g:'Start here', t:'What the job actually needs you to know', k:'The posting is short. This is what each line of it means in terms of things to study.', b:[
+ {p:'This is a paid student position inside <strong>ASUCD</strong>, the student government at UC Davis, in a unit called the <strong>Innovation and Research Lab (IRL)</strong> — a student-run software and research agency with a Research branch and a Software branch. You would join Software, working alongside the branch lead and other student developers.'},
  {table:[['Fact','Detail'],
   ['Title','Innovation &amp; Research Lab: Developer'],
-  ['Pay','$18/hr. No stipend, not work-study.'],
+  ['Pay','$18/hr. Not work-study, no stipend.'],
   ['Hours','10 hrs/week'],
-  ['Term','Start ASAP · ends June 5, 2027'],
+  ['Term','Start as soon as possible, ends June 5, 2027'],
   ['Job number','0043-6793-2026'],
   ['Contact','Sloane Iwach — <code>director@irl.ucdavis.edu</code>'],
   ['Last day to apply','October 1, 2026'],
-  ['Resume','Required'],
-  ['Supplemental questions','Three (work history · qualifications and fit · Principles of Community)']]},
- {h:'What they say they want'},
- {p:'The technical requirements are, verbatim in substance: at least one programming language (JavaScript is the example given), familiarity with frontend and/or backend, and a <em>basic</em> understanding of version control with Git and GitHub. That is all. On the soft side: teamwork, strong problem-solving and attention to detail, the ability to self-direct across concurrent projects, and interest in civic tech, research tools, or public-facing digital products.'},
- {note:'why', n:'Read the bar correctly', p:'"At least one language" and "basic Git" is a genuinely low technical bar — this is an entry-level student role, not an internship screen. Do not over-prepare algorithms. The decision will be made on communication, reliability, and whether you sound like someone who will still be shipping in week nine. Prepare for <em>that</em>.'},
- {h:'The duties, and what each one is really asking'},
- {p:'This table is the single most useful thing on this page. The posting lists duties in HR language; each one implies a specific piece of evidence you should be ready to supply, in your resume and out loud.'},
- {table:[['The posting says','What they want to see'],
-  ['Build and maintain projects "from scoping through deployment"','You have finished something, not just started it. A URL beats a repo; a repo beats a description.'],
-  ['Produce "clean, readable, and well-documented code"','A README that a stranger could follow, and consistent naming. Be ready to say what you would rename in your own project today.'],
-  ['Scope features and troubleshoot with developers and branch leads','You can break a vague request into tasks and say what you would cut. Have one example of scoping something <em>down</em>.'],
-  ['Take part in code reviews and give feedback','Almost no applicant prepares this. See <a href="#review">Code review</a> — it is your cheapest differentiator.'],
-  ['Convert Research and Software lead requirements into features','You can take an ambiguous ask and come back with clarifying questions rather than a wrong guess.'],
-  ['Follow "ASUCD Accessibility Guidelines"','Public-university software has legal accessibility obligations. See <a href="#a11y">Accessibility</a>. This is the highest-leverage thing you can prepare.'],
-  ['Attend weekly staff meetings, support cross-functional planning','You are reliable and present. A 10 hr/week role dies from flakiness, and they have been burned before.'],
-  ['Maintain documentation for "project continuity across quarters"','Student turnover is IRL\'s core operational problem. Say something about handoff and you sound like staff, not an applicant.'],
-  ['Agree to subscribe to the ASUCD newsletter','A literal checkbox. Do it.']]},
- {note:'tip', n:'The sentence that wins this posting', p:'"Continuity across quarters" appears in a duty, and it tells you what actually keeps them up at night: every June, people graduate and knowledge walks out. If you can credibly signal that you will document your work so the next person can pick it up — and that you intend to stay through the full term to June 2027 — you are answering a question they did not know how to ask.'}
+  ['Required','Resume, plus three supplemental answers']]},
+ {h:'The stated requirements, translated into study topics'},
+ {p:'The requirements are: at least one programming language with JavaScript given as the example, familiarity with frontend and/or backend, and a <em>basic</em> understanding of Git and GitHub. That is a genuinely low bar, and it tells you to go for breadth and fluency rather than depth in any one thing.'},
+ {table:[['The posting says','What to actually study'],
+  ['"At least one programming language (e.g. JavaScript)"','<a href="#js-core">Core JavaScript</a>, <a href="#js-func">functions and arrays</a>, <a href="#js-async">async</a>. Be fluent, not clever.'],
+  ['"Familiarity with frontend and/or backend"','<a href="#html">HTML</a>, <a href="#css">CSS</a> and the <a href="#dom">DOM</a> at minimum. If you know any backend, be ready to say what a request and a response are.'],
+  ['"Basic understanding of version control (Git/GitHub)"','<a href="#git">The everyday Git loop</a> plus what to do in a conflict. Eight commands is enough.'],
+  ['Builds projects "from scoping through deployment"','<a href="#project">Ship one small thing</a>. A live URL is the single most persuasive item you can have.'],
+  ['"Clean, readable, and well-documented code"','<a href="#docs">Documentation</a> and naming. Have an opinion about what makes code readable.'],
+  ['"Participate in code reviews and provide feedback"','<a href="#review">Code review</a>. Almost no applicant prepares this.'],
+  ['"Follow ASUCD Accessibility Guidelines"','<a href="#a11y">Accessibility</a>. This is the highest-value hour in the whole guide.'],
+  ['"Troubleshoot" with developers and branch leads','<a href="#debug">Debugging method</a>. Being able to describe how you narrow a problem down matters more than knowing the answer.'],
+  ['Documentation for "project continuity across quarters"','<a href="#docs">Documentation</a> again. Every June people graduate and knowledge walks out the door — this is the problem they live with.']]},
+ {note:'why', n:'Read the bar correctly', p:'"At least one language" and "basic Git" is an entry-level student role, not an internship screen. The decision will come down to whether you can build something, explain it, and still be showing up in week nine. Study for <em>that</em>.'},
+ {note:'tip', n:'The phrase worth noticing', p:'"Continuity across quarters" appears in the duties, and it tells you what actually worries them. If you can credibly say you will document your work so the next person can pick it up, you are answering a question they did not know how to ask.'}
 ]},
 
-{id:'logistics', g:'The role', t:'Logistics, before you write a word', k:'Five days from today. Clear the mechanical work first so the remaining time goes to content.', b:[
- {p:'The application closes <strong>October 1, 2026</strong>. Handle everything below in the first sitting — none of it requires thought, and all of it will otherwise expand to fill the days you need for the supplemental answers.'},
- {check:['Open the listing and read it yourself, start to finish. This page is a companion, not a substitute.',
-  'Confirm the application portal loads and find out whether it saves drafts. Assume it does not — write your answers in a separate file and paste them in.',
-  'Export your resume to PDF and name the file properly: <code>Lastname-Firstname-Resume.pdf</code>. Not <code>resume-final-v3.pdf</code>.',
-  'If you are an international student, check UC Davis SISS guidance on employment eligibility before you apply — the posting explicitly directs you there.',
-  'Subscribe to the ASUCD newsletter (it is one of the listed duties, so do it before you claim you agree to it).',
-  'Draft all three supplemental answers offline in plain text, then paste. Portals lose work.',
-  'Have a single link ready that shows working software — deployed URL preferred, GitHub repo otherwise. Put it in the resume header and in supplemental answer two.',
-  'Set a personal cutoff of September 30 so a portal problem on the last day cannot sink the application.']},
- {h:'About contacting the director'},
- {p:'The posting names Sloane Iwach and gives <code>director@irl.ucdavis.edu</code>. A short, specific email is appropriate and low-risk; a long one that re-asks what the posting already answers is not. Send it only if you have a real question — and if you do, it doubles as an early, favourable impression.'},
- {draft:'Email — only if you have a genuine question', d:'<p>Subject: IRL Developer (0043-6793-2026) — quick question before applying</p><p>Hi Sloane,</p><p>I am applying for the IRL Developer role before the October 1 deadline and had one question I could not answer from the listing: <mark>your actual question — e.g. whether the Software branch is currently working mostly in a particular stack, so I can point my portfolio at the closest thing I have built</mark>.</p><p>Either way, I will have my application in this week. Thanks for your time.</p><p><mark>Name</mark><br><mark>Major, expected graduation</mark> · <mark>link to one project</mark></p>'},
- {note:'trap', n:'Do not send a "just checking in" email', p:'With a five-day window and a named director who is also a student, an email with no content in it costs you more than sending nothing. One question, asked once, is professional. Two follow-ups are not.'}
+{id:'js-core', g:'JavaScript', t:'Core language — scope, types, equality, <code>this</code>', k:'The five topics that come up in every conversation about JavaScript, and that cause most beginner bugs.', b:[
+ {p:'Start here, and aim to be able to <em>explain</em> each of these out loud rather than just recognize them. Explaining is the skill the job actually uses — in code review, in a pull request description, and in the interview. The companion course has the long version of each; this is the study checklist and the self-test.'},
+ {table:[['Topic','What you need to be able to say','Read'],
+  ['<code>var</code> / <code>let</code> / <code>const</code>','<code>let</code> and <code>const</code> are block-scoped, <code>var</code> is function-scoped and hoists. <code>const</code> stops you reassigning the name, not changing the object.','<a href="index.html#scope">Variables, scope, hoisting</a>'],
+  ['The eight types','Seven primitives plus object. <code>typeof null</code> is <code>"object"</code> and <code>typeof []</code> is <code>"object"</code> — both are historical mistakes you just memorize.','<a href="index.html#types">Types</a>'],
+  ['Numbers','One number type, a 64-bit float. <code>0.1 + 0.2 !== 0.3</code>. Never store money in it.','<a href="index.html#types">Types</a>'],
+  ['<code>null</code> vs <code>undefined</code>','<code>undefined</code> means nobody set it. <code>null</code> means someone deliberately set it to nothing.','<a href="index.html#types">Types</a>'],
+  ['Truthy and falsy','The eight falsy values. <code>||</code> for defaults swallows a legitimate <code>0</code> or <code>""</code>; <code>??</code> does not.','<a href="index.html#coercion">Coercion and equality</a>'],
+  ['<code>==</code> vs <code>===</code>','<code>==</code> converts types first and is not even consistent. Use <code>===</code>. The one exception is <code>x == null</code>.','<a href="index.html#coercion">Coercion and equality</a>'],
+  ['<code>?.</code> and <code>??</code>','<code>a?.b</code> gives <code>undefined</code> instead of throwing. <code>??</code> only falls back for <code>null</code> and <code>undefined</code>.','<a href="index.html#modern">Modern syntax</a>'],
+  ['<code>this</code>','Decided by how the function is called, not where it was written. Arrow functions have none of their own.','<a href="index.html#this">this</a>']]},
+ {h:'The four things to type out yourself'},
+ {p:'Reading about these does not work. Run each one, guess the output first, and then explain to yourself why you were wrong.'},
+ {code:`1. The var loop bug, and the fix
+
+for (var i = 0; i < 3; i++) setTimeout(() => console.log(i));
+for (let j = 0; j < 3; j++) setTimeout(() => console.log(j));
+
+   var prints 3 3 3 — one shared variable, and the loop is
+   already finished by the time the callbacks run.
+   let prints 0 1 2 — a fresh variable each time around.
+
+2. Why || is the wrong default
+
+const volume = 0;
+console.log(volume || 50);    // 50 — the real 0 got thrown away
+console.log(volume ?? 50);    // 0  — correct
+
+3. Loose equality is not consistent
+
+console.log(0 == '');         // true
+console.log(0 == '0');        // true
+console.log('' == '0');       // false
+
+4. this depends on the call, not the code
+
+const counter = { n: 0, bump() { this.n++; return this.n; } };
+console.log(counter.bump());  // 1
+const loose = counter.bump;
+loose();                      // throws — nothing on the left of the call`, l:'type these out'},
+ {h:'Self-test'},
+ {p:'Say the answer out loud before you open it. If you cannot get through a sentence without hesitating, that topic is not learned yet.'},
+ {sq:'What is the difference between <code>let</code>, <code>const</code> and <code>var</code>?', a:'<p><code>let</code> and <code>const</code> are scoped to the block they are in. <code>var</code> is scoped to the whole function and gets hoisted to the top, which causes bugs — the classic one is a loop where every callback ends up sharing one variable. <code>const</code> stops you pointing the name at something else, but it does not freeze the value, so a <code>const</code> array can still be pushed to.</p><p>Default to <code>const</code>, use <code>let</code> when you need to reassign, and never use <code>var</code>. <a href="index.html#scope">Full explanation</a>.</p>'},
+ {sq:'Why is <code>typeof</code> not enough to check a type?', a:'<p>Because it lies in two places you will hit constantly: <code>typeof null</code> is <code>"object"</code>, and <code>typeof []</code> is also <code>"object"</code>. Use <code>Array.isArray(x)</code> for arrays and <code>x === null</code> for null. <code>typeof</code> is reliable for <code>"string"</code>, <code>"number"</code>, <code>"boolean"</code>, <code>"function"</code> and <code>"undefined"</code>.</p>'},
+ {sq:'Name the falsy values.', a:'<p><code>false</code>, <code>0</code>, <code>-0</code>, <code>0n</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>. Everything else is truthy — including <code>[]</code>, <code>{}</code>, <code>"0"</code> and <code>"false"</code>, which surprise people.</p><p>The practical consequence: <code>if (items.length)</code> is fine, but <code>if (count || 10)</code> is a bug when <code>count</code> is legitimately <code>0</code>. <a href="index.html#coercion">Full explanation</a>.</p>'},
+ {sq:'Why <code>===</code> and not <code>==</code>?', a:'<p><code>==</code> converts the types before comparing, and the results are not even consistent with each other — <code>0 == ""</code> and <code>0 == "0"</code> are both true, but <code>"" == "0"</code> is false. So use <code>===</code> everywhere. The one exception worth keeping is <code>x == null</code>, which is a short way of checking for both <code>null</code> and <code>undefined</code>.</p>'},
+ {sq:'What does <code>this</code> refer to?', a:'<p>It depends on how the function was called, not where it was written. Four cases: a plain call gets <code>undefined</code> in strict mode, <code>obj.method()</code> gets <code>obj</code>, <code>call</code>/<code>apply</code>/<code>bind</code> let you choose it, and <code>new</code> creates a fresh object. Arrow functions have no <code>this</code> of their own, so they borrow the one from where they were written — which is exactly why they are right for callbacks and wrong for methods.</p><p>The one-sentence version: look at what is immediately to the left of the parentheses. <a href="index.html#this">Full explanation</a>.</p>'},
+ {sq:'Why does a method break when you pass it as a callback?', a:'<p>Because <code>this</code> comes from the call. <code>setTimeout(counter.bump, 0)</code> hands over the bare function, so when it eventually runs there is nothing to the left of the parentheses and <code>this</code> is <code>undefined</code>. Fix it with an arrow wrapper — <code>setTimeout(() =&gt; counter.bump(), 0)</code> — or with <code>.bind(counter)</code>, or by making it a class field defined as an arrow.</p>'},
+ {note:'tip', n:'Explaining beats performing', p:'For this role, being able to say clearly why <code>let</code> beats <code>var</code> reads far better than solving a puzzle in silence. If you get a live exercise, narrate what you are doing. A student interviewer is judging whether working with you will be pleasant, and thinking out loud is most of that.'}
 ]},
 
-{id:'resume', g:'Application', t:'The resume, rebuilt for <em>this</em> posting', k:'One page. Their vocabulary, not yours. Evidence of finishing things.', b:[
- {p:'A resume for this role has one job: make it obvious in fifteen seconds that you can write code, work in a team, and finish. It will be read by a student lead, quickly, alongside dozens of others. Optimise for scanning.'},
- {h:'Order the page by what they asked for'},
- {ol:['<strong>Header</strong> — name, one line: email · phone · GitHub · <em>deployed project URL</em>. The live link is the single highest-value item on the page.',
-  '<strong>Education</strong> — UC Davis, major, expected graduation, relevant coursework only if it is genuinely relevant (data structures, web development, databases). Skip your GPA if it is not helping you.',
-  '<strong>Projects</strong> — two or three, above experience if your experience is unrelated. This is the section that gets you the interview.',
-  '<strong>Technical skills</strong> — grouped honestly: languages, then frontend, then backend, then tools. Include Git/GitHub explicitly, because they asked for it explicitly.',
-  '<strong>Experience</strong> — any job at all, including retail and food service. It demonstrates reliability, which is what a 10 hr/week role is actually testing.',
-  '<strong>Involvement</strong> — clubs, volunteering, hackathons. IRL is a student organisation; showing you participate in campus life is on-message here in a way it would not be at a company.']},
- {h:'The bullet formula'},
- {p:'Every project bullet should answer three questions in one line: what did you build, what did you build it with, and what happened as a result. Weak bullets stop after the first.'},
- {code:'Weak\n  Built a web app using JavaScript and HTML.\n\nBetter\n  Built a course-planner web app (vanilla JS, Node, SQLite) that\n  imports a PDF transcript and flags unmet major requirements;\n  deployed on Render and used by 30 students in my dorm.\n\nWhy it lands\n  what it does -> what it is built with -> it exists in the world\n  and someone other than you has used it', l:'resume bullets'},
- {note:'tip', n:'Mirror their nouns', p:'Use their words where they are honestly true of your work: <em>scoping</em>, <em>deployment</em>, <em>code review</em>, <em>documentation</em>, <em>accessibility</em>, <em>public-facing</em>. A human reads your resume, but a human who has just read their own job posting. Matching vocabulary makes you feel like the obvious fit.'},
- {h:'What to cut'},
- {ul:['Objective statements. They say nothing and cost you two lines.',
-  'Skill percentage bars and star ratings. Nobody believes them.',
-  '"Familiar with" as a category — if it needs that hedge, it belongs in a sentence about what you built with it, or nowhere.',
-  'Tutorial projects with no modifications, presented as your own design. A to-do list is fine if you say what you added and what broke.',
-  'A second page. You do not have a second page of material yet, and padding is visible.']},
- {note:'trap', n:'One thing you must be able to back up', p:'Everything on the resume is fair game in the interview. If you list a language, you can be asked to explain something in it; if you list a project, you can be asked why you chose the structure. Delete anything you cannot discuss for two minutes under mild pressure.'}
+{id:'js-func', g:'JavaScript', t:'Functions, closures, and reshaping data', k:'This is what application code is actually made of: take some data, reshape it, put it on the screen.', b:[
+ {p:'Almost every task you will be handed in this job is a version of the same thing — fetch a list, filter it, sort it, transform each item, and render it. So this section is the highest-value JavaScript you can study. Get fluent with the array methods and you will write less code than everyone around you.'},
+ {h:'Function syntax worth having at your fingertips'},
+ {code:`Arrow functions, defaults, rest and spread
+
+const double = n => n * 2;
+const greet = (name, greeting = 'Hello') => greeting + ', ' + name;
+const sum = (...nums) => nums.reduce((a, b) => a + b, 0);
+
+const base = { host: 'localhost', port: 80 };
+const config = { ...base, port: 443 };      // new object, port overridden
+
+Destructuring — pull values out by name
+
+const { name, email = 'none' } = user;
+const [first, ...rest] = items;
+function render({ id, label }) { return id + ': ' + label; }
+
+   The last one is the pattern you will see most in real code:
+   take an object parameter and name the fields you need.`, l:'syntax'},
+ {h:'The array methods, sorted by how often you will use them'},
+ {table:[['Method','What it gives back','Use it for'],
+  ['<code>map</code>','A new array, same length','Turning each item into something else'],
+  ['<code>filter</code>','A new array, same length or shorter','Keeping the items that pass a test'],
+  ['<code>find</code>','One item, or <code>undefined</code>','Looking up a single row by id'],
+  ['<code>reduce</code>','One value of any shape','Totals, and grouping into an object or <code>Map</code>'],
+  ['<code>some</code> / <code>every</code>','<code>true</code> or <code>false</code>','"Is there any…" and "are they all…"'],
+  ['<code>sort</code>','<strong>The same array, reordered</strong>','Ordering — but it changes the original, so copy first'],
+  ['<code>includes</code>','<code>true</code> or <code>false</code>','Membership, for small arrays. Use a <code>Set</code> inside a loop.'],
+  ['<code>flatMap</code>','A new flattened array','One item in, zero or many out']]},
+ {note:'trap', n:'Know which methods change the original array', p:'<code>push</code>, <code>pop</code>, <code>splice</code>, <code>sort</code>, <code>reverse</code> and <code>fill</code> all modify the array in place. <code>sort</code> is the one that catches people, because it looks like it returns a new array. Either copy first with <code>[...arr].sort(…)</code> or use the newer <code>toSorted()</code>. And <code>sort</code> with no comparator sorts as <em>text</em>, so <code>[1, 5, 10]</code> becomes <code>[1, 10, 5]</code>.'},
+ {code:`The pipeline you will write constantly
+
+const visible = courses
+  .filter(c => c.term === selectedTerm)
+  .map(c => ({ id: c.id, label: c.code + ' — ' + c.title, units: c.units }))
+  .toSorted((a, b) => a.label.localeCompare(b.label));
+
+Two reduces worth memorizing
+
+const totalUnits = visible.reduce((sum, c) => sum + c.units, 0);
+
+const byDepartment = courses.reduce((acc, c) => {
+  (acc[c.department] ??= []).push(c);
+  return acc;
+}, {});
+
+   reduce takes an accumulator and one item, and returns the
+   next accumulator. The second argument is the starting value,
+   and leaving it out is a common source of confusing bugs.`, l:'data drills'},
+ {h:'Closures'},
+ {p:'A closure is a function that still has access to the variables around where it was written, even after the outer function has returned. That sounds abstract, but it is how two very ordinary things work: private state without a class, and debouncing a search box. Have one real example ready, because "where have you used one?" is the half of the question that actually separates people.'},
+ {code:`Private state
+
+function makeCounter(start = 0) {
+  let count = start;
+  return {
+    increment: () => ++count,
+    get value() { return count; },
+  };
+}
+
+   count is an ordinary local variable. The returned functions can
+   reach it because they were written next to it, and nothing else
+   in the program can touch it.
+
+Debounce — the one you will actually use
+
+function debounce(fn, ms) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+}
+
+searchBox.addEventListener('input', debounce(runSearch, 250));
+
+   Each debounced function remembers its own timer, so a burst
+   of keystrokes collapses into one request.`, l:'closures'},
+ {h:'Self-test'},
+ {sq:'What is a closure, and where have you used one?', a:'<p>"A function keeps access to the scope it was defined in, so it can still use those variables after the outer function has returned. I used one to debounce a search box — the returned function holds onto a timer variable, so each keystroke clears the pending timer instead of firing a request per character."</p><p>Any honest example works: a counter with private state, a cached function, an event handler that captured some configuration. The example is the part that matters. <a href="index.html#closures">Full explanation</a>.</p>'},
+ {sq:'Difference between <code>map</code>, <code>filter</code> and <code>reduce</code>?', a:'<p><code>map</code> transforms every element and gives back an array of the same length. <code>filter</code> keeps the elements that pass a test, so the result is the same length or shorter. <code>reduce</code> collapses the array down to one value, which can be any shape — a number for a total, or an object if you are grouping.</p><p>Have the chained example ready: filter to the rows you want, map to the fields you need, sort. <a href="index.html#arrays">Full explanation</a>.</p>'},
+ {sq:'Why does changing a copy of an object change the original?', a:'<p>Because assigning an object copies the reference, not the object — both names point at the same thing. Spread (<code>{ ...obj }</code>) gives you a new top-level object, but anything nested inside is still shared, so it is only a one-level copy. For a genuinely independent copy use <code>structuredClone(obj)</code>.</p><p><a href="index.html#copies">Full explanation</a></p>'},
+ {sq:'How would you group a list of records by one field?', a:'<p><code>reduce</code> into an object, or into a <code>Map</code> if the keys come from user data.</p><p>Say why the <code>Map</code> version is safer when keys are not under your control: object keys are always strings and an object already inherits names like <code>constructor</code> and <code>__proto__</code>, so a key coming from outside can collide with them. A <code>Map</code> starts genuinely empty and takes any value as a key. <a href="index.html#collections">Full explanation</a>.</p>'},
+ {sq:'What does <code>[1, 5, 10].sort()</code> return, and why?', a:'<p><code>[1, 10, 5]</code>. With no comparator, <code>sort</code> converts each element to a string and compares those, so <code>"10"</code> sorts before <code>"5"</code>. Pass a comparator for numbers: <code>arr.sort((a, b) =&gt; a - b)</code>. Also worth adding that <code>sort</code> changes the array in place, so copy it first if anything else is using it.</p>'}
 ]},
 
-{id:'q1', g:'Application', t:'Supplemental 1 — work and volunteer history', k:'The easy one. Answer it literally, completely, and without apology for whatever it contains.', b:[
- {p:'The first supplemental question asks about your prior work and volunteer history. It is mostly an information field, but two things separate a good answer from a neutral one: <strong>completeness</strong> and <strong>translation</strong>.'},
- {p:'Completeness means list everything, including jobs that have nothing to do with software. Retail, tutoring, campus dining, a summer warehouse shift, a club treasurer role. For a 10 hr/week student position, a manager\'s real anxiety is not whether you can code — it is whether you will show up in week nine. Any record of holding a commitment answers that.'},
- {p:'Translation means naming the transferable mechanic rather than the task. A cashier job is a job where you handled a queue under time pressure and reconciled a till exactly; tutoring is a job where you explained a hard idea to someone who did not have your context, which is the same skill as a code review comment.'},
- {draft:'Draft — adapt, do not paste', d:'<p><strong><mark>Role</mark>, <mark>Organisation</mark> — <mark>dates</mark>, <mark>hrs/wk</mark>.</strong> <mark>One sentence on what you actually did.</mark> <mark>One sentence naming the transferable mechanic: worked a shift schedule alongside eight people, trained two new hires, or handled customer problems without escalating them.</mark></p><p><strong>Volunteer — <mark>Organisation</mark>, <mark>dates</mark>.</strong> <mark>What you did and roughly how often. Consistency matters more than scale: "two hours every Saturday for a year" is a stronger signal than "helped at a one-day event".</mark></p><p>If a gap needs explaining, one clause is enough: <mark>"I was not employed during my first year while adjusting to the course load."</mark> Do not elaborate and do not apologise.</p>'},
- {note:'tip', n:'If you have no formal work history', p:'Say so plainly in one line and then give what you do have: coursework with a team component, a club role, a group project where you owned a part, an open-source issue you closed, tutoring a friend. Never leave the field thin — a short honest paragraph reads far better than three words.'}
+{id:'js-async', g:'JavaScript', t:'Async — the event loop, promises, and <code>fetch</code>', k:'The moment your page talks to a server you are here. This is where junior code most often goes wrong.', b:[
+ {p:'Study this one properly. It is the topic where a clear answer most obviously separates someone who has shipped something from someone who has only read about it, and it is also where the real bugs are — blank screens, lost errors, and pages that take three times longer than they need to.'},
+ {h:'The model, in four sentences'},
+ {ol:['JavaScript runs your code on <strong>one thread</strong>, so nothing can run at the same time as anything else.',
+  'That means blocking is fatal: a function that takes two seconds freezes clicks, rendering and everything else for two seconds.',
+  'So slow work is handed off and a callback runs later, scheduled by the <strong>event loop</strong>.',
+  'Promise callbacks (which includes everything after an <code>await</code>) always run before timers and events.']},
+ {p:'A <strong>promise</strong> is an object standing in for a value that is not ready yet. It starts pending and then settles once, either with a value or with an error, and it never changes after that. <code>await</code> pauses <em>that one function</em> until the promise settles — the thread keeps doing other work, so nothing is blocked. <a href="index.html#loop">Event loop</a> · <a href="index.html#promises">Promises</a> · <a href="index.html#async">async / await</a></p>'},
+ {h:'The snippet to be able to write from memory'},
+ {p:'If there is any hands-on element to the interview, it will look like this rather than like a puzzle. Loading state, a real error path, and something on the screen either way.'},
+ {code:`async function load(url, into) {
+  into.textContent = 'Loading...';
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const items = await res.json();
+    if (items.length === 0) {
+      into.textContent = 'Nothing to show yet.';
+      return;
+    }
+    into.replaceChildren(...items.map(toRow));
+  } catch (err) {
+    into.textContent = 'Could not load: ' + err.message;
+  }
+}
+
+   Four things an interviewer is looking for here:
+   the loading state, the res.ok check, the empty case,
+   and an error the user can actually read.`, l:'load, render, handle failure'},
+ {note:'trap', n:'<code>fetch</code> does not fail on a 404', p:'This catches almost everyone. A network error rejects the promise, so <code>try/catch</code> around the <code>await</code> catches it. But an HTTP 404 or 500 <em>resolves</em> normally — <code>fetch</code> considers "the server answered" a success. You have to check <code>res.ok</code> yourself and throw. Knowing this is a strong, cheap signal that you have actually built something.'},
+ {h:'The performance mistake everyone makes'},
+ {code:`Slow — three times the waiting
+
+const user = await getUser(id);
+const posts = await getPosts(id);
+const prefs = await getPrefs(id);
+
+Fast — they do not depend on each other, so start them together
+
+const [user, posts, prefs] = await Promise.all([
+  getUser(id), getPosts(id), getPrefs(id),
+]);
+
+   A promise starts working the moment you create it, not when
+   you await it. Awaiting in sequence is only correct when a
+   later call genuinely needs an earlier result.`, l:'sequential vs parallel'},
+ {table:[['Method','Use it when'],
+  ['<code>Promise.all</code>','You need every result, and one failure should fail the whole thing'],
+  ['<code>Promise.allSettled</code>','You want a win/lose report for each one and never want to bail out early'],
+  ['<code>Promise.race</code>','First to finish wins either way — this is how you build a timeout'],
+  ['<code>Promise.any</code>','First <em>success</em> wins, for fallback sources']]},
+ {h:'Self-test'},
+ {sq:'How does JavaScript do two things at once?', a:'<p>"It does not, really. There is one thread, so slow work gets handed off and a callback runs later — the event loop decides what runs next. A promise is an object standing in for a value that is not ready yet, and <code>await</code> pauses that one function until it settles without blocking the thread."</p><p>Then add the practical half: "the mistake I watch for is awaiting three independent calls in a row, which triples the wait. If they do not depend on each other, start them together and <code>await Promise.all</code>."</p>'},
+ {sq:'What happens when a <code>fetch</code> fails?', a:'<p>"Two different kinds of failure. A network error rejects the promise, so <code>try/catch</code> around the <code>await</code> catches it. But an HTTP 404 or 500 does not reject — <code>fetch</code> resolves and I have to check <code>res.ok</code> myself and throw. So: check <code>res.ok</code>, wrap it in <code>try/catch</code>, and show the user something other than a blank screen."</p>'},
+ {sq:'What is wrong with <code>arr.forEach(async x =&gt; await work(x))</code>?', a:'<p><code>forEach</code> throws away whatever the callback returns, so it ignores the promises entirely and returns immediately. Everything runs at once, in no particular order, and if one fails you get an unhandled rejection. Use <code>for (const x of arr) await work(x)</code> to go one at a time, or <code>await Promise.all(arr.map(work))</code> to go all at once on purpose.</p>'},
+ {sq:'Why should you not do heavy computation on the main thread?', a:'<p>Because there is only one thread. A two-second loop does not just delay itself — it freezes clicks, typing, rendering and every pending timer for two seconds, and the page looks broken. Either break the work into chunks so the loop can breathe between them, or move it into a Web Worker.</p>'},
+ {sq:'What does <code>await</code> actually do?', a:'<p>It pauses the function it is written in until the promise settles, then either gives you the value or throws the error. It does not pause the thread — the rest of the function becomes a callback that gets scheduled when the promise is ready, so everything else on the page keeps running. That is also why code after an <code>await</code> runs later than code that comes after the function call.</p>'}
 ]},
 
-{id:'q2', g:'Application', t:'Supplemental 2 — qualifications and fit', k:'The question that decides the interview. Four moves, in order, in about 250 words.', b:[
- {p:'The second question asks about your qualifications and how the role fits your interests. This is the one that gets read carefully, and most answers fail the same way: they describe the applicant\'s enthusiasm rather than giving anyone a reason to pick them.'},
- {p:'Structure it as four moves. Each one does a different job, and the order matters because a reader who stops after two paragraphs should still have the important part.'},
- {ol:['<strong>The claim, with proof attached.</strong> What can you already do, and the specific thing you built that proves it. Name the language, name the project, give the link.',
-  '<strong>The gap, named honestly, with your response to it.</strong> One weakness that you are visibly acting on. This reads as maturity and it disarms the interviewer\'s job of finding it.',
-  '<strong>Why IRL specifically.</strong> Not "why software" and not "why a job". Something only this posting could have prompted — civic tech, the research branch, public-facing campus tools, accessibility as a requirement.',
-  '<strong>What you will do with the position.</strong> Concrete, and framed as their benefit: you intend to stay the full term, document what you build, and be the person who handles the unglamorous maintenance.']},
- {draft:'Draft — replace every marked span', d:'<p>I write <mark>JavaScript</mark> and have built <mark>and deployed</mark> <mark>project name</mark>, a <mark>one-line description</mark> — <mark>link</mark>. I took it from a vague idea through scoping, <mark>stack</mark>, and deployment, which is why the part of this posting about owning a project from scoping through deployment reads as familiar rather than aspirational. I use Git daily for my own work: branches per feature, small commits, and pull requests even when I am the only reviewer.</p><p>The area I am weakest in is <mark>e.g. backend data modelling — my projects have leaned frontend</mark>. I am working on it deliberately: <mark>what you are actually doing about it</mark>. I would rather say that now than discover it in week three.</p><p>IRL interests me specifically because <mark>the reason that is true for you — e.g. the software is for the campus community rather than for a metric, and the accessibility requirement in this posting is treated as a duty rather than a nice-to-have. I would rather build something a few thousand students can actually use than a polished demo nobody opens.</mark></p><p>Practically: I have <mark>10</mark> hours a week reliably, I intend to stay through the full term to June 2027, and I will leave documentation good enough that whoever follows me can pick the project up without me. <mark>If there is a maintenance task nobody wants, I will take it.</mark></p>'},
- {note:'trap', n:'Three ways this answer is usually lost', p:'<strong>Naming no project.</strong> An unevidenced claim about JavaScript is worth nothing when every applicant makes it. <strong>Answering "why software" instead of "why IRL".</strong> A reason that would apply to any employer tells them you did not read the posting. <strong>Hiding a weakness they will find anyway.</strong> Naming it first costs you nothing and buys credibility for everything else you claimed.'},
- {note:'tip', n:'Length', p:'Around 250 words, three or four short paragraphs. Long enough to carry evidence, short enough that a tired reader finishes it. If the portal enforces a character limit, cut the fourth move down to one sentence and keep the first two intact.'}
+{id:'js-drill', g:'JavaScript', t:'Ten drills, with solutions', k:'Type these into an editor. Guess the answer first, then check. Reading the solution without trying first teaches you nothing.', b:[
+ {p:'These are deliberately small and web-shaped rather than algorithmic, because that is the shape of the work. Give each one five minutes before opening the solution. If you can do all ten without looking, you are comfortably past the bar this posting sets.'},
+ {sq:'1. Given an array of <code>{name, active}</code> objects, return the names of the active ones, sorted alphabetically.', a:'<pre>const names = users\n  .filter(u => u.active)\n  .map(u => u.name)\n  .toSorted((a, b) => a.localeCompare(b));</pre><p>Use <code>localeCompare</code> rather than <code>a &gt; b</code> so accented characters sort sensibly. And remember plain <code>sort()</code> would change the original array, which <code>toSorted</code> does not.</p>'},
+ {sq:'2. Count how many items fall into each category.', a:'<pre>const counts = items.reduce((acc, item) => {\n  acc[item.category] = (acc[item.category] ?? 0) + 1;\n  return acc;\n}, {});</pre><p>The <code>?? 0</code> handles the first time a category is seen. If the categories come from user data rather than your own code, use a <code>Map</code> instead so a category called <code>"constructor"</code> cannot cause trouble.</p>'},
+ {sq:'3. Write a function that returns the first duplicate in an array, or <code>null</code>.', a:'<pre>function firstDuplicate(arr) {\n  const seen = new Set();\n  for (const x of arr) {\n    if (seen.has(x)) return x;\n    seen.add(x);\n  }\n  return null;\n}</pre><p>The point of the drill is the <code>Set</code>. Doing it with <code>arr.includes</code> inside the loop works but rescans the array every time, which is slow on anything large.</p>'},
+ {sq:'4. Fetch a JSON list and render it into a <code>&lt;ul&gt;</code>, handling failure.', a:'<pre>async function render(url, ul) {\n  ul.textContent = \'Loading...\';\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error(\'HTTP \' + res.status);\n    const items = await res.json();\n    ul.replaceChildren(...items.map(item => {\n      const li = document.createElement(\'li\');\n      li.textContent = item.name;\n      return li;\n    }));\n  } catch (err) {\n    ul.textContent = \'Could not load: \' + err.message;\n  }\n}</pre><p>Note <code>textContent</code> rather than <code>innerHTML</code> — if <code>item.name</code> came from a user, <code>innerHTML</code> would let them inject markup.</p>'},
+ {sq:'5. Debounce a search input so it only fires 300ms after typing stops.', a:'<pre>function debounce(fn, ms) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), ms);\n  };\n}\n\ninput.addEventListener(\'input\', debounce(e => {\n  search(e.target.value);\n}, 300));</pre><p>The closure over <code>timer</code> is the whole trick. Each debounced function gets its own.</p>'},
+ {sq:'6. One click handler for a list of 200 rows, without adding 200 listeners.', a:'<pre>list.addEventListener(\'click\', e => {\n  const row = e.target.closest(\'[data-id]\');\n  if (!row || !list.contains(row)) return;\n  select(row.dataset.id);\n});</pre><p>This is <strong>event delegation</strong>: one listener on the container, and <code>closest</code> to work out which row was actually clicked. It also keeps working for rows you add later, which is the real advantage.</p>'},
+ {sq:'7. What does this print, and why? <code>console.log(1); setTimeout(() =&gt; console.log(2)); Promise.resolve().then(() =&gt; console.log(3)); console.log(4);</code>', a:'<p><strong>1, 4, 3, 2.</strong> The normal code runs first (1 and 4). Then the promise callback, because promise callbacks are drained completely before any timer. Then the timer.</p><p>If you can explain this, you understand the event loop well enough for this job. <a href="index.html#loop">Full explanation</a>.</p>'},
+ {sq:'8. Make a deep copy of <code>{a: 1, nested: {b: 2}}</code> so that changing the copy does not touch the original.', a:'<pre>const copy = structuredClone(original);</pre><p>The thing being tested is knowing why the obvious answers are wrong. <code>{ ...original }</code> only copies one level, so <code>copy.nested</code> is still the same object. <code>JSON.parse(JSON.stringify(x))</code> works for plain data but silently destroys <code>Date</code> objects, drops functions and <code>undefined</code>, and crashes on circular references.</p>'},
+ {sq:'9. A form should not reload the page when submitted. Handle it and read the values.', a:'<pre>form.addEventListener(\'submit\', e => {\n  e.preventDefault();\n  const data = Object.fromEntries(new FormData(form));\n  submit(data);\n});</pre><p><code>FormData</code> plus <code>Object.fromEntries</code> beats reading each input by id. It also means the form keeps working if someone adds a field, and it uses the <code>name</code> attributes, which is what makes the form accessible anyway.</p>'},
+ {sq:'10. Take a flat list of <code>{id, parentId}</code> and build a nested tree.', a:'<pre>function buildTree(rows) {\n  const byId = new Map(rows.map(r => [r.id, { ...r, children: [] }]));\n  const roots = [];\n  for (const node of byId.values()) {\n    const parent = byId.get(node.parentId);\n    if (parent) parent.children.push(node);\n    else roots.push(node);\n  }\n  return roots;\n}</pre><p>The trick is doing it in two passes with a <code>Map</code> for lookup, instead of searching the array for each parent. This is the hardest drill here and it is still only ten lines.</p>'},
+ {note:'tip', n:'Say what you are doing while you type', p:'If you get a live exercise, narrate it — "I will filter first so I am mapping over less", "let me handle the empty case before the happy path". A student interviewer is partly deciding whether pairing with you would be pleasant, and silence gives them nothing to go on. It also means a wrong turn gets corrected in ten seconds instead of five minutes.'}
 ]},
 
-{id:'q3', g:'Application', t:'Supplemental 3 — Principles of Community', k:'A real question with real weight at UC Davis. Concrete behaviour beats sentiment, every time.', b:[
- {p:'The third question asks for your views on the UC Davis <em>Principles of Community</em>, diversity, and cultural competency. Two things to get right before you write.'},
- {note:'trap', n:'Read the actual document first', p:'The Principles of Community are a specific published statement, not a generic diversity prompt — they cover affirming the inherent dignity of every person, rejecting acts of discrimination and intolerance, valuing freedom of expression alongside the responsibility that comes with it, and confronting bigotry rather than ignoring it. Find the current official text on the UC Davis website and read it yourself before answering; do not paraphrase from this summary, and do not quote a sentence you have not verified.'},
- {p:'The second thing: this is not a values quiz where you restate the document approvingly. Everyone can do that, and an answer made of agreement is indistinguishable from every other answer. What distinguishes a good one is that it moves from principle to <strong>something you would actually do differently</strong>, ideally in the work this job involves.'},
- {p:'You have an unusually good opening here, because this posting hands you the bridge. Building public-facing software for a whole campus <em>is</em> a diversity and access problem in a concrete, technical sense — and the posting lists following accessibility guidelines as a duty. That connection is specific, it is on-topic, and it is one almost nobody else will make.'},
- {h:'Three places principle becomes practice in this job'},
- {ul:['<strong>Accessibility.</strong> Software that only works for a sighted user with a mouse and a fast connection has quietly decided who counts as a user. Keyboard navigation, screen-reader labels and colour contrast are where "inherent dignity of every person" turns into code. See <a href="#a11y">Accessibility</a>.',
-  '<strong>Code review.</strong> Reviews are where a team is either inclusive or not, in practice, every week. Reviewing the code instead of the person, explaining <em>why</em> rather than issuing verdicts, and making it safe for a newer developer to ask an obvious question is culture that you personally control.',
-  '<strong>Whose problem gets built.</strong> A campus tool serves transfer students, first-generation students, students with disabilities, international students and student parents — people whose needs differ from whoever is in the room. Asking who is not represented in a design conversation is a concrete practice, not a sentiment.']},
- {draft:'Draft — structure to follow, words to replace', d:'<p>I read the Principles of Community as a commitment with operational consequences rather than a statement of good intent — particularly the affirmation of every person\'s inherent dignity and the expectation that bigotry is confronted rather than tolerated.</p><p>In software that becomes concrete faster than people expect. Software for a whole campus decides who its users are, usually without meaning to: a tool that only works with a mouse excludes people who navigate by keyboard, unlabelled form fields exclude screen-reader users, and low-contrast text excludes anyone with limited vision <mark>and anyone outdoors on a phone</mark>. I noticed this properly when <mark>a specific moment — you tried your own project with the keyboard only, ran a contrast checker, watched someone else fail to use something you built. If it has not happened yet, do it this week and then write this sentence truthfully.</mark> I now <mark>the habit you changed as a result</mark>.</p><p>Culturally, the practice I hold myself to is in code review: review the code and not the person, say why rather than just what, and answer a basic question without making the asker regret it. A team where a newer developer is comfortable saying "I do not understand this yet" produces better software, and that comfort is made or destroyed one comment at a time.</p><p>On cultural competency I would rather be accurate than impressive: <mark>your actual experience — a community you have worked across, a language you work in, a time your assumptions about users were wrong and what you did about it</mark>. I am aware my own defaults are not universal, which is why I would rather ask who is missing from a design conversation than assume the room covers it.</p>'},
- {note:'tip', n:'Do the thing before you claim it', p:'This answer is much stronger with one small true action behind it. Spend twenty minutes today running your own project with the keyboard only, and a contrast checker over its colours. You will find something, fixing it takes an hour, and you will have earned a sentence that reads as experience rather than research.'}
+{id:'html', g:'The web platform', t:'HTML that does work for you', k:'Using the right element is most of what people call accessibility, and it is free.', b:[
+ {p:'HTML is the part everyone assumes they already know and then gets wrong. The whole idea is that elements carry <em>meaning</em>, not just appearance — and browsers, screen readers and search engines all act on that meaning. A <code>&lt;button&gt;</code> is focusable, works with the keyboard, and is announced as a button. A <code>&lt;div onclick&gt;</code> looks identical and does none of that.'},
+ {table:[['Instead of','Use','What you get for free'],
+  ['<code>&lt;div onclick&gt;</code>','<code>&lt;button&gt;</code>','Keyboard focus, Enter and Space activation, announced as a button'],
+  ['<code>&lt;div class="link"&gt;</code>','<code>&lt;a href&gt;</code>','Middle-click, open in new tab, right-click menu, works without JS'],
+  ['<code>&lt;div&gt;</code> soup','<code>&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;section&gt; &lt;footer&gt;</code>','Screen-reader users can jump straight to regions'],
+  ['<code>&lt;br&gt;</code> for spacing','<code>&lt;p&gt;</code> and CSS margins','Text that reflows and reads as paragraphs'],
+  ['<code>&lt;div&gt;</code> rows','<code>&lt;table&gt;</code> with <code>&lt;th&gt;</code>','Row and column relationships get announced'],
+  ['A styled <code>&lt;span&gt;</code> label','<code>&lt;label for="x"&gt;</code>','Clicking the label focuses the input, and the input gets a name']]},
+ {h:'Forms, properly'},
+ {p:'Forms are where the most accessibility bugs live and where the most interview credit is available, because almost nobody prepares them. Three rules cover most of it: every input has a real <code>&lt;label&gt;</code>, every input has a <code>name</code>, and the submit button is a <code>&lt;button type="submit"&gt;</code> inside the <code>&lt;form&gt;</code>.'},
+ {code:`<form id="signup">
+  <label for="email">Email address</label>
+  <input id="email" name="email" type="email" required
+         autocomplete="email" aria-describedby="email-hint">
+  <p id="email-hint">We only use this to send your schedule.</p>
+
+  <fieldset>
+    <legend>Notify me about</legend>
+    <label><input type="checkbox" name="topics" value="events"> Events</label>
+    <label><input type="checkbox" name="topics" value="jobs"> Jobs</label>
+  </fieldset>
+
+  <button type="submit">Create account</button>
+</form>
+
+   Why each piece matters:
+   label for/id      clicking the label focuses the input, and screen
+                     readers announce the field by name
+   name              this is what FormData reads, and what a plain
+                     HTML form would submit without any JavaScript
+   type="email"      right keyboard on mobile, free validation
+   required          browser validation before your code runs
+   autocomplete      the browser can fill it in
+   fieldset/legend   groups the checkboxes and announces the group
+   aria-describedby  attaches the hint text to the field
+
+   A placeholder is NOT a label. It disappears as soon as
+   someone types, and it usually fails contrast.`, l:'a form that works'},
+ {h:'Self-test'},
+ {sq:'Why use <code>&lt;button&gt;</code> instead of a <code>&lt;div&gt;</code> with a click handler?', a:'<p>"A real button is focusable, activates with Enter and Space, and is announced as a button by a screen reader. A div with a click handler gets none of that, so you would have to add <code>tabindex</code>, a keydown handler and <code>role="button"</code> to reimplement what the browser already gives you. Using the right element is the cheapest accessibility work there is."</p>'},
+ {sq:'What is the difference between an <code>id</code> and a <code>class</code>?', a:'<p>An <code>id</code> is unique on the page and is what things like <code>&lt;label for&gt;</code>, <code>aria-describedby</code> and URL fragments point at. A <code>class</code> can appear on any number of elements and is what you style and select by. For styling, prefer classes — duplicate ids silently break label associations and anchors.</p>'},
+ {sq:'What does <code>alt</code> text need to say?', a:'<p>Whatever information the image carries, in context. For a chart, the conclusion the chart shows. For a photo of a building, what a sighted reader is meant to learn from it. If the image is purely decorative, use <code>alt=""</code> so a screen reader skips it entirely — leaving <code>alt</code> off completely is worse, because then some readers announce the filename.</p>'}
 ]},
 
-{id:'js', g:'Preparation', t:'Technical prep — JavaScript', k:'The posting names JavaScript as its example language. Cover this list and you are past the bar with room to spare.', b:[
- {p:'The stated requirement is one language and basic version control, so the technical questions in a student-org interview are usually a light check that you can speak about code rather than a screen for gaps. Prepare to <em>explain</em>, not to perform under time pressure — being able to say clearly why <code>let</code> beats <code>var</code> reads better than solving a puzzle silently.'},
- {p:'The companion crash course on this site covers all of it; the table maps each interview-likely topic to the section that explains it.'},
- {table:[['If they ask about','Be able to say','Section'],
-  ['<code>var</code> vs <code>let</code> vs <code>const</code>','Block vs function scope, <code>const</code> freezes the binding not the value, and why the loop-closure bug happens','<a href="index.html#scope">Variables, scope, hoisting</a>'],
-  ['<code>==</code> vs <code>===</code>','Loose equality coerces first and is not transitive; use <code>===</code>, except <code>x == null</code>','<a href="index.html#coercion">Coercion and equality</a>'],
-  ['Truthy and falsy','The eight falsy values, and why <code>||</code> for defaults eats a legitimate <code>0</code> where <code>??</code> does not','<a href="index.html#coercion">Coercion and equality</a>'],
-  ['<code>this</code>','It is decided by the call site, not where the function was written — and arrows have none of their own','<a href="index.html#this">this</a>'],
-  ['Closures','A function keeps a reference to the scope it was defined in, which is how private state and debounce work','<a href="index.html#closures">Closures</a>'],
-  ['Async, promises, <code>await</code>','One thread, an event loop, promises settle once; <code>await</code> pauses the function and not the thread','<a href="index.html#loop">Event loop</a> · <a href="index.html#promises">Promises</a>'],
-  ['Sequential vs parallel awaits','Three awaits in a row is three times the latency; <code>Promise.all</code> when the calls are independent','<a href="index.html#async">async / await</a>'],
-  ['Array methods','<code>map</code> keeps the length, <code>filter</code> shortens it, <code>reduce</code> collapses it; which methods mutate','<a href="index.html#arrays">Arrays</a>'],
-  ['Copying and references','Objects assign by reference, spread is shallow, and why React needs a new object to notice a change','<a href="index.html#copies">Copying and immutability</a>'],
-  ['Objects vs <code>Map</code>','Object keys coerce to strings and inherit prototype keys; <code>Map</code> for runtime keys','<a href="index.html#collections">Map and Set</a>']]},
- {h:'Two things to be able to do live, not just describe'},
- {p:'If there is any hands-on element, it will be small and web-shaped rather than algorithmic. Practise these two until they are boring — they are the shape of almost every warm-up task of this kind.'},
- {code:'Fetch, render, handle the failure\n\nasync function load(url, into) {\n  into.textContent = "Loading...";\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error("HTTP " + res.status);\n    const items = await res.json();\n    into.replaceChildren(...items.map(row));\n  } catch (err) {\n    into.textContent = "Could not load: " + err.message;\n  }\n}\n\nTransform a list\n\nconst active = users\n  .filter(u => u.active)\n  .map(u => ({ id: u.id, label: u.name.trim() }))\n  .toSorted((a, b) => a.label.localeCompare(b.label));', l:'the two drills'},
- {note:'tip', n:'The response that beats a wrong answer', p:'When you do not know something, the winning move is "I have not used that — here is the closest thing I have done, and here is how I would find out." That sentence demonstrates the exact behaviour a 10 hr/week junior developer needs, and it is far stronger than a confident guess an interviewer can see through.'},
- {note:'trap', n:'Do not grind algorithm puzzles for this', p:'Nothing in the posting suggests a LeetCode screen: it asks for one language, basic Git, and interest in public-facing products. Hours spent on dynamic programming here are hours not spent on the accessibility answer, the code-review answer, and having something deployed — which is where this decision is actually made.'}
+{id:'css', g:'The web platform', t:'The CSS you actually need', k:'Flexbox, grid, the box model, and one media query. That covers nearly every layout you will be asked for.', b:[
+ {p:'You do not need to master CSS, and you certainly do not need a framework. You need to be able to lay out a page without fighting it, which comes down to four things: knowing what the box model is doing, flexbox for one dimension, grid for two, and a media query so it survives a phone.'},
+ {h:'The box model, and the one line that fixes it'},
+ {p:'By default, setting <code>width: 300px</code> means the <em>content</em> is 300px and any padding and border get added on top, so the box is wider than you said. <code>box-sizing: border-box</code> makes width mean the whole box, which is what everyone actually wants. Put it at the top of every stylesheet you write.'},
+ {code:`*, *::before, *::after { box-sizing: border-box; }
+
+Flexbox — one direction
+
+.row {
+  display: flex;
+  gap: 16px;              use gap, not margins on children
+  align-items: center;    cross axis
+  justify-content: space-between;   main axis
+  flex-wrap: wrap;        so it survives a narrow screen
+}
+.row > .grow { flex: 1; }   take the leftover space
+
+Grid — two directions, and responsive with no media query
+
+.cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+   That one line means: as many columns as fit, each at least
+   240px, sharing the space equally. It reflows from four
+   columns to one on its own.
+
+A media query, when you do need one
+
+@media (max-width: 720px) {
+  .sidebar { display: none; }
+}
+
+Respect people who asked for less motion
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}`, l:'layout'},
+ {table:[['Problem','Reach for'],
+  ['A row of things, spaced out','<code>display: flex</code> with <code>gap</code> and <code>justify-content</code>'],
+  ['A responsive card grid','<code>grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))</code>'],
+  ['Centering one thing','<code>display: grid; place-items: center</code>'],
+  ['Sticky header','<code>position: sticky; top: 0</code> plus a <code>z-index</code>'],
+  ['Consistent spacing and colors','CSS custom properties: <code>--gap: 16px</code>, then <code>var(--gap)</code>'],
+  ['Something overlapping something else','<code>position: relative</code> on the parent, <code>absolute</code> on the child']]},
+ {note:'trap', n:'Never remove a focus outline without replacing it', p:'<code>outline: none</code> on its own is one of the most common accessibility failures on the web. It makes the page look tidier for mouse users and leaves keyboard users with no idea where they are. If the default ring is ugly, style <code>:focus-visible</code> into something you like — but there must be something.'},
+ {h:'Self-test'},
+ {sq:'Flexbox or grid?', a:'<p>Flexbox for one dimension — a row of buttons, a navigation bar, a header with something pushed to the right. Grid for two dimensions, or any time you want the browser to work out how many columns fit. In practice most pages use both: grid for the page skeleton, flex inside the pieces.</p>'},
+ {sq:'What does <code>box-sizing: border-box</code> change?', a:'<p>It makes <code>width</code> and <code>height</code> mean the size of the whole box including padding and border, instead of just the content. Without it, adding padding to a 300px box makes it wider than 300px, which is why layouts mysteriously overflow. Setting it on <code>*</code> once at the top of the stylesheet is standard practice.</p>'},
+ {sq:'How do you make a layout work on a phone?', a:'<p>Start narrow and add complexity upward, rather than building for desktop and hiding things. Use <code>flex-wrap</code> and <code>minmax</code> grids so things reflow on their own before you reach for a media query, keep tap targets reasonably large, and never set a fixed pixel width on a container. Then actually test it — resize the window down to about 320px and see what breaks.</p>'}
 ]},
 
-{id:'git', g:'Preparation', t:'Technical prep — Git and GitHub', k:'A stated requirement and the daily mechanic of the job. Being fluent in eight commands is enough.', b:[
- {p:'"Basic understanding of version control (Git/GitHub)" is listed as a technical skill, and code review is listed as a duty — which together tell you the team works in branches and pull requests. You do not need deep Git theory. You need to move through the everyday loop without hesitating, and to not panic at a conflict.'},
+{id:'dom', g:'The web platform', t:'The DOM — find it, change it, listen to it', k:'The glue between your data and the screen. Four patterns cover almost everything.', b:[
+ {p:'Most of the actual work in a frontend job is this: get some data, put it on the page, and respond when someone interacts with it. Frameworks wrap this up, but the underlying operations are worth knowing directly — partly because you will be asked, and partly because a small project does not need a framework at all.'},
+ {code:`1. Find things
+
+const el = document.querySelector('#list');
+const rows = document.querySelectorAll('.row');   a static NodeList
+
+2. Create and insert — safely
+
+const li = document.createElement('li');
+li.textContent = item.name;        textContent, not innerHTML
+li.dataset.id = item.id;           becomes data-id="..."
+list.append(li);
+
+   Use textContent for anything that came from a user or an API.
+   innerHTML with untrusted text is how you ship an XSS hole.
+
+3. Replace a whole list in one go
+
+list.replaceChildren(...items.map(toRow));
+
+   One reflow instead of one per row, and it clears the old
+   content for you.
+
+4. Listen once, for the whole list
+
+list.addEventListener('click', e => {
+  const row = e.target.closest('[data-id]');
+  if (!row) return;
+  select(row.dataset.id);
+});
+
+   This is event delegation. One listener on the container
+   instead of one per row, and it keeps working for rows
+   you add later.`, l:'the four patterns'},
+ {h:'Events: the three things to understand'},
+ {ul:['<strong>Events bubble.</strong> A click on a <code>&lt;span&gt;</code> inside a <code>&lt;button&gt;</code> inside a <code>&lt;li&gt;</code> fires on all of them, innermost first. That is what makes delegation possible.',
+  '<strong><code>e.target</code> is what was clicked; <code>e.currentTarget</code> is what you attached the listener to.</strong> Mixing these up is a classic bug — with delegation you almost always want <code>e.target.closest(...)</code>.',
+  '<strong><code>e.preventDefault()</code> stops the browser\'s default behaviour</strong> — the form submitting, the link navigating. <code>e.stopPropagation()</code> stops the bubbling, and you usually do not want it.']},
+ {note:'tip', n:'Keep your data and your DOM separate', p:'The pattern that scales: keep the real state in a plain JavaScript object or array, write one <code>render()</code> function that draws the whole thing from that state, and have every event handler change the state and call <code>render()</code> again. It is slower than surgical updates and much harder to get wrong — and it is the idea every framework is built on, so understanding it here makes React make sense later.'},
+ {code:`let state = { items: [], filter: 'all' };
+
+function render() {
+  const visible = state.filter === 'all'
+    ? state.items
+    : state.items.filter(i => i.status === state.filter);
+  list.replaceChildren(...visible.map(toRow));
+  count.textContent = visible.length + ' of ' + state.items.length;
+}
+
+function setFilter(next) {
+  state = { ...state, filter: next };
+  render();
+}`, l:'state, then render'},
+ {h:'Self-test'},
+ {sq:'Why use <code>textContent</code> instead of <code>innerHTML</code>?', a:'<p>Because <code>innerHTML</code> parses the string as HTML, so anything that came from a user or an API can inject markup and scripts into your page. <code>textContent</code> treats it as plain text, which is what you almost always want. It is also faster. Only reach for <code>innerHTML</code> when you are inserting markup you wrote yourself.</p>'},
+ {sq:'What is event delegation and why use it?', a:'<p>Attaching one listener to a container instead of one to each child, and using <code>e.target.closest(selector)</code> to work out which child was involved. Two reasons: 200 rows need one listener instead of 200, and it keeps working for rows added to the page later, which per-element listeners do not.</p>'},
+ {sq:'How would you render a list of 500 rows without the page freezing?', a:'<p>Build the elements first and insert them in one operation — <code>list.replaceChildren(...rows)</code> or a <code>DocumentFragment</code> — so the browser lays out once instead of 500 times. Never append inside a loop while reading layout properties like <code>offsetHeight</code>, because that forces a recalculation every iteration. If it is genuinely thousands of rows, only render what is on screen.</p>'},
+ {sq:'What is the difference between <code>e.target</code> and <code>e.currentTarget</code>?', a:'<p><code>e.target</code> is the deepest element the event actually happened on. <code>e.currentTarget</code> is the element whose listener is currently running. If you put a click listener on a <code>&lt;li&gt;</code> and someone clicks a <code>&lt;span&gt;</code> inside it, <code>target</code> is the span and <code>currentTarget</code> is the li.</p>'}
+]},
+
+{id:'a11y', g:'Craft', t:'Accessibility — the highest-value hour here', k:'A listed duty, a legal obligation at a public university, and the thing almost no other applicant will have prepared.', b:[
+ {p:'"Follow ASUCD Accessibility Guidelines" is in the duties. At a public university this is not decoration — accessibility for university digital content is a legal and policy obligation, which is why a student organization has written guidelines about it at all. If you can speak about this competently for ninety seconds you will likely be the only applicant who does.'},
+ {p:'You do not need to memorize a standard. The relevant one is <strong>WCAG</strong>, and it is organized under four words: content must be <em class="k">perceivable</em>, <em class="k">operable</em>, <em class="k">understandable</em> and <em class="k">robust</em>. Know those four and what each rules out, and you can reason about a page instead of reciting rules.'},
+ {h:'The checklist that catches most real problems'},
+ {check:['<strong>Semantic HTML first.</strong> A <code>&lt;button&gt;</code> is focusable, keyboard-activatable and announced as a button. A <code>&lt;div onclick&gt;</code> is none of those. Most accessibility work is just using the right element.',
+  '<strong>Every input has a real label.</strong> A <code>&lt;label for&gt;</code> tied to the input\'s id. A placeholder is not a label — it disappears the moment someone types.',
+  '<strong>Keyboard only, end to end.</strong> Put the mouse down and Tab through the whole flow. If you cannot reach or activate something, that is as serious as a crash.',
+  '<strong>Focus is visible.</strong> If a stylesheet removes the focus ring without replacing it, keyboard users lose their cursor. Never ship <code>outline: none</code> on its own.',
+  '<strong>Contrast meets the ratio.</strong> Run a checker rather than trusting your eye. 4.5:1 is the usual target for body text. Light grey placeholder text is the standard violation.',
+  '<strong>Images have alt text that says something.</strong> Describe the information the image carries. Use <code>alt=""</code> for decorative images so screen readers skip them.',
+  '<strong>Headings form a real outline.</strong> One <code>h1</code>, then <code>h2</code>, then <code>h3</code>, with no level skipped for visual size. Screen-reader users navigate by heading.',
+  '<strong>Color is never the only signal.</strong> An error field that is only red is invisible to a color-blind user. Add text or an icon.',
+  '<strong>Respect <code>prefers-reduced-motion</code>.</strong> Two lines of CSS, and it matters to anyone with vestibular issues.',
+  '<strong>ARIA last.</strong> Correct HTML beats added ARIA, and wrong ARIA is worse than none. Use it only when there is no native element for the job.']},
+ {h:'How to actually test'},
+ {table:[['Check','How','Catches'],
+  ['Keyboard pass','Tab, Shift-Tab, Enter, Space, Escape through the whole flow','Unreachable controls, lost focus, traps in modals'],
+  ['Contrast','Any contrast checker, or the browser devtools color picker','Unreadable grey-on-grey text'],
+  ['Automated scan','Lighthouse in Chrome devtools, or the axe extension','Missing labels, missing alt, bad heading order'],
+  ['Screen reader','VoiceOver on macOS (Cmd F5), NVDA on Windows. Ten minutes is enough to be humbling.','Everything the other three miss'],
+  ['Zoom','Zoom the browser to 200%','Text clipped by fixed heights']]},
+ {note:'say', n:'The ninety-second answer, if they ask', p:'"I treat it as part of doing the work rather than a pass at the end. Semantic elements first, because a real button is focusable and announced correctly for free. Then I check three things by hand: Tab through the whole flow with no mouse, run a contrast checker, and confirm every input has a label tied to it. I also assume I will miss things — automated checkers catch maybe half, so the keyboard pass matters more than the score."'},
+ {note:'tip', n:'Do it to your own project tonight', p:'Twenty minutes: Tab through your project without touching the mouse, run a contrast checker over your palette, check your inputs have labels. You will find two or three real problems. Fix them. Now everything above is something you did rather than something you read — and you have a specific story ready.'}
+]},
+
+{id:'debug', g:'Craft', t:'Debugging, and reading an error properly', k:'"Troubleshoot with other developers" is a listed duty. Method matters more than knowledge here.', b:[
+ {p:'Nobody expects you to know why something broke. They expect you to have a way of finding out. The difference between a junior who is useful and one who is exhausting is almost entirely this: narrowing down deliberately versus changing things at random until the error goes away.'},
+ {h:'Read the error. Actually read it.'},
+ {p:'Beginners skim errors and start guessing. An error message usually contains the answer. Three parts matter: the <strong>type</strong>, the <strong>message</strong>, and the <strong>first line of the stack that is your own file</strong> — ignore everything inside library code.'},
+ {table:[['Error','What it usually means'],
+  ['<code>TypeError: Cannot read properties of undefined (reading \'x\')</code>','Something you expected to be an object is <code>undefined</code>. The bug is one step earlier than the line reported.'],
+  ['<code>TypeError: x is not a function</code>','A typo in the name, or you imported the wrong thing, or you called the result instead of the function'],
+  ['<code>ReferenceError: x is not defined</code>','Misspelled name, wrong scope, or you used a <code>let</code> before its line ran'],
+  ['<code>SyntaxError: Unexpected token &lt; in JSON</code>','You called <code>res.json()</code> on an HTML error page. The server returned a 404 or 500 and you did not check <code>res.ok</code>.'],
+  ['<code>CORS</code> error in the console','The server did not permit a request from your origin. Not fixable from the frontend.'],
+  ['Nothing at all, blank screen','An error inside a promise that nobody caught. Check the console with "Pause on uncaught exceptions" on.']]},
+ {h:'The method'},
+ {ol:['<strong>Reproduce it reliably.</strong> A bug you cannot trigger on demand cannot be fixed, only guessed at.',
+  '<strong>Read the error and find the first line in your own code.</strong> Not the library frames.',
+  '<strong>Check your assumption about the data.</strong> <code>console.log</code> the actual value right before the failing line. Most bugs are a shape mismatch — you read <code>data.items</code> and the API returns <code>data.results</code>.',
+  '<strong>Narrow it down.</strong> Delete or comment out half the suspect code. Does it still break? Now you know which half. Repeat.',
+  '<strong>Change one thing at a time.</strong> Two changes at once and a fix tells you nothing about the cause.',
+  '<strong>Write down what fixed it.</strong> One line in the pull request. Future you, and the next student developer, will need it.']},
+ {h:'Devtools, the parts you will use daily'},
+ {table:[['Panel','What you use it for'],
+  ['Console','Errors, and <code>console.log</code>. <code>console.table(arr)</code> is much nicer for arrays of objects.'],
+  ['Network','Did the request go out? What status came back? What did the response body actually contain? This answers most "the API is broken" questions.'],
+  ['Elements','What markup actually rendered, and which CSS rule is winning'],
+  ['Sources','Breakpoints. Setting one and stepping through beats twenty <code>console.log</code> calls.'],
+  ['Lighthouse','Performance and a first accessibility pass']]},
+ {note:'say', n:'If they ask how you debug something that works locally but breaks when deployed', p:'"First the browser console and the network tab on the deployed site — most of the time it is a 404 on an asset, a failing request, or a CORS error, and the console says so outright. Then I compare what differs: environment variables, base paths, a case-sensitive filesystem on the server that my laptop did not care about, or a build step I only ever ran locally. And I change one thing at a time so I know which fix actually worked."'},
+ {note:'tip', n:'"One thing at a time" is worth saying out loud', p:'It is the phrase that separates debugging from thrashing, and an interviewer will notice it. The same goes for naming your help threshold: "about thirty minutes of no progress, then I ask, with what I have already tried." A branch lead supervising ten hours a week desperately wants to hear that.'}
+]},
+
+{id:'git', g:'Craft', t:'Git and GitHub', k:'A stated requirement and the daily mechanic of the job. Eight commands, fluently, is enough.', b:[
+ {p:'The posting asks for a "basic understanding of version control (Git/GitHub)" and lists code review as a duty, which together tell you the team works in branches and pull requests. You do not need Git theory. You need to move through the everyday loop without hesitating, and not panic at a conflict.'},
  {h:'The loop, in the order you will use it'},
- {code:'git switch -c feat/course-filter          start a branch off main\n\ngit add -p                                stage in reviewable pieces\ngit commit -m "Filter courses by term"    one logical change per commit\n\ngit switch main && git pull               get current main\ngit switch feat/course-filter\ngit rebase main                           replay your work on top\n\ngit push -u origin feat/course-filter     publish the branch\n                                          then open the pull request on GitHub', l:'the everyday loop'},
- {h:'The three situations that actually come up'},
- {table:[['Situation','What to do','What to say in the interview'],
-  ['A merge conflict','Open the file, resolve between the markers, <code>git add</code> the file, continue the rebase or merge','"Conflicts are normal, not a failure state — Git is telling me two people changed the same lines and it will not guess."'],
+ {code:`git switch -c feat/course-filter          start a branch off main
+
+git add -p                                stage in reviewable pieces
+git commit -m "Filter courses by term"    one logical change per commit
+
+git switch main && git pull               get current main
+git switch feat/course-filter
+git rebase main                           replay your work on top
+
+git push -u origin feat/course-filter     publish the branch
+                                          then open the pull request`, l:'the everyday loop'},
+ {h:'The four situations that actually come up'},
+ {table:[['Situation','What to do','What to say'],
+  ['A merge conflict','Open the file, keep the right combination, delete the markers, <code>git add</code> it, then continue the rebase or merge','"Conflicts are normal, not a failure. Git is telling me two people changed the same lines and it will not guess."'],
   ['A bad commit already pushed','<code>git revert &lt;sha&gt;</code> — a new commit that undoes it','"I revert rather than force-push shared history, because rewriting a branch other people have pulled breaks their copies."'],
-  ['Committed to <code>main</code> by accident','Branch from where you are, then reset <code>main</code> back','"I noticed before pushing, moved the commits onto a branch, and opened a PR like normal."']]},
- {h:'The pull request itself'},
- {p:'A pull request is a piece of writing, and it is the artefact the team will actually judge you by week to week. Three sentences is plenty: what changed, why, and how the reviewer can check it. If the change is visual, a screenshot removes half the questions before they are asked.'},
- {code:'What\n  Adds a term filter to the course list.\n\nWhy\n  Students plan one quarter at a time; the full list is 400+ rows\n  and unusable on a phone.\n\nHow to check\n  Run locally, open /courses, pick "Winter 2027" -> 62 rows.\n  Keyboard: tab to the select, arrow keys change it, list updates.\n\nNotes\n  Left the sort order alone deliberately; separate change.', l:'pull request description'},
- {note:'tip', n:'Say "small pull requests" out loud', p:'Preferring small, single-purpose PRs is a senior-sounding preference with an honest junior reason behind it: they get reviewed faster, they are easier to revert, and they make it obvious when you have gone off-scope. It also directly answers the duty about scoping features.'},
- {check:['Create a throwaway repo, make a branch, commit twice, open a PR against your own main, and merge it. End to end, today.',
-  'Deliberately cause a conflict: edit the same line on two branches and rebase one onto the other. Resolve it. Do it twice so it stops being alarming.',
-  'Write one PR description in the shape above for a change you already made.',
-  'Check that your GitHub profile is not empty — a pinned repo with a real README is worth more than a contribution graph.']}
+  ['Committed to <code>main</code> by accident','Branch from where you are, then reset <code>main</code> back','"I caught it before pushing, moved the commits onto a branch, and opened a pull request as normal."'],
+  ['Need to undo a local change','<code>git restore &lt;file&gt;</code> for the working copy, <code>git restore --staged &lt;file&gt;</code> to unstage','"I keep changes small enough that throwing one away is cheap."']]},
+ {h:'The pull request is a piece of writing'},
+ {p:'This is the artifact your team judges you by week to week, and it is easy to be visibly good at. Three sentences is plenty: what changed, why, and how the reviewer can check it. If the change is visual, a screenshot removes half the questions before they are asked.'},
+ {code:`What
+  Adds a term filter to the course list.
+
+Why
+  Students plan one quarter at a time, and the full list is
+  400+ rows and unusable on a phone.
+
+How to check
+  Run locally, open /courses, pick "Winter 2027" -> 62 rows.
+  Keyboard: tab to the select, arrow keys change it, list updates.
+
+Notes
+  Left the sort order alone deliberately; separate change.`, l:'pull request description'},
+ {note:'tip', n:'Say "small pull requests" out loud', p:'Preferring small, single-purpose pull requests is a senior-sounding preference with an honest junior reason behind it: they get reviewed faster, they are easier to revert, and they make it obvious when you have drifted out of scope. It also answers the duty about scoping features without you having to claim anything.'},
+ {check:['Create a throwaway repository, make a branch, commit twice, open a pull request against your own main, and merge it. End to end, today.',
+  'Cause a conflict on purpose: edit the same line on two branches, then rebase one onto the other. Resolve it. Do it twice, so it stops being alarming.',
+  'Practice <code>git add -p</code> once. Staging part of a file is the habit that keeps commits reviewable.',
+  'Write one pull request description in the shape above, for a change you already made.',
+  'Check your GitHub profile is not empty. One pinned repository with a real README beats any contribution graph.']}
 ]},
 
-{id:'review', g:'Preparation', t:'Code review — your cheapest advantage', k:'An explicitly listed duty that almost no applicant will have prepared a single sentence about.', b:[
- {p:'The posting says you will take part in code reviews and give feedback to other developers. That is unusual to state for an entry-level student role, and it means someone on that team cares about it. It is also the question most applicants will answer with a shrug.'},
+{id:'review', g:'Craft', t:'Code review', k:'An explicitly listed duty that almost no applicant will have prepared a single sentence about.', b:[
+ {p:'The posting says you will take part in code reviews and give feedback to other developers. That is unusual to state for an entry-level student role, which means someone on that team cares about it. It is also the question most applicants answer with a shrug — so preparing it is cheap advantage.'},
  {h:'What to look for, in priority order'},
- {p:'Reviewing well is mostly knowing what to look at first. Style is last, because a formatter should handle it and arguing about it wastes the reviewer\'s credibility on the things that matter.'},
- {ol:['<strong>Does it do what the PR says?</strong> Read the description, then check the diff delivers exactly that and nothing extra.',
-  '<strong>What happens when it fails?</strong> Empty list, null response, network error, the user with no permission. Junior code is usually correct on the happy path and silent everywhere else.',
-  '<strong>Is anything unclear?</strong> If you cannot tell what a function does from its name and signature, say so — that is the most valuable comment you can leave, and the easiest to fix now versus in March.',
-  '<strong>Is it in scope?</strong> An unrelated refactor buried in a feature PR should be its own PR. This is a kindness, not pedantry: it keeps the revert clean.',
-  '<strong>Accessibility, if it touches the UI.</strong> Keyboard reachable, labelled, contrast adequate, focus visible.',
-  '<strong>Style.</strong> Last, briefly, and ideally automated away.']},
+ {p:'Reviewing well is mostly knowing what to look at first. Style comes last, because a formatter should handle it and arguing about it spends your credibility on the least important thing.'},
+ {ol:['<strong>Does it do what the description says?</strong> Read the description, then check the diff delivers exactly that and nothing extra.',
+  '<strong>What happens when it fails?</strong> Empty list, null response, network error, a user without permission. Junior code is usually correct on the happy path and silent everywhere else.',
+  '<strong>Is anything unclear?</strong> If you cannot tell what a function does from its name and arguments, say so. That is the most valuable comment you can leave and the cheapest to fix now rather than in March.',
+  '<strong>Is it in scope?</strong> An unrelated refactor buried in a feature change should be its own change. This is a kindness, not pedantry — it keeps the revert clean.',
+  '<strong>Accessibility, if it touches the UI.</strong> Keyboard reachable, labelled, adequate contrast, visible focus.',
+  '<strong>Style.</strong> Last, briefly, and ideally automated away entirely.']},
  {h:'How to phrase it'},
- {p:'The whole craft is in tone. Comment on the code rather than the person, give the reason rather than only the instruction, and be explicit about what is blocking versus what is taste. Ask rather than assert when you might be missing context — you usually are.'},
- {table:[['Instead of','Write','Because'],
-  ['This is wrong.','"If <code>items</code> comes back empty, this throws on <code>items[0]</code> — should it render the empty state instead?"','Names the input, the consequence, and a direction. Nothing to be defensive about.'],
-  ['Why did you do it this way?','"What made you go with a <code>Map</code> here? I would have reached for an object and I might be missing something."','Assumes there was a reason. Often there was.'],
+ {p:'The whole craft is in the tone. Comment on the code rather than the person, give the reason rather than only the instruction, and be explicit about what is blocking versus what is taste. Ask rather than assert when you might be missing context — you usually are.'},
+ {table:[['Instead of','Write','Why'],
+  ['This is wrong.','"If <code>items</code> comes back empty, this throws on <code>items[0]</code> — should it render the empty state instead?"','Names the input, the consequence and a direction. Nothing to be defensive about.'],
+  ['Why did you do it this way?','"What made you go with a <code>Map</code> here? I would have reached for an object and I might be missing something."','Assumes there was a reason. Usually there was.'],
   ['Rename this.','"<code>data</code> is hard to follow three functions down — <code>enrolledCourses</code>?" (non-blocking)','Gives the reason and the alternative, and marks its own severity.'],
-  ['(silence when it is good)','"This is much easier to follow than the old version."','Reviews that only ever criticise train people to dread them.']]},
- {note:'say', n:'If they ask how you handle feedback on your own code', p:'"I try to separate the code from me, which is easier when I remember the reviewer is spending their time on my work. If I disagree I say why once and then defer — and if I do not understand the comment I ask, because guessing what a reviewer meant and pushing the wrong fix wastes two people\'s time."'},
- {note:'tip', n:'Bring one real example', p:'If you have ever reviewed anyone\'s code — a lab partner\'s, a friend\'s, an open-source PR — have that story ready. If you have not, review something this week. Comment on a friend\'s project, or open a small PR on a repository and read the feedback you get. One concrete instance makes everything above credible.'}
+  ['(saying nothing when it is good)','"This is much easier to follow than the old version."','Reviews that only ever criticize train people to dread them.']]},
+ {note:'say', n:'If they ask how you handle feedback on your own code', p:'"I try to separate the code from me, which is easier when I remember the reviewer is spending their own time on my work. If I disagree I say why once and then defer. And if I do not understand a comment I ask, because guessing what a reviewer meant and pushing the wrong fix wastes two people\'s time."'},
+ {note:'tip', n:'Get one real example this week', p:'If you have ever reviewed anyone\'s code — a lab partner\'s, a friend\'s, an open-source pull request — have that story ready. If you have not, do it before you apply. Comment on a friend\'s project, or open a small pull request on a public repository and read the feedback you get back. One concrete instance makes everything above credible instead of theoretical.'}
 ]},
 
-{id:'a11y', g:'Preparation', t:'Accessibility — the highest-leverage hour you can spend', k:'A listed duty, a legal obligation at a public university, and the thing that will separate you from every other applicant.', b:[
- {p:'"Follow ASUCD Accessibility Guidelines" is in the duties. At a public university this is not decoration: accessibility for university digital content is a legal and policy obligation, which is why a student organisation has written guidelines about it at all. If you can speak about this competently for ninety seconds, you will be the only applicant who does.'},
- {p:'You do not need to memorise a standard. You need the shape of it and a short list you can actually apply. The relevant standard is <strong>WCAG</strong>, organised under four principles — content must be <em class="k">perceivable</em>, <em class="k">operable</em>, <em class="k">understandable</em> and <em class="k">robust</em>. Know those four words and what each one rules out, and you can reason about a page rather than recite rules.'},
- {h:'The checklist that covers most real problems'},
- {check:['<strong>Semantic HTML first.</strong> A <code>&lt;button&gt;</code> is focusable, keyboard-activatable and announced as a button; a <code>&lt;div onclick&gt;</code> is none of those. Most accessibility work is using the right element.',
-  '<strong>Every input has a real label.</strong> A <code>&lt;label for&gt;</code> tied to the input\'s id. Placeholder text is not a label — it disappears the moment someone types.',
-  '<strong>Keyboard only, end to end.</strong> Put the mouse down and tab through the whole flow. If you cannot reach or activate something, that is a bug of the same severity as a crash.',
-  '<strong>Focus is visible.</strong> If a stylesheet removes the focus ring without replacing it, keyboard users lose their cursor. Never ship <code>outline: none</code> alone.',
-  '<strong>Contrast meets the ratio.</strong> Run a contrast checker rather than trusting your eye — 4.5:1 for normal body text is the usual target. Light grey placeholder text is the standard violation.',
-  '<strong>Images have alt text that says something.</strong> Describe the information the image carries; use <code>alt=""</code> for purely decorative images so a screen reader skips them.',
-  '<strong>Headings are a real outline.</strong> One <code>h1</code>, then <code>h2</code>, then <code>h3</code>, with no levels skipped for visual size. Screen-reader users navigate by heading.',
-  '<strong>Colour is never the only signal.</strong> An error field that is only red is invisible to a colour-blind user. Add text or an icon.',
-  '<strong>ARIA last.</strong> Correct HTML beats added ARIA, and wrong ARIA is worse than none. Reach for it only when there is no native element for the job.']},
- {note:'say', n:'The ninety-second answer, if they ask', p:'"I treat it as part of doing the work rather than a pass at the end. Semantic elements first, because a real button is focusable and announced correctly for free. Then I check three things by hand: tab through the whole flow with no mouse, run a contrast checker, and confirm every input has a label tied to it. I also assume I will miss things — automated checkers catch maybe half, so the keyboard pass matters more than the score."'},
- {note:'tip', n:'Do it to your own project tonight', p:'Twenty minutes: tab through your project without touching the mouse, run any contrast checker over your palette, and check your inputs have labels. You will find two or three real problems. Fix them. Now every sentence above is something you did rather than something you read, and you have a specific story for supplemental answer three.'}
+{id:'docs', g:'Craft', t:'Documentation that survives you', k:'"Continuity across quarters" is in the duties. Every June, people graduate and knowledge leaves with them.', b:[
+ {p:'This is the duty most applicants will read past, and it is the one that describes IRL\'s actual operational problem. A student-run lab loses a chunk of its team every June. If you write things down so the next person can pick them up, you are solving something they live with — and you can demonstrate it before you even apply, because a README is a thing you can go and write tonight.'},
+ {h:'The README that gets you hired'},
+ {code:`# Campus Study Spaces
+
+One-sentence description of what it does and who it is for.
+
+[Live version](https://...)    <- the most valuable line here
+![screenshot](docs/screenshot.png)
+
+## Run it locally
+    npm install
+    npm run dev
+Open http://localhost:5173
+
+## How it works
+Two or three sentences. Where the data comes from, how it is
+stored, and the one design decision a reader would question.
+
+## Accessibility
+What you checked: keyboard pass, contrast, labelled inputs.
+
+## What I would do next
+- Cache the data so it survives a reload
+- Add filtering by hours; deliberately left out to ship
+
+   That last section does more work than anything else on the
+   page. It turns every limitation from something a reviewer
+   might find into evidence that you scope deliberately --
+   which is literally one of the listed duties.`, l:'readme'},
+ {h:'What to document, and what not to'},
+ {table:[['Document this','Because'],
+  ['Why a decision was made','The code shows what it does. It cannot show what you rejected and why.'],
+  ['How to run it from nothing','The next person has an empty laptop and no context'],
+  ['Anything surprising or external','A rate limit, a quirk of the data, a manual step nobody could guess'],
+  ['What is deliberately unfinished','Otherwise the next person rebuilds it or assumes it is a bug'],
+  ['<s>What each line of code does</s>','Rename the thing instead. Comments drift out of date; names get read every time.']]},
+ {note:'tip', n:'Write the handoff note before you need it', p:'A one-page "if I disappeared tomorrow" document — where things are deployed, which accounts matter, what is half-finished — is worth more to an organization like this than a feature. It is also the single most senior-sounding thing a junior can produce, and it takes twenty minutes.'},
+ {sq:'What makes code readable?', a:'<p>"Names that say what the thing is, small functions that each do one thing, and early returns instead of deep nesting. I would rather have a good name than a comment explaining a bad one — comments drift out of date and names get read every time. What I do document is the <em>why</em>: the constraint or the decision the code cannot express by itself."</p>'}
 ]},
 
-{id:'portfolio', g:'Preparation', t:'Ship one small thing before you apply', k:'If you have nothing deployed, this is the highest-return three days available to you.', b:[
- {p:'The posting is about taking projects from scoping through deployment, for the campus community, accessibly, with documentation. If you have one small project that visibly does all of those, your application answers itself. If you have nothing deployed, build something deliberately unambitious this week rather than sending a resume that describes intentions.'},
+{id:'project', g:'Practice', t:'Build and ship one small thing', k:'This is where the study material stops being theory. If you have nothing deployed, this is the best use of your remaining time.', b:[
+ {p:'The posting is about taking projects from scoping through deployment, for the campus community, accessibly, with documentation. If you have one small project that visibly does all of that, most of the application answers itself. If you have nothing deployed, build something deliberately unambitious rather than sending a resume that describes intentions.'},
  {h:'Pick something campus-shaped and boring'},
- {p:'Ambition is the enemy here. The goal is a finished, deployed, documented artefact — not an impressive one. Good candidates: a bus-route countdown for the stop you use, a searchable list of campus study spaces with hours and outlet availability, a GPA or degree-requirement calculator, a dining-hall menu filter for a dietary restriction, a club-events aggregator.'},
+ {p:'Ambition is the enemy here. The goal is a finished, deployed, documented thing — not an impressive one. Good candidates: a bus-route countdown for the stop you use, a searchable list of study spaces with hours and outlets, a degree-requirement calculator, a dining-hall menu filter for a dietary restriction, a club-events aggregator.'},
  {ol:['<strong>Scope it to one screen and one job.</strong> Write the single sentence it does. If you cannot, it is too big.',
-  '<strong>Pick a stack you already know.</strong> Learning a framework is not the deliverable. Plain HTML, CSS and JavaScript is a completely respectable answer and it deploys anywhere.',
-  '<strong>Build it in a branch, review your own PR, merge it.</strong> Now you have a Git story and a PR to point at.',
-  '<strong>Run the accessibility checklist.</strong> Keyboard pass, contrast, labels. This is what makes it match the posting.',
+  '<strong>Use what you already know.</strong> Learning a framework is not the deliverable. Plain HTML, CSS and JavaScript is a completely respectable answer and it deploys anywhere.',
+  '<strong>Build it on a branch, review your own pull request, merge it.</strong> Now you have a Git story and a real pull request to point at.',
+  '<strong>Run the <a href="#a11y">accessibility checklist</a>.</strong> Keyboard pass, contrast, labels. This is what makes it match the posting rather than just exist.',
   '<strong>Deploy it.</strong> Any free static host. A URL a stranger can open is worth more than any description of it.',
-  '<strong>Write the README.</strong> What it does, a screenshot, how to run it locally, what you would do next. This is the "well-documented" and "continuity" evidence, and it takes twenty minutes.']},
- {note:'tip', n:'The "what I would do next" section', p:'End the README with two or three things you deliberately left out and why. It converts every limitation from something an interviewer might find into evidence that you scope consciously — which is literally one of the listed duties. Nothing else you can write in twenty minutes signals as much judgement.'},
- {note:'trap', n:'Do not start something you cannot finish by September 30', p:'A half-built ambitious project is worth less than a finished trivial one, in this process and in general. If it is Tuesday and it is not working, cut a feature rather than the deployment step.'}
+  '<strong>Write the <a href="#docs">README</a>.</strong> What it does, a screenshot, how to run it, what you would do next.']},
+ {check:['One sentence written down describing what it does. Reject the idea if you cannot write the sentence.',
+  'It works end to end for one user doing one thing. Not three half-features.',
+  'Handles the three boring states: loading, empty, and failed.',
+  'Keyboard pass done, contrast checked, every input labelled.',
+  'Deployed at a URL that loads on a phone.',
+  'README with a live link, a screenshot, run instructions and a "what I would do next" section.',
+  'One commit history a stranger could read, and one merged pull request.']},
+ {note:'trap', n:'Do not start something you cannot finish', p:'A half-built ambitious project is worth less than a finished trivial one — in this process and generally. If it is two days before the deadline and it is not working, cut a feature rather than cutting the deployment step.'},
+ {note:'tip', n:'The "what I would do next" section', p:'End the README with two or three things you deliberately left out and why. It converts every limitation from something an interviewer might find into evidence that you scope consciously. Nothing else you can write in twenty minutes signals as much judgement.'}
 ]},
 
-{id:'format', g:'Interview', t:'What the interview will probably be', k:'Inferred, not stated. The posting says nothing about the process, so treat this as a likely shape rather than fact.', b:[
- {note:'why', n:'Be clear about what is known', p:'The listing does not describe the interview at all. Everything in this section is an inference from what the role is — a student-run organisation, a 10 hr/week entry-level developer position, a named student director, a late-September posting with an October 1 close. Prepare for this shape, but do not be thrown if the real thing differs.'},
- {p:'Most likely: one conversation, twenty to forty minutes, in person on campus or over Zoom, with one to three people — plausibly the Associate Director you would report to and the Software branch lead. Expect it to be mostly conversational, with light technical questions and a walk-through of something you have built. A take-home or a live coding exercise is possible but less likely at this level; a whiteboard algorithm round is unlikely.'},
- {p:'Interviewers here are students, often busy and not professionally trained at interviewing. Two consequences worth planning for. First, they may not drive the conversation well, so <strong>be ready to fill silence</strong> with your project walk-through. Second, they are choosing someone they will sit next to every week — so likeability and reliability weigh more heavily than they would at a company, and are not things you should be cynical about.'},
- {h:'What they are deciding'},
- {ul:['Can this person write code without constant supervision at ten hours a week?',
-  'Will they still be here in week nine? (This is the real one.)',
-  'Will they say "I do not know" instead of quietly shipping something broken?',
-  'Is a code review with them going to be pleasant or exhausting?',
-  'Do they care about who uses this software, or only about building it?']},
- {h:'The five things to have ready before you walk in'},
- {ol:['A two-minute project walk-through, out loud, timed. See <a href="#walkthrough">the drill</a>.',
-  'One story about something you broke or got wrong, and what you changed afterwards.',
-  'One sentence on why IRL specifically — the same one from supplemental answer two, said naturally.',
-  'One accessibility observation about your own project, from having actually checked it.',
-  'Three questions for them that a careful reader of the posting would ask. See <a href="#ask">Questions to ask</a>.']}
+{id:'selftest', g:'Practice', t:'Self-test — say these out loud', k:'Twenty questions across everything above. Speak the answer before you open it. Hesitating is the signal.', b:[
+ {p:'Reading your own notes creates a false sense of knowing. Saying an answer out loud does not. Work down the list, speak each answer as if someone asked you, and mark the ones where you stalled — those are the only ones worth restudying.'},
+ {h:'Language'},
+ {sq:'Why do you default to <code>const</code>?', a:'<p>Because most variables never need to be reassigned, and saying so up front means one less thing a reader has to track. <code>let</code> when you genuinely reassign. Never <code>var</code>, because it is function-scoped and hoists, which produces bugs like the loop where every callback shares one variable.</p>'},
+ {sq:'What is the difference between <code>null</code> and <code>undefined</code>?', a:'<p><code>undefined</code> means nobody ever set it — a missing property, a parameter you did not pass, a function with no return. <code>null</code> means someone deliberately set it to "no value". Practical consequences: default parameters only kick in for <code>undefined</code>, and <code>??</code> falls back for both.</p>'},
+ {sq:'What does <code>0.1 + 0.2 === 0.3</code> return, and why does it matter?', a:'<p><code>false</code>. There is one number type and it is a 64-bit float, so most decimals cannot be represented exactly. It matters because you must never store money in a float — use integer cents. To compare, check the difference is smaller than a tiny tolerance rather than using <code>===</code>.</p>'},
+ {sq:'Explain <code>this</code> in one sentence.', a:'<p>"It is determined by how the function is called, not where it is written — look at what is immediately to the left of the parentheses." Then the four cases, and that arrow functions have no <code>this</code> of their own so they borrow the surrounding one.</p>'},
+ {sq:'What is a closure, with an example you have written?', a:'<p>A function that still has access to the variables around where it was defined, after the outer function has returned. The example matters more than the definition — a debounce, a counter with private state, a cached function.</p>'},
+ {h:'Data'},
+ {sq:'When do you reach for <code>reduce</code> instead of <code>map</code> or <code>filter</code>?', a:'<p>When the result is not an array of the same items. A total, an object grouped by some key, a lookup <code>Map</code>. If the answer is still a list, <code>map</code> and <code>filter</code> read better and you should use them.</p>'},
+ {sq:'Which array methods change the original array?', a:'<p><code>push</code>, <code>pop</code>, <code>shift</code>, <code>unshift</code>, <code>splice</code>, <code>sort</code>, <code>reverse</code>, <code>fill</code>. <code>sort</code> is the trap, because it looks like it returns a new array. Copy first, or use <code>toSorted</code>, <code>toReversed</code> and <code>with</code>.</p>'},
+ {sq:'Object or <code>Map</code>?', a:'<p>An object for a record whose field names you type into the source. A <code>Map</code> for a collection whose keys only appear at runtime — especially keys from user data, because object keys are always strings and objects already inherit names like <code>constructor</code> and <code>__proto__</code>. A <code>Map</code> also gives you <code>.size</code> and iterates in insertion order.</p>'},
+ {sq:'How do you copy an object so changes do not leak?', a:'<p><code>{ ...obj }</code> for one level. <code>structuredClone(obj)</code> for a real deep copy. Know why <code>JSON.parse(JSON.stringify(x))</code> is risky: it destroys <code>Date</code> objects, drops functions and <code>undefined</code>, and throws on circular references.</p>'},
+ {h:'Async'},
+ {sq:'How does JavaScript handle slow work with one thread?', a:'<p>It hands the work off and runs a callback later, scheduled by the event loop. Promise callbacks always run before timers and events. <code>await</code> pauses the one function rather than the thread.</p>'},
+ {sq:'What is the most common async performance bug?', a:'<p>Awaiting independent calls one at a time, so three 200ms calls take 600ms instead of 200ms. A promise starts working when it is created, so create them all and then <code>await Promise.all([...])</code>. Sequential awaits are only correct when a later call needs an earlier result.</p>'},
+ {sq:'How do you handle a failing network request?', a:'<p><code>try/catch</code> around the <code>await</code> for network failures, plus an explicit <code>res.ok</code> check and throw, because <code>fetch</code> does not reject on a 404 or 500. Then show the user an actual message rather than a blank screen.</p>'},
+ {h:'The web platform'},
+ {sq:'Why does using the right HTML element matter?', a:'<p>Because behaviour comes with it for free: focus, keyboard activation, and how assistive technology announces it. A <code>&lt;div&gt;</code> with a click handler needs <code>tabindex</code>, a keydown handler and a role to imitate what <code>&lt;button&gt;</code> already does. Most accessibility work is element choice.</p>'},
+ {sq:'Flexbox or grid, and why?', a:'<p>Flex for one dimension, grid for two or when you want the browser to decide how many columns fit. <code>repeat(auto-fill, minmax(240px, 1fr))</code> gives you a responsive card grid with no media query at all.</p>'},
+ {sq:'How would you attach one handler to a list of 200 rows?', a:'<p>Event delegation: one listener on the container, then <code>e.target.closest(\'[data-id]\')</code> to find the row. One listener instead of 200, and it keeps working for rows added later.</p>'},
+ {sq:'How do you make sure a page is accessible?', a:'<p>Semantic elements first, then three manual checks: a keyboard-only pass through the whole flow, a contrast checker, and every input labelled. Add that automated tools catch only about half, which is why the keyboard pass matters more than the score.</p>'},
+ {h:'Working with people'},
+ {sq:'What do you do in a merge conflict?', a:'<p>"Read it rather than react to it. Git is telling me two branches changed the same lines and it will not guess — so I open the file, look at both sides, keep the right combination, delete the markers, <code>git add</code> and continue. If it is a big conflict I ask the other author what they intended rather than overwrite their work."</p>'},
+ {sq:'What do you look for when reviewing someone\'s code?', a:'<p>In order: does it do what the description says, what happens when it fails, is anything unclear, is it in scope, accessibility if it touches the UI, and style last. Then a sentence on tone — comment on the code not the person, give the reason, and mark what is blocking versus what is taste.</p>'},
+ {sq:'How do you debug something that works locally but not when deployed?', a:'<p>Console and network tab on the deployed site first. Then compare what differs: environment variables, base paths, filesystem case sensitivity, a build step that only ever ran locally. One change at a time.</p>'},
+ {sq:'What would you do if you were given a vague requirement?', a:'<p>Write down your interpretation and confirm it before building, rather than guessing or waiting. Concretely: restate the ask in your own words, list what you are assuming, name the smallest version you could ship, and ask one clarifying question. Then say you would rather send a small wrong thing early than a large wrong thing late.</p>'},
+ {note:'tip', n:'What to do with the ones you stalled on', p:'Do not reread the whole section. Go back to the specific table row or code block, type the example out by hand, and then answer the question again out loud. Two or three minutes each. Restudying everything is how people spend four hours and improve at nothing.'}
 ]},
 
-{id:'behavioural', g:'Interview', t:'Behavioural questions', k:'Open each one for what they are really testing and a scaffold to answer from. Use your own material.', b:[
- {p:'Answer these in the <strong>STAR</strong> shape — situation, task, action, result — but keep it conversational rather than recited: two sentences of context, three of what you did, one of how it turned out and what changed afterwards. The single most common failure is spending ninety seconds on context and ten on your own contribution.'},
- {note:'tip', n:'Use "I" more than "we"', p:'Group projects invite the passive voice, and it makes your contribution invisible. Credit the team once, then say what <em>you</em> did. An interviewer cannot hire "we".'},
- {qa:'Tell me about yourself.', why:'Not a biography request. They are checking whether you can be concise and whether you know which parts of yourself are relevant.', a:'<p>Sixty to ninety seconds, three beats: where you are now (year, major, what you are into technically), the one thing you have built that is most relevant, and why this role is the logical next step. End on the role so the conversation opens where you want it.</p><p>Do not start at high school. Do not list courses.</p>'},
- {qa:'Why do you want to work at IRL?', why:'Whether you read the posting, and whether you will still care in February.', a:'<p>Use a reason that could not apply to any other employer: software for the campus community rather than for a metric, the pairing of a research branch with a software branch, accessibility written into the duties. Then add the honest self-interested half — you want to work on something real, with reviewers, that ships — because a purely altruistic answer sounds rehearsed.</p>'},
- {qa:'Walk me through a project you are proud of.', why:'The core question of the interview. Technical judgement, ownership, and whether you can explain a thing to a person.', a:'<p>See <a href="#walkthrough">the walk-through drill</a> — it has a timed structure. Lead with the problem and the user, not the stack.</p>'},
- {qa:'Tell me about a time you got stuck.', why:'Your debugging process, and whether you ask for help at a sensible point rather than too early or far too late.', a:'<p>Structure: what broke, what you assumed and why that was wrong, how you narrowed it down, when you asked for help. The interesting part is the narrowing — "I assumed the API was wrong, logged the actual response, and found I was reading <code>data.items</code> when the shape was <code>data.results</code>" is a better answer than any amount of persistence.</p><p>Name your help threshold explicitly: "about thirty minutes of no progress, then I ask with what I have already tried." That sentence is exactly what a branch lead wants to hear.</p>'},
- {qa:'Tell me about a disagreement with a teammate.', why:'Whether you can disagree without it costing the team, and whether you can be wrong.', a:'<p>Pick something genuinely small and technical, not a grievance. Structure: the disagreement, what you each wanted and why, how it resolved, and what you did afterwards to keep it clean. Best if you deferred and it worked out, or you were wrong and said so.</p><p>Avoid the "my teammate did nothing" story. Even when true, it is unreadable from the outside and it makes you sound like a difficult person to sit next to.</p>'},
- {qa:'How do you manage ten hours a week around your coursework?', why:'The reliability question, asked directly. This is arguably the most important question they will ask.', a:'<p>Be specific and modest: which days and hours are genuinely free, how you track commitments, and what you would do in week eight when midterms land. Say plainly that you would flag a crunch week in advance rather than going quiet — going quiet is the actual failure mode they have seen before.</p><p>Do not over-promise. "I can do fifteen if you need" reads as someone who will burn out in November.</p>'},
- {qa:'Tell me about a time you received critical feedback.', why:'Whether code review with you will be productive.', a:'<p>One real instance, no defensiveness in the retelling, and a concrete change you kept. "I was told my variable names were unreadable, was annoyed for a day, then renamed them and started naming things after what they hold rather than what type they are" is a complete and good answer.</p>'},
- {qa:'How do you work when requirements are vague?', why:'Directly from the duty about converting lead requirements into features.', a:'<p>Say that you write down your interpretation and confirm it before building, rather than either guessing or waiting. Concretely: restate the ask in your own words, list what you are assuming, name the smallest version you could ship, and ask one clarifying question. Then say you would rather send a small wrong thing early than a large wrong thing late.</p>'},
- {qa:'What are you weakest at technically?', why:'Self-awareness, and whether you will hide problems.', a:'<p>Name something real, adjacent to the job, and say what you are doing about it. Backend data modelling, testing, and CSS layout are all safe honest answers. Avoid the disguised brag ("I care too much") and avoid naming the core requirement ("JavaScript, honestly").</p>'},
- {qa:'Where do you see yourself after this?', why:'Whether you will leave in January for something shinier.', a:'<p>Be honest but bounded: you want to keep building software, and you intend to stay for the full term through June 2027. If you are genuinely aiming at an industry internship, frame this as the experience that makes you a credible candidate for one — which is true and does not read as disloyalty.</p>'},
- {qa:'Do you have anything you want to add?', why:'A gift. Most people say no.', a:'<p>Have one thing banked: the accessibility pass you ran on your own project, the fact that you subscribed to the newsletter and read the last few issues, or the one duty in the posting you are most interested in and why. Thirty seconds, then stop.</p>'}
+{id:'resources', g:'Resources', t:'Where to actually study', k:'Free, good, and in the order you should use them. Skip anything that is a paid course at this stage.', b:[
+ {p:'You do not need to buy anything. Everything below is free and better than most paid courses, and the list is short on purpose — the failure mode here is collecting resources instead of using one.'},
+ {table:[['Resource','Use it for','When'],
+  ['<a href="index.html">The companion course on this site</a>','All of the JavaScript above, with runnable examples you can edit','First. It is written for exactly this level.'],
+  ['<strong>MDN Web Docs</strong>','The reference for the language, the DOM, HTML, CSS and every browser API','Every day, for the rest of your career. Learn to read it.'],
+  ['<strong>MDN Learn Web Development</strong>','A structured path through HTML, CSS and JavaScript basics','If any of the web platform sections above felt shaky'],
+  ['<strong>web.dev</strong> (Learn CSS, Learn Accessibility)','Short, modern, practical courses from the Chrome team','For the CSS and accessibility sections specifically'],
+  ['<strong>JavaScript.info</strong>','Deeper explanations with exercises and solutions','When you want to genuinely understand something rather than just use it'],
+  ['<strong>WebAIM</strong>','Contrast checker, and the clearest writing anywhere on accessibility','While doing the accessibility pass'],
+  ['<strong>The Pro Git book</strong> (free online)','Git, when the everyday loop is not enough','Only if you hit something the Git section above does not cover'],
+  ['<strong>Chrome DevTools docs</strong>','The panels you are not using yet','After you have debugged something the slow way once']]},
+ {h:'Practice, not reading'},
+ {ul:['<strong>Your own project.</strong> Far and away the best practice available. Every bug you hit teaches you something a tutorial cannot.',
+  '<strong>Frontend Mentor</strong> — real designs to build to, free tier. Good for HTML and CSS fluency specifically.',
+  '<strong>Exercism (JavaScript track)</strong> — small exercises with human feedback, free. Good for language fluency.',
+  '<strong>Read other people\'s code.</strong> Open any small public repository and read one file properly. This is an underrated skill and it is exactly what code review asks of you.']},
+ {note:'trap', n:'Tutorial hell is real', p:'Watching someone else build something feels like learning and mostly is not. The rule that works: for every hour of reading or video, spend two hours with your own broken code in front of you. If you have not been stuck recently, you are not learning.'},
+ {note:'tip', n:'Read the ASUCD and UC Davis material too', p:'Before you apply, read the actual job listing yourself start to finish, the UC Davis Principles of Community in its own words rather than any paraphrase, and whatever the ASUCD Accessibility Guidelines say if you can find them. That is thirty minutes and it will show up in your answers.'}
 ]},
 
-{id:'technical', g:'Interview', t:'Technical questions, with answers', k:'Pitched where this posting pitches itself: one language, basic Git, web fundamentals. Open each for a model answer.', b:[
- {p:'These are the questions a student interviewer actually asks for a role described as "at least one programming language" and "basic understanding of version control". Every answer below is short on purpose — in an interview, a clear three-sentence answer beats a five-minute one, and leaves room for the follow-up you want.'},
- {qa:'What is the difference between <code>let</code>, <code>const</code> and <code>var</code>?', why:'The most common opening JavaScript question in existence. They are checking you write modern code.', a:'<p>"<code>let</code> and <code>const</code> are block-scoped; <code>var</code> is function-scoped and hoists, which causes bugs — the classic one is a loop where every callback ends up sharing a single variable. <code>const</code> prevents reassigning the binding, but not mutating the value, so a <code>const</code> array can still be pushed to. I default to <code>const</code>, use <code>let</code> when I need to reassign, and do not use <code>var</code>."</p><p class="lb">Follow-up they may ask</p><p>Why does the <code>var</code> loop print the same number three times. Answer: one shared binding, and by the time the callbacks run the loop has finished. <a href="index.html#scope">Full explanation</a>.</p>'},
- {qa:'<code>==</code> or <code>===</code>?', why:'A one-line check on whether you have been bitten by coercion yet.', a:'<p>"<code>===</code>, always. <code>==</code> coerces the types before comparing, and the result is not even transitive — <code>0 == \'\'</code> and <code>0 == \'0\'</code> are both true but <code>\'\' == \'0\'</code> is false. The one exception I keep is <code>x == null</code>, which is a compact test for null or undefined."</p>'},
- {qa:'What is a closure, and where have you used one?', why:'Separates people who have written JavaScript from people who have read about it. The second half of the question is the real one.', a:'<p>"A function keeps a reference to the scope it was defined in, so it can still use those variables after the outer function has returned. I used one for a debounce on a search box — the returned function holds onto a timer variable, so each keystroke clears the pending timer instead of firing a request per character."</p><p>Any real example works. A counter with private state, a memoised function, an event handler that captured configuration. <a href="index.html#closures">Full explanation</a>.</p>'},
- {qa:'What does <code>this</code> refer to?', why:'A depth probe. A confident wrong answer is common here.', a:'<p>"It depends on how the function is called, not where it was written. A plain call gets <code>undefined</code> in strict mode, <code>obj.method()</code> gets <code>obj</code>, <code>call</code>/<code>apply</code>/<code>bind</code> let you set it, and <code>new</code> makes a fresh object. Arrow functions have no <code>this</code> of their own — they take it from the enclosing scope, which is why they are right for callbacks and wrong for methods."</p><p>If you only remember one sentence: look at what is immediately left of the parentheses. <a href="index.html#this">Full explanation</a>.</p>'},
- {qa:'Explain async/await, or how JavaScript does two things at once.', why:'Whether you understand that it is one thread, which determines whether your code will block a UI.', a:'<p>"JavaScript runs on one thread, so slow work cannot block — it gets handed off and a callback runs later, scheduled by the event loop. A promise is an object standing in for a value that is not ready yet, and <code>await</code> pauses that one function until it settles, without blocking the thread. The mistake I watch for is awaiting three independent calls in sequence, which triples the wait; if they do not depend on each other, start them together and <code>await Promise.all</code>."</p><p><a href="index.html#loop">Event loop</a> · <a href="index.html#async">async / await</a></p>'},
- {qa:'What happens when a <code>fetch</code> fails?', why:'Error handling in practice. Most junior code has none.', a:'<p>"Two different failures. A network error rejects the promise, so <code>try/catch</code> around the <code>await</code> catches it. But an HTTP 404 or 500 does <em>not</em> reject — <code>fetch</code> resolves and I have to check <code>res.ok</code> myself and throw. So: check <code>res.ok</code>, wrap in <code>try/catch</code>, and show the user something other than a blank screen."</p><p>This answer is short, specific, and quietly demonstrates you have shipped something.</p>'},
- {qa:'Difference between <code>map</code>, <code>filter</code> and <code>reduce</code>?', why:'Basic fluency with the array methods you will use hourly.', a:'<p>"<code>map</code> transforms each element and returns an array of the same length. <code>filter</code> keeps the elements that pass a test, so it returns the same length or shorter. <code>reduce</code> collapses the array into one value of any shape — a sum, or an object if I am grouping."</p><p>Have the chained example ready: filter to the active rows, map to the fields you need, sort. <a href="index.html#arrays">Full explanation</a>.</p>'},
- {qa:'Why does changing a copy of an object change the original?', why:'The reference-semantics question. Every aliasing bug traces back to it.', a:'<p>"Because assigning an object copies the reference, not the object — both names point at the same thing. Spread gives me a new top-level object, but any nested object is still shared, so it is a shallow copy. For a genuinely independent copy I use <code>structuredClone</code>."</p><p><a href="index.html#copies">Full explanation</a></p>'},
- {qa:'How would you debug something that works locally but not when deployed?', why:'Process, not knowledge. A very good question for this role, and one many candidates flounder on.', a:'<p>Narrate a method rather than guessing a cause. "First I check the browser console and the network tab on the deployed site — most of the time it is a 404 on an asset, a failing request, or a CORS error, and the console says so. Then I compare what differs: environment variables, base paths, a case-sensitive filesystem on the server that my laptop did not care about, or a build step I only ever ran locally. I change one thing at a time so I know which fix worked."</p><p>The phrase "one thing at a time" is worth saying out loud. It is what separates debugging from thrashing.</p>'},
- {qa:'What do you do in a merge conflict?', why:'Whether Git panics you.', a:'<p>"Read it rather than react to it. Git is telling me two branches changed the same lines and it will not guess — so I open the file, look at both sides, keep the correct combination, delete the markers, <code>git add</code> the file and continue. If it is a big conflict I will ask the other author what they intended rather than overwrite their work."</p>'},
- {qa:'What makes code readable?', why:'Directly from the duty about clean, well-documented code. Also reveals your taste.', a:'<p>"Names that say what the thing is, small functions that do one thing, and early returns instead of deep nesting. I would rather a good name than a comment explaining a bad one — comments drift out of date and names get read every time. What I do document is the <em>why</em>: the constraint or the decision that the code cannot express by itself."</p>'},
- {qa:'How do you make sure a page is accessible?', why:'If they ask this, it is because they care. See the dedicated section.', a:'<p>Use the ninety-second answer from <a href="#a11y">Accessibility</a>: semantic elements first, then three manual checks — keyboard-only pass, contrast checker, every input labelled. Mention that automated tools catch only part of it, which is why the keyboard pass matters.</p>'},
- {qa:'Have you written tests?', why:'Honesty check. Most applicants at this level have not, and pretending is transparent.', a:'<p>If you have, name the framework and what you tested. If you have not: "Not properly — I have tested by hand and with console output. I know that does not scale, and it is on my list; the closest I have come is <mark>writing a function to be pure so I could check it in isolation</mark>." Then stop. An honest no plus a direction is a fine answer; an invented yes collapses under one follow-up.</p>'},
- {qa:'Do you have any experience with our stack?', why:'A fit question that is really a learning-speed question.', a:'<p>If yes, be specific about what you built. If no: name the closest thing you do know, say what transfers, and give evidence that you pick things up — "I had not used <mark>X</mark> before <mark>project</mark>; I learned enough in a weekend to ship the first version, then improved it as I understood the patterns." Learning speed is the thing they are buying at this level.</p>'}
+{id:'apply', g:'Application', t:'The application', k:'A resume, three supplemental answers, and some mechanical steps. Do the mechanical part first.', b:[
+ {p:'The application closes <strong>October 1, 2026</strong>. Handle everything mechanical in one sitting so the rest of your time goes to the two answers that matter.'},
+ {check:['Read the listing yourself, start to finish. This guide is a companion, not a substitute.',
+  'Confirm the portal loads. Assume it does not save drafts — write your answers in a separate file and paste them in.',
+  'Export your resume to PDF named properly: <code>Lastname-Firstname-Resume.pdf</code>, not <code>resume-final-v3.pdf</code>.',
+  'If you are an international student, check UC Davis SISS guidance on employment eligibility — the posting directs you there.',
+  'Subscribe to the ASUCD newsletter, since agreeing to is one of the listed duties.',
+  'Have one link ready that shows working software. A deployed URL first, a GitHub repository otherwise.',
+  'Set your own cutoff at September 30 so a portal problem on the last day cannot sink it.']},
+ {h:'The resume'},
+ {p:'One page, read in about fifteen seconds by a busy student lead. Its only job is to make three things obvious: you can write code, you can work with people, and you finish things. Use the posting\'s own vocabulary — scoping, deployment, code review, documentation, accessibility — because that is what is being looked for.'},
+ {ol:['<strong>Header</strong> — name, then one line: email · phone · GitHub · <em>deployed project URL</em>. The live link is the highest-value item on the page.',
+  '<strong>Education</strong> — school, major, expected graduation. Two lines. Only list coursework if it is directly relevant.',
+  '<strong>Projects</strong> — before work experience, because they are the evidence. Two or three, each with what it does, the stack, and <em>one measurable or concrete outcome</em>.',
+  '<strong>Experience</strong> — all of it, including non-technical jobs. Retail and food service demonstrate reliability, and reliability is what a 10 hr/week role actually needs.',
+  '<strong>Skills</strong> — honest and short. Languages you would be comfortable being asked about, plus Git. Do not list things you have read about.']},
+ {note:'tip', n:'Write project bullets as outcomes, not activities', p:'"Built a React app with Firebase" describes an activity. "Course planner used by ~40 classmates; cut class selection from three tabs to one page; deployed on Vercel with a keyboard-accessible filter" describes an outcome, names the stack anyway, and hits three duties from the posting.'},
+ {h:'Supplemental 1 — work and volunteer history'},
+ {p:'The easy one. Answer it literally and completely, including jobs that have nothing to do with software, and do not apologize for what it contains. A student who held down a campus job while taking a full course load is directly evidence for the thing this role needs most.'},
+ {h:'Supplemental 2 — qualifications and fit'},
+ {p:'This is the answer that decides whether you get an interview. About 250 words, four moves, in this order.'},
+ {ol:['<strong>What you can already do,</strong> with one specific piece of evidence. Not "I am passionate about coding" — the project, the link, what it does.',
+  '<strong>Why IRL specifically.</strong> Something that could not apply to any other employer: software for the campus community rather than for a metric, a research branch feeding a software branch, accessibility written into the duties.',
+  '<strong>Evidence for the parts you cannot claim outright.</strong> You cannot claim years of experience. You can show that you finished something, documented it, and checked it worked for people who use a keyboard.',
+  '<strong>The commitment.</strong> Ten hours a week, through June 2027, and a plain sentence about how you would handle a midterm week — flag it in advance rather than going quiet. Going quiet is the failure mode they have seen before.']},
+ {note:'trap', n:'Do not write an answer that would fit any job', p:'The most common failure in this answer is that it says why you like software rather than why you want <em>this</em>. Test it: if you could send the same paragraph to a startup, it is not finished. Have someone else read it and ask them only one question — "does this say why IRL?"'},
+ {h:'Supplemental 3 — Principles of Community'},
+ {p:'A real question with real weight at UC Davis, and one people answer badly by being sentimental. Concrete behaviour beats sentiment every time. Read the actual Principles of Community in the university\'s own words first — do not work from anyone\'s paraphrase, including this page\'s.'},
+ {p:'Then answer it with something you have actually done. The strongest version for a developer role is accessibility, because it makes the abstract concrete: you checked whether the thing you built worked for someone using a keyboard or a screen reader, you found problems, and you fixed them. That is inclusion as an engineering practice rather than a sentiment, and it ties directly to a listed duty.'},
+ {note:'tip', n:'Where the accessibility work pays off twice', p:'If you ran the <a href="#a11y">accessibility checklist</a> on your own project, you now have a specific, true, non-generic answer to this question — and it is the same story you use in the interview. That is why it is the highest-value hour in this guide.'}
 ]},
 
-{id:'walkthrough', g:'Interview', t:'The project walk-through drill', k:'Two minutes, spoken out loud, structured. Rehearse this more than anything else on this page.', b:[
- {p:'"Walk me through a project" is the highest-weight question in the interview and the one people prepare least, because it feels like something you can wing. You cannot. Unrehearsed, it turns into a tour of implementation details with no shape, and the interviewer\'s attention is gone by the third minute.'},
- {p:'Use this structure, in this order. It takes about two minutes and it answers the follow-ups before they are asked.'},
+{id:'interview', g:'Application', t:'The interview', k:'Probably one conversation, twenty to forty minutes. Rehearse the project walk-through more than anything else.', b:[
+ {note:'why', n:'Be clear about what is known', p:'The listing does not describe the interview at all. Everything here is an inference from what the role is — a student-run organization, an entry-level 10 hr/week developer position, a named student director, a late-September posting. Prepare for this shape, but do not be thrown if the real thing differs.'},
+ {p:'Most likely: one conversation, twenty to forty minutes, on campus or over Zoom, with one to three people — plausibly the Associate Director you would report to and the Software branch lead. Mostly conversational, with light technical questions and a walk-through of something you built. A take-home is possible; a whiteboard algorithm round is unlikely.'},
+ {p:'Your interviewers are students, often busy and not trained at interviewing. Two consequences. They may not drive the conversation well, so <strong>be ready to fill silence</strong> with your project walk-through. And they are choosing someone they will sit next to every week, so being straightforward and pleasant weighs more than it would at a company.'},
+ {h:'The project walk-through — rehearse this'},
+ {p:'"Walk me through a project" is the highest-weight question and the one people prepare least, because it feels like something you can wing. Unrehearsed it becomes a tour of implementation details with no shape. Use these six beats, in this order, out loud, timed.'},
  {table:[['Beat','Seconds','What to say'],
   ['Problem','15','Who had what problem. "Picking classes meant cross-referencing three pages, and nobody could tell what they still needed."'],
   ['What it does','20','The one-sentence description of the working thing. Offer the live URL here.'],
-  ['Stack, briefly','15','What you built it with and <em>why</em> that choice. "Plain JS because it is one page and I did not want a build step to maintain."'],
-  ['The hard part','35','Pick one real problem and how you solved it. This is the part they are actually evaluating — it shows how you think.'],
-  ['What you would change','20','One honest thing. "The state is scattered across three functions; I would pull it into one object." Shows judgement, and pre-empts the critique.'],
-  ['What you cut','15','One feature you deliberately dropped to ship. This is the scoping duty, demonstrated rather than claimed.']]},
- {note:'tip', n:'Lead with the person, not the stack', p:'Starting with "it is a React app with a Node backend" tells the interviewer nothing about whether you can think. Starting with who was stuck and why makes everything after it make sense — and it matches a posting about public-facing products for the campus community.'},
- {check:['Write the six beats out as bullet points. Not a script — bullets, so you sound like a person.',
-  'Say it out loud, timed. Twice. The first attempt will run four minutes and the second will find what to cut.',
-  'Prepare the "hard part" beat properly: it should be a real problem with a real resolution, not "it was hard to learn".',
-  'Have the live URL or repo open in a tab before the interview so you are not searching for it while talking.',
-  'Prepare one sentence for "why did you build this?" — "because I wanted it" is a good answer.']},
- {note:'trap', n:'Do not narrate the code', p:'Nobody wants a function-by-function tour. If they want detail they will ask, and then you go deep on exactly the part they asked about. Volunteering depth is how a two-minute answer becomes six minutes of the interviewer waiting to speak.'}
-]},
-
-{id:'ask', g:'Interview', t:'Questions to ask them', k:'Three good ones, chosen to show you read the posting. This is the last impression you leave.', b:[
- {p:'Pick three, adapted to what came up in the conversation. Each of these is built from something the posting actually says, which is the point — they demonstrate attention rather than just filling the slot.'},
- {h:'About the work'},
+  ['Stack, briefly','15','What you built it with and <em>why</em>. "Plain JS because it is one page and I did not want a build step to maintain."'],
+  ['The hard part','35','One real problem and how you solved it. This is the part actually being evaluated.'],
+  ['What you would change','20','One honest thing. Shows judgement and pre-empts the critique.'],
+  ['What you cut','15','One feature you dropped to ship. This demonstrates the scoping duty instead of claiming it.']]},
+ {note:'trap', n:'Lead with the person, not the stack', p:'Starting with "it is a React app with a Node backend" tells the interviewer nothing about whether you can think. Starting with who was stuck and why makes everything after it make sense. And do not narrate the code — if they want detail they will ask, and then you go deep on exactly the part they asked about.'},
+ {h:'The questions they will actually ask'},
+ {p:'The technical ones are all in the <a href="#selftest">self-test</a>. These are the rest. Answer in roughly the STAR shape — situation, task, action, result — but conversationally: two sentences of context, three of what you did, one on how it turned out. The usual failure is ninety seconds of context and ten on your own contribution.'},
+ {qa:'Tell me about yourself.', why:'Not a biography request. Whether you can be concise, and whether you know which parts of yourself are relevant.', a:'<p>Sixty to ninety seconds, three beats: where you are now (year, major, what you are into technically), the one most relevant thing you have built, and why this role is the logical next step. End on the role so the conversation opens where you want it. Do not start at high school, and do not list courses.</p>'},
+ {qa:'Why do you want to work at IRL?', why:'Whether you read the posting, and whether you will still care in February.', a:'<p>Use a reason that could not apply to any other employer: software for the campus community rather than for a metric, a research branch paired with a software branch, accessibility written into the duties. Then add the honest self-interested half — you want to work on something real, with reviewers, that ships. A purely altruistic answer sounds rehearsed.</p>'},
+ {qa:'Tell me about a time you got stuck.', why:'Your debugging process, and whether you ask for help at a sensible point.', a:'<p>Structure: what broke, what you assumed and why that was wrong, how you narrowed it down, when you asked. The narrowing is the interesting part — "I assumed the API was wrong, logged the actual response, and found I was reading <code>data.items</code> when the shape was <code>data.results</code>" beats any amount of persistence. Then name your help threshold: "about thirty minutes of no progress, then I ask with what I have already tried."</p>'},
+ {qa:'How do you manage ten hours a week around coursework?', why:'The reliability question, asked directly. Arguably the most important thing they will ask.', a:'<p>Be specific and modest: which days are genuinely free, how you track commitments, and what you would do in week eight when midterms land. Say plainly that you would flag a crunch week in advance rather than going quiet. Do not over-promise — "I can do fifteen if you need" reads as someone who burns out in November.</p>'},
+ {qa:'Tell me about receiving critical feedback.', why:'Whether code review with you will be productive.', a:'<p>One real instance, no defensiveness in the retelling, and a concrete change you kept. "I was told my variable names were unreadable, was annoyed for a day, then renamed them and started naming things after what they hold rather than what type they are" is a complete and good answer.</p>'},
+ {qa:'What are you weakest at technically?', why:'Self-awareness, and whether you will hide problems.', a:'<p>Name something real, adjacent to the job, and say what you are doing about it. Backend data modelling, testing, and CSS layout are all safe honest answers. Avoid the disguised brag, and avoid naming the core requirement.</p>'},
+ {qa:'Have you written tests?', why:'Honesty check. Most applicants at this level have not, and pretending is transparent.', a:'<p>If you have, name what you used and what you tested. If not: "Not properly — I have tested by hand and with console output. I know that does not scale and it is on my list; the closest I have come is writing a function to be pure so I could check it in isolation." Then stop. An honest no with a direction is fine; an invented yes collapses under one follow-up.</p>'},
+ {qa:'Do you have any experience with our stack?', why:'A fit question that is really a learning-speed question.', a:'<p>If yes, be specific about what you built. If no: name the closest thing you do know, say what transfers, and give evidence you pick things up — "I had not used it before that project; I learned enough in a weekend to ship the first version, then improved it as I understood the patterns." Learning speed is what they are buying at this level.</p>'},
+ {qa:'Do you have anything to add?', why:'A gift. Most people say no.', a:'<p>Have one thing banked: the accessibility pass you ran on your own project, the fact that you read the last few newsletter issues, or the one duty you are most interested in and why. Thirty seconds, then stop.</p>'},
+ {h:'Three questions to ask them'},
  {ul:['"What is the Software branch working on right now, and where would a new developer be most useful in the first few weeks?"',
-  '"How do features usually arrive — does the Research branch bring findings that turn into products, or does it come from ASUCD requests?"',
   '"How does the team handle continuity across quarters when people graduate? The posting mentions documentation for that, and I am curious what has worked."',
-  '"What does code review look like in practice here — who reviews, and roughly how quickly?"']},
- {h:'About accessibility and users'},
- {ul:['"How do the ASUCD Accessibility Guidelines get applied day to day — is it part of review, or checked separately?"',
-  '"Do you get to see usage of what you build, or hear from students who use it?"']},
- {h:'About you succeeding'},
- {ul:['"What does a developer who works out well here look like three months in?"',
-  '"How are the ten hours usually structured — fixed blocks, or flexible around the weekly staff meeting?"',
+  '"How do the ASUCD Accessibility Guidelines get applied day to day — is it part of review, or checked separately?"',
+  '"What does code review look like in practice here — who reviews, and roughly how quickly?"',
   '"What is the most common reason a new developer struggles in this role?"']},
- {note:'trap', n:'Three questions not to ask', p:'<strong>Anything the posting answers.</strong> Pay, hours and end date are all stated — asking signals you did not read it. <strong>"What does IRL do?"</strong> Fatal. <strong>Nothing at all.</strong> "No, I think you covered everything" is the most forgettable way to end an interview; have your three banked even if they did cover everything.'},
- {note:'tip', n:'Ask one question that could not be prepared', p:'The strongest question in any interview comes from something they said twenty minutes earlier. If a project gets mentioned, ask what the hardest part of it has been. It proves you were listening, which no prepared question can.'}
-]},
-
-{id:'plan', g:'Execution', t:'The five-day plan', k:'Today is September 26. The application closes October 1. Here is where the hours go.', b:[
- {p:'Five days, and the work divides naturally: the artefacts first, because they feed the writing, and the writing before the deadline day so a portal problem cannot end it. If you only have one evening, do Day 1 and Day 4 and skip the rest.'},
- {h:'Day 1 — Friday, September 26'},
- {check:['Read the listing yourself, start to finish.',
-  'Resume rebuilt in the order from <a href="#resume">the resume section</a>. One page, live link in the header.',
-  'Decide now whether you are shipping a small project before the deadline. If yes, scope it to one screen tonight.',
-  'Run the <a href="#a11y">accessibility checklist</a> on something you have already built. Fix what you find.']},
- {h:'Day 2 — Saturday, September 27'},
- {check:['Build the project, or finish and deploy what you have. Deployment matters more than features.',
-  'Git drill: branch, two commits, PR against your own main, merge. Then force a conflict and resolve it.',
-  'Write the README, ending with what you would do next and why.']},
- {h:'Day 3 — Sunday, September 28'},
- {check:['Draft supplemental answer two — the four moves, about 250 words. It is the one that decides the interview.',
-  'Draft supplemental answer three. Read the real UC Davis Principles of Community first, and use the accessibility work from Day 1 as your concrete example.',
-  'Draft supplemental answer one. Complete, including non-technical jobs.']},
- {h:'Day 4 — Monday, September 29'},
- {check:['Reread all three answers cold. Cut a quarter of the words. Every answer improves.',
-  'Check every claim against the posting\'s vocabulary: scoping, deployment, code review, documentation, accessibility, public-facing.',
-  'Have one other person read answer two. Ask them only: "does this say why IRL, or just why software?"',
-  'Submit the application. Do not wait for the last day.']},
- {h:'Day 5 — Tuesday, September 30'},
- {check:['Confirm the submission went through and you have a confirmation.',
-  'Rehearse the <a href="#walkthrough">two-minute walk-through</a> out loud, twice, timed.',
-  'Prepare the three <a href="#ask">questions to ask</a> and the one story about something you got wrong.',
-  'Reread the technical answers once. Do not cram; you are past the bar.']},
- {note:'tip', n:'If you have three hours total', p:'Resume header with a live link (20 min) · accessibility pass on an existing project (30 min) · supplemental answer two, four moves (60 min) · answer three with the accessibility example (40 min) · answer one (15 min) · submit. Skip the new project and the Git drill. An application that exists beats a perfect one you did not send.'}
-]},
-
-{id:'after', g:'Execution', t:'After the interview', k:'Two short things, and then leave it alone.', b:[
- {p:'Send a thank-you email within a day. Keep it to four sentences — its job is to be a small, positive, easy-to-read signal, not a second attempt at the interview. One specific reference to what you discussed is what makes it land; without that it reads as a template, because it is one.'},
- {draft:'Thank-you email', d:'<p>Subject: Thank you — IRL Developer</p><p>Hi <mark>name</mark>,</p><p>Thanks for taking the time today. I enjoyed hearing about <mark>the specific thing they mentioned — a project, how review works, the research-to-software handoff</mark>, and it made me more interested in the role rather than less.</p><p>One thing I did not say well: <mark>optional, only if there is a real thing — a question you fumbled, or a detail you left out. One sentence, not a paragraph.</mark></p><p>Either way, happy to send <mark>whatever you offered — the repo, the deployed link</mark> if it is useful. Thanks again.</p><p><mark>Name</mark></p>'},
- {note:'trap', n:'One follow-up, then stop', p:'If they gave a timeline, wait until it has passed before following up once. If they did not, a week is reasonable. A second follow-up does not help and it is remembered. This is a student-run organisation staffed by people carrying full course loads — silence is much more likely to be a busy week than a decision about you.'},
- {h:'If it does not work out'},
- {p:'It is ten hours a week at a student organisation with one opening and a five-day window; the outcome has a large random component and very little to do with your worth as an engineer. The assets you built getting here — a deployed project, a real README, an accessibility habit, a rehearsed walk-through, and a Git workflow you do not have to think about — transfer intact to every application after this one, and they are worth considerably more than this particular job.'},
- {p:'Ask to be kept in mind for the next cycle, and mean it. Student organisations turn over constantly, which cuts both ways: someone will leave in March.'}
+ {note:'trap', n:'Three questions not to ask', p:'<strong>Anything the posting answers.</strong> Pay, hours and end date are all stated, so asking signals you did not read it. <strong>"What does IRL do?"</strong> Fatal. <strong>Nothing at all.</strong> "I think you covered everything" is the most forgettable way to end an interview — have your three banked even if they did cover everything. And the strongest question always comes from something they said twenty minutes earlier.'},
+ {h:'Afterwards'},
+ {p:'Send a thank-you email within a day, four sentences, with one specific reference to something you actually discussed — without that it reads as a template, because it is one. Then if they gave a timeline, wait until it passes before following up once. A second follow-up does not help and is remembered. This is a student organization staffed by people carrying full course loads; silence is far more likely to be a busy week than a decision about you.'},
+ {draft:'Thank-you email', d:'<p>Subject: Thank you — IRL Developer</p><p>Hi <mark>name</mark>,</p><p>Thanks for taking the time today. I enjoyed hearing about <mark>the specific thing they mentioned — a project, how review works, the research-to-software handoff</mark>, and it made me more interested in the role rather than less.</p><p>One thing I did not say well: <mark>optional, only if there is a real thing. One sentence, not a paragraph.</mark></p><p>Either way, happy to send <mark>whatever you offered — the repo, the deployed link</mark> if it is useful. Thanks again.</p><p><mark>Name</mark></p>'},
+ {p:'If it does not work out: it is ten hours a week at a student organization with one opening and a five-day window, so the outcome has a large random component. Everything you built getting here — a deployed project, a real README, an accessibility habit, a rehearsed walk-through, a Git workflow you do not have to think about — transfers intact to every application after this one, and is worth considerably more than this particular job. Ask to be kept in mind for the next cycle, and mean it. Student organizations turn over constantly, which cuts both ways.'}
 ]}
 
 ];
@@ -646,6 +1063,8 @@ function blockHTML(b, sid, idx){
   if(b.qa)     return '<div class="qa"><button type="button"><i>'+b.qn+'</i><span>'+b.qa+'</span><u>+</u></button>'+
                       '<div class="ans"><span class="lb">What they are testing</span><p>'+b.why+'</p>'+
                       '<span class="lb">How to answer</span>'+b.a+'</div></div>';
+  if(b.sq)     return '<div class="qa study"><button type="button"><i>'+b.qn+'</i><span>'+b.sq+'</span><u>+</u></button>'+
+                      '<div class="ans">'+b.a+'</div></div>';
   if(b.check)  return '<div class="ck">'+b.check.map((x,i)=>{
                         const key = 'prep.ck.'+sid+'.'+idx+'.'+i;
                         totalChecks++;
@@ -658,7 +1077,7 @@ let qn = 0;
 const html = C.map((s, i) => {
   qn = 0;
   const body = s.b.map((b, j) => {
-    if(b.qa) b.qn = String(++qn).padStart(2,'0');
+    if(b.qa || b.sq) b.qn = String(++qn).padStart(2,'0');
     return blockHTML(b, s.id, j);
   }).join('');
   return '<section id="'+s.id+'"><span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
