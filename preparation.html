@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASUCD IRL Developer — application &amp; interview preparation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --serif:'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --sans:'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --r:2px;
+  --ease:cubic-bezier(.19,1,.22,1);
+}
+html[data-theme="ink"]{
+  --bg:#0c0d0f; --bg2:#121316; --bg3:#181a1e; --panel:#101114;
+  --ink:#e9e5dc; --ink2:#a5a29a; --ink3:#6e6c67;
+  --rule:#26282d; --rule2:#1b1d21;
+  --acc:#f5d312; --acc-dim:#8a7807;
+  --mint:#6fe3b6; --rose:#ff7a6b; --sky:#8ab4ff; --plum:#c9a7ff;
+  --grid:rgba(255,255,255,.021);
+  --glow1:rgba(245,211,18,.055); --glow2:rgba(138,180,255,.045);
+  --shadow:0 18px 50px -22px rgba(0,0,0,.9);
+}
+html[data-theme="paper"]{
+  --bg:#f3efe5; --bg2:#eae5d8; --bg3:#e2dccc; --panel:#1a1a18;
+  --ink:#16160f; --ink2:#5a574c; --ink3:#8d8877;
+  --rule:#d2cbb9; --rule2:#e0daca;
+  --acc:#a8730c; --acc-dim:#c9a24a;
+  --mint:#1c7a5a; --rose:#b4402f; --sky:#2b5fa8; --plum:#6d4a9e;
+  --grid:rgba(0,0,0,.022);
+  --glow1:rgba(168,115,12,.07); --glow2:rgba(43,95,168,.05);
+  --shadow:0 14px 40px -20px rgba(70,60,30,.38);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-weight:300; font-size:16.5px; line-height:1.68;
+  -webkit-font-smoothing:antialiased; letter-spacing:.005em;
+  transition:background .5s var(--ease), color .5s var(--ease);
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(900px 620px at 8% -8%, var(--glow1), transparent 62%),
+    radial-gradient(720px 520px at 102% 42%, var(--glow2), transparent 60%),
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px 88px);
+}
+body::after{
+  content:''; position:fixed; inset:-50%; z-index:0; pointer-events:none; opacity:.32;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+html[data-theme="paper"] body::after{opacity:.5; mix-blend-mode:multiply}
+::selection{background:var(--acc); color:#0c0d0f}
+html[data-theme="paper"] ::selection{background:var(--acc); color:#fff}
+#bar{position:fixed; top:0; left:0; height:2px; width:0; background:var(--acc); z-index:90; box-shadow:0 0 12px var(--acc)}
+
+.shell{position:relative; z-index:1; display:grid; grid-template-columns:clamp(232px,20vw,286px) minmax(0,1fr); max-width:1480px; margin:0 auto}
+aside{position:sticky; top:0; align-self:start; height:100vh; display:flex; flex-direction:column; border-right:1px solid var(--rule); padding:26px 0 0}
+.brand{padding:0 22px 16px; border-bottom:1px solid var(--rule2)}
+.brand b{display:block; font-family:var(--serif); font-weight:400; font-size:26px; line-height:1.06; letter-spacing:-.01em}
+.brand b i{font-style:italic; color:var(--acc)}
+.brand span{display:block; margin-top:7px; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink3)}
+.tools{display:flex; gap:6px; padding:12px 18px; border-bottom:1px solid var(--rule2)}
+.tool{
+  flex:1; background:transparent; border:1px solid var(--rule); color:var(--ink2);
+  font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+  padding:7px 4px; border-radius:var(--r); cursor:pointer; transition:.22s var(--ease); text-align:center; text-decoration:none;
+}
+.tool:hover{border-color:var(--acc); color:var(--acc)}
+.xlink{display:block; padding:12px 22px; border-bottom:1px solid var(--rule2); text-decoration:none}
+.xlink span{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink3)}
+.xlink b{display:block; margin-top:3px; font-weight:400; font-size:13.5px; color:var(--ink2); line-height:1.35}
+.xlink:hover b{color:var(--acc)}
+.clock{padding:11px 22px; border-bottom:1px solid var(--rule2); font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--ink3); display:flex; justify-content:space-between; align-items:center}
+.clock em{font-style:normal; color:var(--acc)}
+.clock.hot em{color:var(--rose)}
+nav{overflow-y:auto; flex:1; padding:10px 0 60px; scrollbar-width:thin}
+nav::-webkit-scrollbar{width:7px}
+nav::-webkit-scrollbar-thumb{background:var(--rule); border-radius:9px}
+nav a{
+  position:relative; display:grid; grid-template-columns:26px 1fr 14px; gap:9px; align-items:baseline;
+  padding:6px 20px 6px 18px; text-decoration:none; color:var(--ink2); font-size:13.5px; line-height:1.4;
+  opacity:0; animation:slip .5s var(--ease) forwards; transition:color .2s;
+}
+@keyframes slip{from{opacity:0; transform:translateX(-9px)} to{opacity:1; transform:none}}
+nav a i{font-style:normal; font-family:var(--mono); font-size:10px; color:var(--ink3); letter-spacing:.04em}
+nav a b{font-weight:400}
+nav a u{text-decoration:none; font-family:var(--mono); font-size:10px; color:var(--mint); opacity:0; transition:.2s}
+nav a.done u{opacity:1}
+nav a::before{content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:var(--acc); transform:scaleY(0); transform-origin:top; transition:transform .3s var(--ease)}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--ink)} nav a.on i{color:var(--acc)} nav a.on::before{transform:scaleY(1)}
+nav .grp{padding:16px 20px 5px; font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc-dim)}
+
+main{padding:0 clamp(22px,5vw,86px) 30vh; min-width:0}
+header.hero{padding:14vh 0 10vh; border-bottom:1px solid var(--rule)}
+header.hero .eyebrow{font-family:var(--mono); font-size:10.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--acc); margin-bottom:26px}
+header.hero h1{font-family:var(--serif); font-weight:400; font-size:clamp(46px,8vw,104px); line-height:.92; letter-spacing:-.028em; margin:0; max-width:17ch}
+header.hero h1 i{font-style:italic; color:var(--acc)}
+header.hero .sub{max-width:58ch; color:var(--ink2); font-size:18px; margin:30px 0 0}
+header.hero .facts{display:flex; flex-wrap:wrap; margin-top:44px; border-top:1px solid var(--rule2)}
+header.hero .facts div{padding:16px 30px 14px 0; margin-right:30px; border-right:1px solid var(--rule2)}
+header.hero .facts div:last-child{border-right:0}
+header.hero .facts b{display:block; font-family:var(--serif); font-size:31px; line-height:1.1; color:var(--acc)}
+header.hero .facts span{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink3)}
+.hero > *{opacity:0; animation:rise .9s var(--ease) forwards}
+.hero .eyebrow{animation-delay:.05s} .hero h1{animation-delay:.14s} .hero .sub{animation-delay:.28s} .hero .facts{animation-delay:.4s}
+@keyframes rise{from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none}}
+
+section{padding:9vh 0 2vh; border-bottom:1px solid var(--rule2); position:relative; max-width:900px; scroll-margin-top:28px}
+section > .num{position:absolute; right:100%; top:9vh; margin-right:26px; font-family:var(--serif); font-style:italic; font-size:60px; line-height:1; color:var(--ink3); opacity:.5}
+@media (max-width:1240px){section > .num{position:static; display:block; margin:0 0 4px; font-size:36px}}
+section h2{font-family:var(--serif); font-weight:400; font-size:clamp(30px,4.2vw,47px); line-height:1.04; letter-spacing:-.02em; margin:0 0 14px; max-width:27ch}
+section h2 em{font-style:italic; color:var(--acc)}
+.kicker{font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--ink3); margin:0 0 34px; max-width:62ch; line-height:1.6}
+section h3{font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.17em; text-transform:uppercase; color:var(--acc); margin:52px 0 16px; display:flex; align-items:center; gap:12px}
+section h3::after{content:''; flex:1; height:1px; background:var(--rule)}
+p{margin:0 0 17px; max-width:70ch}
+a{color:var(--acc)}
+p code, li code, td code, th code, .draft code{font-family:var(--mono); font-size:.855em; background:var(--bg3); border:1px solid var(--rule2); padding:1px 5px; border-radius:var(--r); color:var(--ink); white-space:nowrap}
+html[data-theme="paper"] p code{background:var(--bg2)}
+strong{font-weight:600; color:var(--ink)}
+em.k{font-style:normal; color:var(--acc); font-weight:500}
+ul,ol{margin:0 0 18px; padding-left:21px; max-width:70ch}
+li{margin-bottom:7px}
+ul{list-style:none; padding-left:17px}
+ul li::before{content:'—'; font-family:var(--mono); color:var(--acc); margin-right:11px; margin-left:-27px; opacity:.7}
+
+.tw{overflow-x:auto; margin:0 0 24px; border:1px solid var(--rule); border-radius:var(--r)}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th{text-align:left; font-family:var(--mono); font-weight:500; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink3); padding:11px 15px; border-bottom:1px solid var(--rule); background:var(--bg2)}
+td{padding:11px 15px; border-bottom:1px solid var(--rule2); vertical-align:top; color:var(--ink2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink); font-weight:400}
+
+.note{position:relative; margin:0 0 24px; padding:15px 19px 15px 21px; border:1px solid var(--rule); border-left:2px solid var(--c); border-radius:var(--r); background:var(--bg2); font-size:14.5px; max-width:70ch}
+.note b.hd{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--c); margin-bottom:6px; font-weight:500}
+.note.trap{--c:var(--rose)} .note.tip{--c:var(--mint)} .note.why{--c:var(--sky)} .note.say{--c:var(--plum)}
+.note p:last-child{margin-bottom:0}
+
+.cb{margin:0 0 26px; border:1px solid var(--rule); border-radius:var(--r); background:var(--panel); overflow:hidden; box-shadow:var(--shadow)}
+html[data-theme="paper"] .cb{background:#15161a}
+.cb .top{display:flex; align-items:center; gap:8px; padding:7px 9px 7px 13px; border-bottom:1px solid #26282d; background:#0e0f12}
+.cb .top .tag{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:#6e6c67; margin-right:auto}
+.cb .top .tag b{color:#f5d312; font-weight:500}
+.btn{background:transparent; border:1px solid #2e3035; color:#a5a29a; font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase; padding:4px 10px; border-radius:var(--r); cursor:pointer; transition:.18s var(--ease); white-space:nowrap}
+.btn:hover{border-color:#f5d312; color:#f5d312; background:rgba(245,211,18,.06)}
+.btn:active{transform:translateY(1px)}
+.cb pre{margin:0; padding:15px 17px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.72; color:#dcd8cf; tab-size:2; white-space:pre-wrap; word-break:break-word}
+.cb pre::-webkit-scrollbar{height:8px} .cb pre::-webkit-scrollbar-thumb{background:#2e3035; border-radius:9px}
+
+.draft{margin:0 0 26px; border:1px solid var(--rule); border-left:2px solid var(--plum); border-radius:var(--r); background:var(--bg2); max-width:74ch}
+.draft .dh{display:flex; align-items:center; gap:8px; padding:9px 14px; border-bottom:1px solid var(--rule2)}
+.draft .dh span{font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--plum); margin-right:auto}
+.draft .dbtn{background:transparent; border:1px solid var(--rule); color:var(--ink3); font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; padding:4px 9px; border-radius:var(--r); cursor:pointer; transition:.18s}
+.draft .dbtn:hover{border-color:var(--plum); color:var(--plum)}
+.draft .db{padding:16px 18px; font-size:15px; color:var(--ink2)}
+.draft .db p{max-width:none}
+.draft .db p:last-child{margin-bottom:0}
+.draft .db mark{background:transparent; color:var(--acc); font-family:var(--mono); font-size:.86em; border:1px dashed var(--acc-dim); padding:0 4px; border-radius:var(--r)}
+
+.qa{margin:0 0 20px; border:1px solid var(--rule); border-radius:var(--r); background:var(--bg2); max-width:74ch; overflow:hidden}
+.qa > button{
+  width:100%; display:grid; grid-template-columns:30px 1fr 18px; gap:12px; align-items:baseline; text-align:left;
+  background:transparent; border:0; color:var(--ink); font-family:var(--sans); font-weight:400; font-size:15.5px;
+  padding:14px 16px; cursor:pointer; line-height:1.5;
+}
+.qa > button i{font-style:normal; font-family:var(--mono); font-size:10.5px; color:var(--ink3)}
+.qa > button u{text-decoration:none; font-family:var(--mono); font-size:13px; color:var(--acc); justify-self:end; transition:transform .25s var(--ease)}
+.qa.open > button u{transform:rotate(45deg)}
+.qa > button:hover{background:var(--bg3)}
+.qa .ans{display:none; padding:2px 18px 18px 58px; font-size:14.7px; color:var(--ink2); border-top:1px dashed var(--rule)}
+.qa.open .ans{display:block; animation:rise .34s var(--ease)}
+.qa .ans .lb{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.17em; text-transform:uppercase; color:var(--ink3); margin:14px 0 5px}
+.qa .ans .lb:first-child{margin-top:12px}
+.qa .ans p{max-width:none}
+
+.ck{margin:0 0 26px; border:1px solid var(--rule); border-radius:var(--r); background:var(--bg2); max-width:74ch; padding:6px 0}
+.ck button{
+  display:flex; width:100%; gap:12px; align-items:flex-start; text-align:left; background:transparent; border:0;
+  color:var(--ink2); font-family:var(--sans); font-weight:300; font-size:14.8px; padding:9px 18px; cursor:pointer; line-height:1.55; transition:.18s;
+}
+.ck button em{font-style:normal; flex:none; width:12px; height:12px; margin-top:6px; border:1px solid var(--ink3); border-radius:1px; transition:.2s}
+.ck button:hover{background:var(--bg3); color:var(--ink)}
+.ck button.on{color:var(--ink3); text-decoration:line-through; text-decoration-color:var(--acc-dim)}
+.ck button.on em{background:var(--mint); border-color:var(--mint); box-shadow:inset 0 0 0 2px var(--bg2)}
+
+.done-row{display:flex; align-items:center; gap:14px; margin:34px 0 0; padding-top:20px; border-top:1px dashed var(--rule)}
+.chk{display:inline-flex; align-items:center; gap:10px; background:transparent; border:1px solid var(--rule); color:var(--ink3); font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:8px 14px; border-radius:var(--r); cursor:pointer; transition:.22s var(--ease)}
+.chk em{font-style:normal; width:11px; height:11px; border:1px solid var(--ink3); border-radius:1px; display:inline-block; transition:.22s}
+.chk:hover{border-color:var(--mint); color:var(--mint)} .chk:hover em{border-color:var(--mint)}
+.chk.is-done{border-color:var(--mint); color:var(--mint)} .chk.is-done em{background:var(--mint); border-color:var(--mint); box-shadow:inset 0 0 0 2px var(--bg2)}
+
+.pal{position:fixed; inset:0; z-index:100; display:none; padding:12vh 20px 20px; background:rgba(4,5,6,.76); backdrop-filter:blur(7px)}
+html[data-theme="paper"] .pal{background:rgba(60,52,32,.42)}
+.pal.open{display:block; animation:rise .26s var(--ease)}
+.pal .box{max-width:620px; margin:0 auto; background:var(--bg2); border:1px solid var(--rule); border-radius:var(--r); box-shadow:0 40px 90px -30px #000; overflow:hidden}
+.pal input{width:100%; background:transparent; border:0; border-bottom:1px solid var(--rule); color:var(--ink); font-family:var(--mono); font-size:15px; padding:17px 20px; outline:none}
+.pal input::placeholder{color:var(--ink3)}
+.pal .res{max-height:48vh; overflow-y:auto; padding:7px 0}
+.pal .res a{display:grid; grid-template-columns:28px 1fr; gap:11px; padding:8px 20px; text-decoration:none; color:var(--ink2); font-size:14px}
+.pal .res a i{font-style:normal; font-family:var(--mono); font-size:10px; color:var(--ink3)}
+.pal .res a.sel, .pal .res a:hover{background:var(--bg3); color:var(--ink)}
+.pal .res a.sel i{color:var(--acc)}
+.pal .hint{padding:9px 20px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3)}
+
+footer{max-width:900px; padding:11vh 0 0; font-size:14px; color:var(--ink2)}
+footer h2{font-family:var(--serif); font-weight:400; font-size:38px; margin:0 0 18px; color:var(--ink)}
+kbd{font-family:var(--mono); font-size:11px; border:1px solid var(--rule); border-bottom-width:2px; padding:1px 5px; border-radius:3px; color:var(--ink2)}
+.mobinav{display:none}
+@media (max-width:920px){
+  .shell{grid-template-columns:1fr}
+  aside{display:none}
+  .mobinav{display:flex; position:sticky; top:0; z-index:40; gap:8px; align-items:center; padding:10px 22px; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule)}
+  .mobinav b{font-family:var(--serif); font-size:18px; margin-right:auto}
+  header.hero{padding:8vh 0 6vh}
+  .qa .ans{padding-left:18px}
+}
+@media print{
+  body::before,body::after,aside,.mobinav,.pal,#bar,.done-row,.btn,.dbtn{display:none!important}
+  .shell{grid-template-columns:1fr} .cb{box-shadow:none}
+  .qa .ans{display:block!important} .qa > button u{display:none}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="shell">
+  <aside>
+    <div class="brand">
+      <b>IRL Developer<br><i>preparation</i></b>
+      <span>ASUCD · UC Davis · 0043-6793-2026</span>
+    </div>
+    <div class="tools">
+      <button class="tool" id="theme">Paper</button>
+      <button class="tool" id="find">Search</button>
+    </div>
+    <a class="xlink" href="index.html">
+      <span>Companion course</span>
+      <b>JavaScript, properly — 25 parts &rsaquo;</b>
+    </a>
+    <div class="clock" id="clock"><span>Apply by Oct 1</span><span><em id="cdays">—</em></span></div>
+    <div class="clock"><span>Checklist</span><span><em id="cdone">0</em> / <span id="ctot">0</span></span></div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <div>
+    <div class="mobinav">
+      <b>IRL prep</b>
+      <a class="tool" href="index.html" style="flex:none;padding:6px 10px">Course</a>
+      <button class="tool" id="theme2" style="flex:none;padding:6px 10px">Theme</button>
+      <button class="tool" id="find2" style="flex:none;padding:6px 10px">Search</button>
+    </div>
+    <main>
+      <header class="hero">
+        <div class="eyebrow">Application &amp; interview preparation</div>
+        <h1>Innovation &amp; Research Lab: <i>Developer</i></h1>
+        <p class="sub">A student-run software and research agency inside ASUCD, hiring a developer at $18/hr for 10 hrs/week through June 2027. The technical bar is deliberately low — one language, basic Git. That means the hiring decision turns on everything <em>around</em> the code. This is how to win it.</p>
+        <div class="facts">
+          <div><b>$18</b><span>Per hour</span></div>
+          <div><b>10</b><span>Hours / week</span></div>
+          <div><b>Oct 1</b><span>Last day to apply</span></div>
+          <div><b>3</b><span>Supplemental answers</span></div>
+        </div>
+      </header>
+      <div id="doc"></div>
+      <footer>
+        <h2>The gap between applicants is not skill.</h2>
+        <p>Every applicant for this role will claim JavaScript and Git. Almost none will have read the accessibility requirement, prepared a code-review answer, shipped something deployed, or be able to say in one sentence why <em>this</em> lab rather than any internship. Do those four things and the interview stops being a competition.</p>
+        <p style="color:var(--ink3);font-family:var(--mono);font-size:11px;letter-spacing:.08em;margin-top:34px">Press <kbd>Cmd K</kbd> to jump · checklist state is saved locally · <a href="index.html">back to the course</a></p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<div class="pal" id="pal">
+  <div class="box">
+    <input id="palq" placeholder="Jump to a section…" autocomplete="off" spellcheck="false">
+    <div class="res" id="palr"></div>
+    <div class="hint">up / down navigate &nbsp;·&nbsp; enter open &nbsp;·&nbsp; esc close</div>
+  </div>
+</div>
+
+<script>
+const DEADLINE = '2026-10-01';
+const JS = 'index.html';
+
+const C = [
+
+{id:'posting', g:'The role', t:'What the posting <em>actually</em> says', k:'Read before anything else. Every later section is built on these facts, and several of them are unusual.', b:[
+ {p:'This is a paid student position inside <strong>ASUCD</strong> — the Associated Students of UC Davis, the student government — in a unit called the <strong>Innovation and Research Lab (IRL)</strong>. IRL describes itself as a student-run software and research agency with two branches, Research and Software. You would join the Software branch, reporting to the Associate Director and working alongside the Software branch lead and other student developers.'},
+ {table:[['Fact','Detail'],
+  ['Title','Innovation &amp; Research Lab: Developer'],
+  ['Pay','$18/hr. No stipend, not work-study.'],
+  ['Hours','10 hrs/week'],
+  ['Term','Start ASAP · ends June 5, 2027'],
+  ['Job number','0043-6793-2026'],
+  ['Contact','Sloane Iwach — <code>director@irl.ucdavis.edu</code>'],
+  ['Last day to apply','October 1, 2026'],
+  ['Resume','Required'],
+  ['Supplemental questions','Three (work history · qualifications and fit · Principles of Community)']]},
+ {h:'What they say they want'},
+ {p:'The technical requirements are, verbatim in substance: at least one programming language (JavaScript is the example given), familiarity with frontend and/or backend, and a <em>basic</em> understanding of version control with Git and GitHub. That is all. On the soft side: teamwork, strong problem-solving and attention to detail, the ability to self-direct across concurrent projects, and interest in civic tech, research tools, or public-facing digital products.'},
+ {note:'why', n:'Read the bar correctly', p:'"At least one language" and "basic Git" is a genuinely low technical bar — this is an entry-level student role, not an internship screen. Do not over-prepare algorithms. The decision will be made on communication, reliability, and whether you sound like someone who will still be shipping in week nine. Prepare for <em>that</em>.'},
+ {h:'The duties, and what each one is really asking'},
+ {p:'This table is the single most useful thing on this page. The posting lists duties in HR language; each one implies a specific piece of evidence you should be ready to supply, in your resume and out loud.'},
+ {table:[['The posting says','What they want to see'],
+  ['Build and maintain projects "from scoping through deployment"','You have finished something, not just started it. A URL beats a repo; a repo beats a description.'],
+  ['Produce "clean, readable, and well-documented code"','A README that a stranger could follow, and consistent naming. Be ready to say what you would rename in your own project today.'],
+  ['Scope features and troubleshoot with developers and branch leads','You can break a vague request into tasks and say what you would cut. Have one example of scoping something <em>down</em>.'],
+  ['Take part in code reviews and give feedback','Almost no applicant prepares this. See <a href="#review">Code review</a> — it is your cheapest differentiator.'],
+  ['Convert Research and Software lead requirements into features','You can take an ambiguous ask and come back with clarifying questions rather than a wrong guess.'],
+  ['Follow "ASUCD Accessibility Guidelines"','Public-university software has legal accessibility obligations. See <a href="#a11y">Accessibility</a>. This is the highest-leverage thing you can prepare.'],
+  ['Attend weekly staff meetings, support cross-functional planning','You are reliable and present. A 10 hr/week role dies from flakiness, and they have been burned before.'],
+  ['Maintain documentation for "project continuity across quarters"','Student turnover is IRL\'s core operational problem. Say something about handoff and you sound like staff, not an applicant.'],
+  ['Agree to subscribe to the ASUCD newsletter','A literal checkbox. Do it.']]},
+ {note:'tip', n:'The sentence that wins this posting', p:'"Continuity across quarters" appears in a duty, and it tells you what actually keeps them up at night: every June, people graduate and knowledge walks out. If you can credibly signal that you will document your work so the next person can pick it up — and that you intend to stay through the full term to June 2027 — you are answering a question they did not know how to ask.'}
+]},
+
+{id:'logistics', g:'The role', t:'Logistics, before you write a word', k:'Five days from today. Clear the mechanical work first so the remaining time goes to content.', b:[
+ {p:'The application closes <strong>October 1, 2026</strong>. Handle everything below in the first sitting — none of it requires thought, and all of it will otherwise expand to fill the days you need for the supplemental answers.'},
+ {check:['Open the listing and read it yourself, start to finish. This page is a companion, not a substitute.',
+  'Confirm the application portal loads and find out whether it saves drafts. Assume it does not — write your answers in a separate file and paste them in.',
+  'Export your resume to PDF and name the file properly: <code>Lastname-Firstname-Resume.pdf</code>. Not <code>resume-final-v3.pdf</code>.',
+  'If you are an international student, check UC Davis SISS guidance on employment eligibility before you apply — the posting explicitly directs you there.',
+  'Subscribe to the ASUCD newsletter (it is one of the listed duties, so do it before you claim you agree to it).',
+  'Draft all three supplemental answers offline in plain text, then paste. Portals lose work.',
+  'Have a single link ready that shows working software — deployed URL preferred, GitHub repo otherwise. Put it in the resume header and in supplemental answer two.',
+  'Set a personal cutoff of September 30 so a portal problem on the last day cannot sink the application.']},
+ {h:'About contacting the director'},
+ {p:'The posting names Sloane Iwach and gives <code>director@irl.ucdavis.edu</code>. A short, specific email is appropriate and low-risk; a long one that re-asks what the posting already answers is not. Send it only if you have a real question — and if you do, it doubles as an early, favourable impression.'},
+ {draft:'Email — only if you have a genuine question', d:'<p>Subject: IRL Developer (0043-6793-2026) — quick question before applying</p><p>Hi Sloane,</p><p>I am applying for the IRL Developer role before the October 1 deadline and had one question I could not answer from the listing: <mark>your actual question — e.g. whether the Software branch is currently working mostly in a particular stack, so I can point my portfolio at the closest thing I have built</mark>.</p><p>Either way, I will have my application in this week. Thanks for your time.</p><p><mark>Name</mark><br><mark>Major, expected graduation</mark> · <mark>link to one project</mark></p>'},
+ {note:'trap', n:'Do not send a "just checking in" email', p:'With a five-day window and a named director who is also a student, an email with no content in it costs you more than sending nothing. One question, asked once, is professional. Two follow-ups are not.'}
+]},
+
+{id:'resume', g:'Application', t:'The resume, rebuilt for <em>this</em> posting', k:'One page. Their vocabulary, not yours. Evidence of finishing things.', b:[
+ {p:'A resume for this role has one job: make it obvious in fifteen seconds that you can write code, work in a team, and finish. It will be read by a student lead, quickly, alongside dozens of others. Optimise for scanning.'},
+ {h:'Order the page by what they asked for'},
+ {ol:['<strong>Header</strong> — name, one line: email · phone · GitHub · <em>deployed project URL</em>. The live link is the single highest-value item on the page.',
+  '<strong>Education</strong> — UC Davis, major, expected graduation, relevant coursework only if it is genuinely relevant (data structures, web development, databases). Skip your GPA if it is not helping you.',
+  '<strong>Projects</strong> — two or three, above experience if your experience is unrelated. This is the section that gets you the interview.',
+  '<strong>Technical skills</strong> — grouped honestly: languages, then frontend, then backend, then tools. Include Git/GitHub explicitly, because they asked for it explicitly.',
+  '<strong>Experience</strong> — any job at all, including retail and food service. It demonstrates reliability, which is what a 10 hr/week role is actually testing.',
+  '<strong>Involvement</strong> — clubs, volunteering, hackathons. IRL is a student organisation; showing you participate in campus life is on-message here in a way it would not be at a company.']},
+ {h:'The bullet formula'},
+ {p:'Every project bullet should answer three questions in one line: what did you build, what did you build it with, and what happened as a result. Weak bullets stop after the first.'},
+ {code:'Weak\n  Built a web app using JavaScript and HTML.\n\nBetter\n  Built a course-planner web app (vanilla JS, Node, SQLite) that\n  imports a PDF transcript and flags unmet major requirements;\n  deployed on Render and used by 30 students in my dorm.\n\nWhy it lands\n  what it does -> what it is built with -> it exists in the world\n  and someone other than you has used it', l:'resume bullets'},
+ {note:'tip', n:'Mirror their nouns', p:'Use their words where they are honestly true of your work: <em>scoping</em>, <em>deployment</em>, <em>code review</em>, <em>documentation</em>, <em>accessibility</em>, <em>public-facing</em>. A human reads your resume, but a human who has just read their own job posting. Matching vocabulary makes you feel like the obvious fit.'},
+ {h:'What to cut'},
+ {ul:['Objective statements. They say nothing and cost you two lines.',
+  'Skill percentage bars and star ratings. Nobody believes them.',
+  '"Familiar with" as a category — if it needs that hedge, it belongs in a sentence about what you built with it, or nowhere.',
+  'Tutorial projects with no modifications, presented as your own design. A to-do list is fine if you say what you added and what broke.',
+  'A second page. You do not have a second page of material yet, and padding is visible.']},
+ {note:'trap', n:'One thing you must be able to back up', p:'Everything on the resume is fair game in the interview. If you list a language, you can be asked to explain something in it; if you list a project, you can be asked why you chose the structure. Delete anything you cannot discuss for two minutes under mild pressure.'}
+]},
+
+{id:'q1', g:'Application', t:'Supplemental 1 — work and volunteer history', k:'The easy one. Answer it literally, completely, and without apology for whatever it contains.', b:[
+ {p:'The first supplemental question asks about your prior work and volunteer history. It is mostly an information field, but two things separate a good answer from a neutral one: <strong>completeness</strong> and <strong>translation</strong>.'},
+ {p:'Completeness means list everything, including jobs that have nothing to do with software. Retail, tutoring, campus dining, a summer warehouse shift, a club treasurer role. For a 10 hr/week student position, a manager\'s real anxiety is not whether you can code — it is whether you will show up in week nine. Any record of holding a commitment answers that.'},
+ {p:'Translation means naming the transferable mechanic rather than the task. A cashier job is a job where you handled a queue under time pressure and reconciled a till exactly; tutoring is a job where you explained a hard idea to someone who did not have your context, which is the same skill as a code review comment.'},
+ {draft:'Draft — adapt, do not paste', d:'<p><strong><mark>Role</mark>, <mark>Organisation</mark> — <mark>dates</mark>, <mark>hrs/wk</mark>.</strong> <mark>One sentence on what you actually did.</mark> <mark>One sentence naming the transferable mechanic: worked a shift schedule alongside eight people, trained two new hires, or handled customer problems without escalating them.</mark></p><p><strong>Volunteer — <mark>Organisation</mark>, <mark>dates</mark>.</strong> <mark>What you did and roughly how often. Consistency matters more than scale: "two hours every Saturday for a year" is a stronger signal than "helped at a one-day event".</mark></p><p>If a gap needs explaining, one clause is enough: <mark>"I was not employed during my first year while adjusting to the course load."</mark> Do not elaborate and do not apologise.</p>'},
+ {note:'tip', n:'If you have no formal work history', p:'Say so plainly in one line and then give what you do have: coursework with a team component, a club role, a group project where you owned a part, an open-source issue you closed, tutoring a friend. Never leave the field thin — a short honest paragraph reads far better than three words.'}
+]},
+
+{id:'q2', g:'Application', t:'Supplemental 2 — qualifications and fit', k:'The question that decides the interview. Four moves, in order, in about 250 words.', b:[
+ {p:'The second question asks about your qualifications and how the role fits your interests. This is the one that gets read carefully, and most answers fail the same way: they describe the applicant\'s enthusiasm rather than giving anyone a reason to pick them.'},
+ {p:'Structure it as four moves. Each one does a different job, and the order matters because a reader who stops after two paragraphs should still have the important part.'},
+ {ol:['<strong>The claim, with proof attached.</strong> What can you already do, and the specific thing you built that proves it. Name the language, name the project, give the link.',
+  '<strong>The gap, named honestly, with your response to it.</strong> One weakness that you are visibly acting on. This reads as maturity and it disarms the interviewer\'s job of finding it.',
+  '<strong>Why IRL specifically.</strong> Not "why software" and not "why a job". Something only this posting could have prompted — civic tech, the research branch, public-facing campus tools, accessibility as a requirement.',
+  '<strong>What you will do with the position.</strong> Concrete, and framed as their benefit: you intend to stay the full term, document what you build, and be the person who handles the unglamorous maintenance.']},
+ {draft:'Draft — replace every marked span', d:'<p>I write <mark>JavaScript</mark> and have built <mark>and deployed</mark> <mark>project name</mark>, a <mark>one-line description</mark> — <mark>link</mark>. I took it from a vague idea through scoping, <mark>stack</mark>, and deployment, which is why the part of this posting about owning a project from scoping through deployment reads as familiar rather than aspirational. I use Git daily for my own work: branches per feature, small commits, and pull requests even when I am the only reviewer.</p><p>The area I am weakest in is <mark>e.g. backend data modelling — my projects have leaned frontend</mark>. I am working on it deliberately: <mark>what you are actually doing about it</mark>. I would rather say that now than discover it in week three.</p><p>IRL interests me specifically because <mark>the reason that is true for you — e.g. the software is for the campus community rather than for a metric, and the accessibility requirement in this posting is treated as a duty rather than a nice-to-have. I would rather build something a few thousand students can actually use than a polished demo nobody opens.</mark></p><p>Practically: I have <mark>10</mark> hours a week reliably, I intend to stay through the full term to June 2027, and I will leave documentation good enough that whoever follows me can pick the project up without me. <mark>If there is a maintenance task nobody wants, I will take it.</mark></p>'},
+ {note:'trap', n:'Three ways this answer is usually lost', p:'<strong>Naming no project.</strong> An unevidenced claim about JavaScript is worth nothing when every applicant makes it. <strong>Answering "why software" instead of "why IRL".</strong> A reason that would apply to any employer tells them you did not read the posting. <strong>Hiding a weakness they will find anyway.</strong> Naming it first costs you nothing and buys credibility for everything else you claimed.'},
+ {note:'tip', n:'Length', p:'Around 250 words, three or four short paragraphs. Long enough to carry evidence, short enough that a tired reader finishes it. If the portal enforces a character limit, cut the fourth move down to one sentence and keep the first two intact.'}
+]},
+
+{id:'q3', g:'Application', t:'Supplemental 3 — Principles of Community', k:'A real question with real weight at UC Davis. Concrete behaviour beats sentiment, every time.', b:[
+ {p:'The third question asks for your views on the UC Davis <em>Principles of Community</em>, diversity, and cultural competency. Two things to get right before you write.'},
+ {note:'trap', n:'Read the actual document first', p:'The Principles of Community are a specific published statement, not a generic diversity prompt — they cover affirming the inherent dignity of every person, rejecting acts of discrimination and intolerance, valuing freedom of expression alongside the responsibility that comes with it, and confronting bigotry rather than ignoring it. Find the current official text on the UC Davis website and read it yourself before answering; do not paraphrase from this summary, and do not quote a sentence you have not verified.'},
+ {p:'The second thing: this is not a values quiz where you restate the document approvingly. Everyone can do that, and an answer made of agreement is indistinguishable from every other answer. What distinguishes a good one is that it moves from principle to <strong>something you would actually do differently</strong>, ideally in the work this job involves.'},
+ {p:'You have an unusually good opening here, because this posting hands you the bridge. Building public-facing software for a whole campus <em>is</em> a diversity and access problem in a concrete, technical sense — and the posting lists following accessibility guidelines as a duty. That connection is specific, it is on-topic, and it is one almost nobody else will make.'},
+ {h:'Three places principle becomes practice in this job'},
+ {ul:['<strong>Accessibility.</strong> Software that only works for a sighted user with a mouse and a fast connection has quietly decided who counts as a user. Keyboard navigation, screen-reader labels and colour contrast are where "inherent dignity of every person" turns into code. See <a href="#a11y">Accessibility</a>.',
+  '<strong>Code review.</strong> Reviews are where a team is either inclusive or not, in practice, every week. Reviewing the code instead of the person, explaining <em>why</em> rather than issuing verdicts, and making it safe for a newer developer to ask an obvious question is culture that you personally control.',
+  '<strong>Whose problem gets built.</strong> A campus tool serves transfer students, first-generation students, students with disabilities, international students and student parents — people whose needs differ from whoever is in the room. Asking who is not represented in a design conversation is a concrete practice, not a sentiment.']},
+ {draft:'Draft — structure to follow, words to replace', d:'<p>I read the Principles of Community as a commitment with operational consequences rather than a statement of good intent — particularly the affirmation of every person\'s inherent dignity and the expectation that bigotry is confronted rather than tolerated.</p><p>In software that becomes concrete faster than people expect. Software for a whole campus decides who its users are, usually without meaning to: a tool that only works with a mouse excludes people who navigate by keyboard, unlabelled form fields exclude screen-reader users, and low-contrast text excludes anyone with limited vision <mark>and anyone outdoors on a phone</mark>. I noticed this properly when <mark>a specific moment — you tried your own project with the keyboard only, ran a contrast checker, watched someone else fail to use something you built. If it has not happened yet, do it this week and then write this sentence truthfully.</mark> I now <mark>the habit you changed as a result</mark>.</p><p>Culturally, the practice I hold myself to is in code review: review the code and not the person, say why rather than just what, and answer a basic question without making the asker regret it. A team where a newer developer is comfortable saying "I do not understand this yet" produces better software, and that comfort is made or destroyed one comment at a time.</p><p>On cultural competency I would rather be accurate than impressive: <mark>your actual experience — a community you have worked across, a language you work in, a time your assumptions about users were wrong and what you did about it</mark>. I am aware my own defaults are not universal, which is why I would rather ask who is missing from a design conversation than assume the room covers it.</p>'},
+ {note:'tip', n:'Do the thing before you claim it', p:'This answer is much stronger with one small true action behind it. Spend twenty minutes today running your own project with the keyboard only, and a contrast checker over its colours. You will find something, fixing it takes an hour, and you will have earned a sentence that reads as experience rather than research.'}
+]},
+
+{id:'js', g:'Preparation', t:'Technical prep — JavaScript', k:'The posting names JavaScript as its example language. Cover this list and you are past the bar with room to spare.', b:[
+ {p:'The stated requirement is one language and basic version control, so the technical questions in a student-org interview are usually a light check that you can speak about code rather than a screen for gaps. Prepare to <em>explain</em>, not to perform under time pressure — being able to say clearly why <code>let</code> beats <code>var</code> reads better than solving a puzzle silently.'},
+ {p:'The companion crash course on this site covers all of it; the table maps each interview-likely topic to the section that explains it.'},
+ {table:[['If they ask about','Be able to say','Section'],
+  ['<code>var</code> vs <code>let</code> vs <code>const</code>','Block vs function scope, <code>const</code> freezes the binding not the value, and why the loop-closure bug happens','<a href="index.html#scope">Variables, scope, hoisting</a>'],
+  ['<code>==</code> vs <code>===</code>','Loose equality coerces first and is not transitive; use <code>===</code>, except <code>x == null</code>','<a href="index.html#coercion">Coercion and equality</a>'],
+  ['Truthy and falsy','The eight falsy values, and why <code>||</code> for defaults eats a legitimate <code>0</code> where <code>??</code> does not','<a href="index.html#coercion">Coercion and equality</a>'],
+  ['<code>this</code>','It is decided by the call site, not where the function was written — and arrows have none of their own','<a href="index.html#this">this</a>'],
+  ['Closures','A function keeps a reference to the scope it was defined in, which is how private state and debounce work','<a href="index.html#closures">Closures</a>'],
+  ['Async, promises, <code>await</code>','One thread, an event loop, promises settle once; <code>await</code> pauses the function and not the thread','<a href="index.html#loop">Event loop</a> · <a href="index.html#promises">Promises</a>'],
+  ['Sequential vs parallel awaits','Three awaits in a row is three times the latency; <code>Promise.all</code> when the calls are independent','<a href="index.html#async">async / await</a>'],
+  ['Array methods','<code>map</code> keeps the length, <code>filter</code> shortens it, <code>reduce</code> collapses it; which methods mutate','<a href="index.html#arrays">Arrays</a>'],
+  ['Copying and references','Objects assign by reference, spread is shallow, and why React needs a new object to notice a change','<a href="index.html#copies">Copying and immutability</a>'],
+  ['Objects vs <code>Map</code>','Object keys coerce to strings and inherit prototype keys; <code>Map</code> for runtime keys','<a href="index.html#collections">Map and Set</a>']]},
+ {h:'Two things to be able to do live, not just describe'},
+ {p:'If there is any hands-on element, it will be small and web-shaped rather than algorithmic. Practise these two until they are boring — they are the shape of almost every warm-up task of this kind.'},
+ {code:'Fetch, render, handle the failure\n\nasync function load(url, into) {\n  into.textContent = "Loading...";\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error("HTTP " + res.status);\n    const items = await res.json();\n    into.replaceChildren(...items.map(row));\n  } catch (err) {\n    into.textContent = "Could not load: " + err.message;\n  }\n}\n\nTransform a list\n\nconst active = users\n  .filter(u => u.active)\n  .map(u => ({ id: u.id, label: u.name.trim() }))\n  .toSorted((a, b) => a.label.localeCompare(b.label));', l:'the two drills'},
+ {note:'tip', n:'The response that beats a wrong answer', p:'When you do not know something, the winning move is "I have not used that — here is the closest thing I have done, and here is how I would find out." That sentence demonstrates the exact behaviour a 10 hr/week junior developer needs, and it is far stronger than a confident guess an interviewer can see through.'},
+ {note:'trap', n:'Do not grind algorithm puzzles for this', p:'Nothing in the posting suggests a LeetCode screen: it asks for one language, basic Git, and interest in public-facing products. Hours spent on dynamic programming here are hours not spent on the accessibility answer, the code-review answer, and having something deployed — which is where this decision is actually made.'}
+]},
+
+{id:'git', g:'Preparation', t:'Technical prep — Git and GitHub', k:'A stated requirement and the daily mechanic of the job. Being fluent in eight commands is enough.', b:[
+ {p:'"Basic understanding of version control (Git/GitHub)" is listed as a technical skill, and code review is listed as a duty — which together tell you the team works in branches and pull requests. You do not need deep Git theory. You need to move through the everyday loop without hesitating, and to not panic at a conflict.'},
+ {h:'The loop, in the order you will use it'},
+ {code:'git switch -c feat/course-filter          start a branch off main\n\ngit add -p                                stage in reviewable pieces\ngit commit -m "Filter courses by term"    one logical change per commit\n\ngit switch main && git pull               get current main\ngit switch feat/course-filter\ngit rebase main                           replay your work on top\n\ngit push -u origin feat/course-filter     publish the branch\n                                          then open the pull request on GitHub', l:'the everyday loop'},
+ {h:'The three situations that actually come up'},
+ {table:[['Situation','What to do','What to say in the interview'],
+  ['A merge conflict','Open the file, resolve between the markers, <code>git add</code> the file, continue the rebase or merge','"Conflicts are normal, not a failure state — Git is telling me two people changed the same lines and it will not guess."'],
+  ['A bad commit already pushed','<code>git revert &lt;sha&gt;</code> — a new commit that undoes it','"I revert rather than force-push shared history, because rewriting a branch other people have pulled breaks their copies."'],
+  ['Committed to <code>main</code> by accident','Branch from where you are, then reset <code>main</code> back','"I noticed before pushing, moved the commits onto a branch, and opened a PR like normal."']]},
+ {h:'The pull request itself'},
+ {p:'A pull request is a piece of writing, and it is the artefact the team will actually judge you by week to week. Three sentences is plenty: what changed, why, and how the reviewer can check it. If the change is visual, a screenshot removes half the questions before they are asked.'},
+ {code:'What\n  Adds a term filter to the course list.\n\nWhy\n  Students plan one quarter at a time; the full list is 400+ rows\n  and unusable on a phone.\n\nHow to check\n  Run locally, open /courses, pick "Winter 2027" -> 62 rows.\n  Keyboard: tab to the select, arrow keys change it, list updates.\n\nNotes\n  Left the sort order alone deliberately; separate change.', l:'pull request description'},
+ {note:'tip', n:'Say "small pull requests" out loud', p:'Preferring small, single-purpose PRs is a senior-sounding preference with an honest junior reason behind it: they get reviewed faster, they are easier to revert, and they make it obvious when you have gone off-scope. It also directly answers the duty about scoping features.'},
+ {check:['Create a throwaway repo, make a branch, commit twice, open a PR against your own main, and merge it. End to end, today.',
+  'Deliberately cause a conflict: edit the same line on two branches and rebase one onto the other. Resolve it. Do it twice so it stops being alarming.',
+  'Write one PR description in the shape above for a change you already made.',
+  'Check that your GitHub profile is not empty — a pinned repo with a real README is worth more than a contribution graph.']}
+]},
+
+{id:'review', g:'Preparation', t:'Code review — your cheapest advantage', k:'An explicitly listed duty that almost no applicant will have prepared a single sentence about.', b:[
+ {p:'The posting says you will take part in code reviews and give feedback to other developers. That is unusual to state for an entry-level student role, and it means someone on that team cares about it. It is also the question most applicants will answer with a shrug.'},
+ {h:'What to look for, in priority order'},
+ {p:'Reviewing well is mostly knowing what to look at first. Style is last, because a formatter should handle it and arguing about it wastes the reviewer\'s credibility on the things that matter.'},
+ {ol:['<strong>Does it do what the PR says?</strong> Read the description, then check the diff delivers exactly that and nothing extra.',
+  '<strong>What happens when it fails?</strong> Empty list, null response, network error, the user with no permission. Junior code is usually correct on the happy path and silent everywhere else.',
+  '<strong>Is anything unclear?</strong> If you cannot tell what a function does from its name and signature, say so — that is the most valuable comment you can leave, and the easiest to fix now versus in March.',
+  '<strong>Is it in scope?</strong> An unrelated refactor buried in a feature PR should be its own PR. This is a kindness, not pedantry: it keeps the revert clean.',
+  '<strong>Accessibility, if it touches the UI.</strong> Keyboard reachable, labelled, contrast adequate, focus visible.',
+  '<strong>Style.</strong> Last, briefly, and ideally automated away.']},
+ {h:'How to phrase it'},
+ {p:'The whole craft is in tone. Comment on the code rather than the person, give the reason rather than only the instruction, and be explicit about what is blocking versus what is taste. Ask rather than assert when you might be missing context — you usually are.'},
+ {table:[['Instead of','Write','Because'],
+  ['This is wrong.','"If <code>items</code> comes back empty, this throws on <code>items[0]</code> — should it render the empty state instead?"','Names the input, the consequence, and a direction. Nothing to be defensive about.'],
+  ['Why did you do it this way?','"What made you go with a <code>Map</code> here? I would have reached for an object and I might be missing something."','Assumes there was a reason. Often there was.'],
+  ['Rename this.','"<code>data</code> is hard to follow three functions down — <code>enrolledCourses</code>?" (non-blocking)','Gives the reason and the alternative, and marks its own severity.'],
+  ['(silence when it is good)','"This is much easier to follow than the old version."','Reviews that only ever criticise train people to dread them.']]},
+ {note:'say', n:'If they ask how you handle feedback on your own code', p:'"I try to separate the code from me, which is easier when I remember the reviewer is spending their time on my work. If I disagree I say why once and then defer — and if I do not understand the comment I ask, because guessing what a reviewer meant and pushing the wrong fix wastes two people\'s time."'},
+ {note:'tip', n:'Bring one real example', p:'If you have ever reviewed anyone\'s code — a lab partner\'s, a friend\'s, an open-source PR — have that story ready. If you have not, review something this week. Comment on a friend\'s project, or open a small PR on a repository and read the feedback you get. One concrete instance makes everything above credible.'}
+]},
+
+{id:'a11y', g:'Preparation', t:'Accessibility — the highest-leverage hour you can spend', k:'A listed duty, a legal obligation at a public university, and the thing that will separate you from every other applicant.', b:[
+ {p:'"Follow ASUCD Accessibility Guidelines" is in the duties. At a public university this is not decoration: accessibility for university digital content is a legal and policy obligation, which is why a student organisation has written guidelines about it at all. If you can speak about this competently for ninety seconds, you will be the only applicant who does.'},
+ {p:'You do not need to memorise a standard. You need the shape of it and a short list you can actually apply. The relevant standard is <strong>WCAG</strong>, organised under four principles — content must be <em class="k">perceivable</em>, <em class="k">operable</em>, <em class="k">understandable</em> and <em class="k">robust</em>. Know those four words and what each one rules out, and you can reason about a page rather than recite rules.'},
+ {h:'The checklist that covers most real problems'},
+ {check:['<strong>Semantic HTML first.</strong> A <code>&lt;button&gt;</code> is focusable, keyboard-activatable and announced as a button; a <code>&lt;div onclick&gt;</code> is none of those. Most accessibility work is using the right element.',
+  '<strong>Every input has a real label.</strong> A <code>&lt;label for&gt;</code> tied to the input\'s id. Placeholder text is not a label — it disappears the moment someone types.',
+  '<strong>Keyboard only, end to end.</strong> Put the mouse down and tab through the whole flow. If you cannot reach or activate something, that is a bug of the same severity as a crash.',
+  '<strong>Focus is visible.</strong> If a stylesheet removes the focus ring without replacing it, keyboard users lose their cursor. Never ship <code>outline: none</code> alone.',
+  '<strong>Contrast meets the ratio.</strong> Run a contrast checker rather than trusting your eye — 4.5:1 for normal body text is the usual target. Light grey placeholder text is the standard violation.',
+  '<strong>Images have alt text that says something.</strong> Describe the information the image carries; use <code>alt=""</code> for purely decorative images so a screen reader skips them.',
+  '<strong>Headings are a real outline.</strong> One <code>h1</code>, then <code>h2</code>, then <code>h3</code>, with no levels skipped for visual size. Screen-reader users navigate by heading.',
+  '<strong>Colour is never the only signal.</strong> An error field that is only red is invisible to a colour-blind user. Add text or an icon.',
+  '<strong>ARIA last.</strong> Correct HTML beats added ARIA, and wrong ARIA is worse than none. Reach for it only when there is no native element for the job.']},
+ {note:'say', n:'The ninety-second answer, if they ask', p:'"I treat it as part of doing the work rather than a pass at the end. Semantic elements first, because a real button is focusable and announced correctly for free. Then I check three things by hand: tab through the whole flow with no mouse, run a contrast checker, and confirm every input has a label tied to it. I also assume I will miss things — automated checkers catch maybe half, so the keyboard pass matters more than the score."'},
+ {note:'tip', n:'Do it to your own project tonight', p:'Twenty minutes: tab through your project without touching the mouse, run any contrast checker over your palette, and check your inputs have labels. You will find two or three real problems. Fix them. Now every sentence above is something you did rather than something you read, and you have a specific story for supplemental answer three.'}
+]},
+
+{id:'portfolio', g:'Preparation', t:'Ship one small thing before you apply', k:'If you have nothing deployed, this is the highest-return three days available to you.', b:[
+ {p:'The posting is about taking projects from scoping through deployment, for the campus community, accessibly, with documentation. If you have one small project that visibly does all of those, your application answers itself. If you have nothing deployed, build something deliberately unambitious this week rather than sending a resume that describes intentions.'},
+ {h:'Pick something campus-shaped and boring'},
+ {p:'Ambition is the enemy here. The goal is a finished, deployed, documented artefact — not an impressive one. Good candidates: a bus-route countdown for the stop you use, a searchable list of campus study spaces with hours and outlet availability, a GPA or degree-requirement calculator, a dining-hall menu filter for a dietary restriction, a club-events aggregator.'},
+ {ol:['<strong>Scope it to one screen and one job.</strong> Write the single sentence it does. If you cannot, it is too big.',
+  '<strong>Pick a stack you already know.</strong> Learning a framework is not the deliverable. Plain HTML, CSS and JavaScript is a completely respectable answer and it deploys anywhere.',
+  '<strong>Build it in a branch, review your own PR, merge it.</strong> Now you have a Git story and a PR to point at.',
+  '<strong>Run the accessibility checklist.</strong> Keyboard pass, contrast, labels. This is what makes it match the posting.',
+  '<strong>Deploy it.</strong> Any free static host. A URL a stranger can open is worth more than any description of it.',
+  '<strong>Write the README.</strong> What it does, a screenshot, how to run it locally, what you would do next. This is the "well-documented" and "continuity" evidence, and it takes twenty minutes.']},
+ {note:'tip', n:'The "what I would do next" section', p:'End the README with two or three things you deliberately left out and why. It converts every limitation from something an interviewer might find into evidence that you scope consciously — which is literally one of the listed duties. Nothing else you can write in twenty minutes signals as much judgement.'},
+ {note:'trap', n:'Do not start something you cannot finish by September 30', p:'A half-built ambitious project is worth less than a finished trivial one, in this process and in general. If it is Tuesday and it is not working, cut a feature rather than the deployment step.'}
+]},
+
+{id:'format', g:'Interview', t:'What the interview will probably be', k:'Inferred, not stated. The posting says nothing about the process, so treat this as a likely shape rather than fact.', b:[
+ {note:'why', n:'Be clear about what is known', p:'The listing does not describe the interview at all. Everything in this section is an inference from what the role is — a student-run organisation, a 10 hr/week entry-level developer position, a named student director, a late-September posting with an October 1 close. Prepare for this shape, but do not be thrown if the real thing differs.'},
+ {p:'Most likely: one conversation, twenty to forty minutes, in person on campus or over Zoom, with one to three people — plausibly the Associate Director you would report to and the Software branch lead. Expect it to be mostly conversational, with light technical questions and a walk-through of something you have built. A take-home or a live coding exercise is possible but less likely at this level; a whiteboard algorithm round is unlikely.'},
+ {p:'Interviewers here are students, often busy and not professionally trained at interviewing. Two consequences worth planning for. First, they may not drive the conversation well, so <strong>be ready to fill silence</strong> with your project walk-through. Second, they are choosing someone they will sit next to every week — so likeability and reliability weigh more heavily than they would at a company, and are not things you should be cynical about.'},
+ {h:'What they are deciding'},
+ {ul:['Can this person write code without constant supervision at ten hours a week?',
+  'Will they still be here in week nine? (This is the real one.)',
+  'Will they say "I do not know" instead of quietly shipping something broken?',
+  'Is a code review with them going to be pleasant or exhausting?',
+  'Do they care about who uses this software, or only about building it?']},
+ {h:'The five things to have ready before you walk in'},
+ {ol:['A two-minute project walk-through, out loud, timed. See <a href="#walkthrough">the drill</a>.',
+  'One story about something you broke or got wrong, and what you changed afterwards.',
+  'One sentence on why IRL specifically — the same one from supplemental answer two, said naturally.',
+  'One accessibility observation about your own project, from having actually checked it.',
+  'Three questions for them that a careful reader of the posting would ask. See <a href="#ask">Questions to ask</a>.']}
+]},
+
+{id:'behavioural', g:'Interview', t:'Behavioural questions', k:'Open each one for what they are really testing and a scaffold to answer from. Use your own material.', b:[
+ {p:'Answer these in the <strong>STAR</strong> shape — situation, task, action, result — but keep it conversational rather than recited: two sentences of context, three of what you did, one of how it turned out and what changed afterwards. The single most common failure is spending ninety seconds on context and ten on your own contribution.'},
+ {note:'tip', n:'Use "I" more than "we"', p:'Group projects invite the passive voice, and it makes your contribution invisible. Credit the team once, then say what <em>you</em> did. An interviewer cannot hire "we".'},
+ {qa:'Tell me about yourself.', why:'Not a biography request. They are checking whether you can be concise and whether you know which parts of yourself are relevant.', a:'<p>Sixty to ninety seconds, three beats: where you are now (year, major, what you are into technically), the one thing you have built that is most relevant, and why this role is the logical next step. End on the role so the conversation opens where you want it.</p><p>Do not start at high school. Do not list courses.</p>'},
+ {qa:'Why do you want to work at IRL?', why:'Whether you read the posting, and whether you will still care in February.', a:'<p>Use a reason that could not apply to any other employer: software for the campus community rather than for a metric, the pairing of a research branch with a software branch, accessibility written into the duties. Then add the honest self-interested half — you want to work on something real, with reviewers, that ships — because a purely altruistic answer sounds rehearsed.</p>'},
+ {qa:'Walk me through a project you are proud of.', why:'The core question of the interview. Technical judgement, ownership, and whether you can explain a thing to a person.', a:'<p>See <a href="#walkthrough">the walk-through drill</a> — it has a timed structure. Lead with the problem and the user, not the stack.</p>'},
+ {qa:'Tell me about a time you got stuck.', why:'Your debugging process, and whether you ask for help at a sensible point rather than too early or far too late.', a:'<p>Structure: what broke, what you assumed and why that was wrong, how you narrowed it down, when you asked for help. The interesting part is the narrowing — "I assumed the API was wrong, logged the actual response, and found I was reading <code>data.items</code> when the shape was <code>data.results</code>" is a better answer than any amount of persistence.</p><p>Name your help threshold explicitly: "about thirty minutes of no progress, then I ask with what I have already tried." That sentence is exactly what a branch lead wants to hear.</p>'},
+ {qa:'Tell me about a disagreement with a teammate.', why:'Whether you can disagree without it costing the team, and whether you can be wrong.', a:'<p>Pick something genuinely small and technical, not a grievance. Structure: the disagreement, what you each wanted and why, how it resolved, and what you did afterwards to keep it clean. Best if you deferred and it worked out, or you were wrong and said so.</p><p>Avoid the "my teammate did nothing" story. Even when true, it is unreadable from the outside and it makes you sound like a difficult person to sit next to.</p>'},
+ {qa:'How do you manage ten hours a week around your coursework?', why:'The reliability question, asked directly. This is arguably the most important question they will ask.', a:'<p>Be specific and modest: which days and hours are genuinely free, how you track commitments, and what you would do in week eight when midterms land. Say plainly that you would flag a crunch week in advance rather than going quiet — going quiet is the actual failure mode they have seen before.</p><p>Do not over-promise. "I can do fifteen if you need" reads as someone who will burn out in November.</p>'},
+ {qa:'Tell me about a time you received critical feedback.', why:'Whether code review with you will be productive.', a:'<p>One real instance, no defensiveness in the retelling, and a concrete change you kept. "I was told my variable names were unreadable, was annoyed for a day, then renamed them and started naming things after what they hold rather than what type they are" is a complete and good answer.</p>'},
+ {qa:'How do you work when requirements are vague?', why:'Directly from the duty about converting lead requirements into features.', a:'<p>Say that you write down your interpretation and confirm it before building, rather than either guessing or waiting. Concretely: restate the ask in your own words, list what you are assuming, name the smallest version you could ship, and ask one clarifying question. Then say you would rather send a small wrong thing early than a large wrong thing late.</p>'},
+ {qa:'What are you weakest at technically?', why:'Self-awareness, and whether you will hide problems.', a:'<p>Name something real, adjacent to the job, and say what you are doing about it. Backend data modelling, testing, and CSS layout are all safe honest answers. Avoid the disguised brag ("I care too much") and avoid naming the core requirement ("JavaScript, honestly").</p>'},
+ {qa:'Where do you see yourself after this?', why:'Whether you will leave in January for something shinier.', a:'<p>Be honest but bounded: you want to keep building software, and you intend to stay for the full term through June 2027. If you are genuinely aiming at an industry internship, frame this as the experience that makes you a credible candidate for one — which is true and does not read as disloyalty.</p>'},
+ {qa:'Do you have anything you want to add?', why:'A gift. Most people say no.', a:'<p>Have one thing banked: the accessibility pass you ran on your own project, the fact that you subscribed to the newsletter and read the last few issues, or the one duty in the posting you are most interested in and why. Thirty seconds, then stop.</p>'}
+]},
+
+{id:'technical', g:'Interview', t:'Technical questions, with answers', k:'Pitched where this posting pitches itself: one language, basic Git, web fundamentals. Open each for a model answer.', b:[
+ {p:'These are the questions a student interviewer actually asks for a role described as "at least one programming language" and "basic understanding of version control". Every answer below is short on purpose — in an interview, a clear three-sentence answer beats a five-minute one, and leaves room for the follow-up you want.'},
+ {qa:'What is the difference between <code>let</code>, <code>const</code> and <code>var</code>?', why:'The most common opening JavaScript question in existence. They are checking you write modern code.', a:'<p>"<code>let</code> and <code>const</code> are block-scoped; <code>var</code> is function-scoped and hoists, which causes bugs — the classic one is a loop where every callback ends up sharing a single variable. <code>const</code> prevents reassigning the binding, but not mutating the value, so a <code>const</code> array can still be pushed to. I default to <code>const</code>, use <code>let</code> when I need to reassign, and do not use <code>var</code>."</p><p class="lb">Follow-up they may ask</p><p>Why does the <code>var</code> loop print the same number three times. Answer: one shared binding, and by the time the callbacks run the loop has finished. <a href="index.html#scope">Full explanation</a>.</p>'},
+ {qa:'<code>==</code> or <code>===</code>?', why:'A one-line check on whether you have been bitten by coercion yet.', a:'<p>"<code>===</code>, always. <code>==</code> coerces the types before comparing, and the result is not even transitive — <code>0 == \'\'</code> and <code>0 == \'0\'</code> are both true but <code>\'\' == \'0\'</code> is false. The one exception I keep is <code>x == null</code>, which is a compact test for null or undefined."</p>'},
+ {qa:'What is a closure, and where have you used one?', why:'Separates people who have written JavaScript from people who have read about it. The second half of the question is the real one.', a:'<p>"A function keeps a reference to the scope it was defined in, so it can still use those variables after the outer function has returned. I used one for a debounce on a search box — the returned function holds onto a timer variable, so each keystroke clears the pending timer instead of firing a request per character."</p><p>Any real example works. A counter with private state, a memoised function, an event handler that captured configuration. <a href="index.html#closures">Full explanation</a>.</p>'},
+ {qa:'What does <code>this</code> refer to?', why:'A depth probe. A confident wrong answer is common here.', a:'<p>"It depends on how the function is called, not where it was written. A plain call gets <code>undefined</code> in strict mode, <code>obj.method()</code> gets <code>obj</code>, <code>call</code>/<code>apply</code>/<code>bind</code> let you set it, and <code>new</code> makes a fresh object. Arrow functions have no <code>this</code> of their own — they take it from the enclosing scope, which is why they are right for callbacks and wrong for methods."</p><p>If you only remember one sentence: look at what is immediately left of the parentheses. <a href="index.html#this">Full explanation</a>.</p>'},
+ {qa:'Explain async/await, or how JavaScript does two things at once.', why:'Whether you understand that it is one thread, which determines whether your code will block a UI.', a:'<p>"JavaScript runs on one thread, so slow work cannot block — it gets handed off and a callback runs later, scheduled by the event loop. A promise is an object standing in for a value that is not ready yet, and <code>await</code> pauses that one function until it settles, without blocking the thread. The mistake I watch for is awaiting three independent calls in sequence, which triples the wait; if they do not depend on each other, start them together and <code>await Promise.all</code>."</p><p><a href="index.html#loop">Event loop</a> · <a href="index.html#async">async / await</a></p>'},
+ {qa:'What happens when a <code>fetch</code> fails?', why:'Error handling in practice. Most junior code has none.', a:'<p>"Two different failures. A network error rejects the promise, so <code>try/catch</code> around the <code>await</code> catches it. But an HTTP 404 or 500 does <em>not</em> reject — <code>fetch</code> resolves and I have to check <code>res.ok</code> myself and throw. So: check <code>res.ok</code>, wrap in <code>try/catch</code>, and show the user something other than a blank screen."</p><p>This answer is short, specific, and quietly demonstrates you have shipped something.</p>'},
+ {qa:'Difference between <code>map</code>, <code>filter</code> and <code>reduce</code>?', why:'Basic fluency with the array methods you will use hourly.', a:'<p>"<code>map</code> transforms each element and returns an array of the same length. <code>filter</code> keeps the elements that pass a test, so it returns the same length or shorter. <code>reduce</code> collapses the array into one value of any shape — a sum, or an object if I am grouping."</p><p>Have the chained example ready: filter to the active rows, map to the fields you need, sort. <a href="index.html#arrays">Full explanation</a>.</p>'},
+ {qa:'Why does changing a copy of an object change the original?', why:'The reference-semantics question. Every aliasing bug traces back to it.', a:'<p>"Because assigning an object copies the reference, not the object — both names point at the same thing. Spread gives me a new top-level object, but any nested object is still shared, so it is a shallow copy. For a genuinely independent copy I use <code>structuredClone</code>."</p><p><a href="index.html#copies">Full explanation</a></p>'},
+ {qa:'How would you debug something that works locally but not when deployed?', why:'Process, not knowledge. A very good question for this role, and one many candidates flounder on.', a:'<p>Narrate a method rather than guessing a cause. "First I check the browser console and the network tab on the deployed site — most of the time it is a 404 on an asset, a failing request, or a CORS error, and the console says so. Then I compare what differs: environment variables, base paths, a case-sensitive filesystem on the server that my laptop did not care about, or a build step I only ever ran locally. I change one thing at a time so I know which fix worked."</p><p>The phrase "one thing at a time" is worth saying out loud. It is what separates debugging from thrashing.</p>'},
+ {qa:'What do you do in a merge conflict?', why:'Whether Git panics you.', a:'<p>"Read it rather than react to it. Git is telling me two branches changed the same lines and it will not guess — so I open the file, look at both sides, keep the correct combination, delete the markers, <code>git add</code> the file and continue. If it is a big conflict I will ask the other author what they intended rather than overwrite their work."</p>'},
+ {qa:'What makes code readable?', why:'Directly from the duty about clean, well-documented code. Also reveals your taste.', a:'<p>"Names that say what the thing is, small functions that do one thing, and early returns instead of deep nesting. I would rather a good name than a comment explaining a bad one — comments drift out of date and names get read every time. What I do document is the <em>why</em>: the constraint or the decision that the code cannot express by itself."</p>'},
+ {qa:'How do you make sure a page is accessible?', why:'If they ask this, it is because they care. See the dedicated section.', a:'<p>Use the ninety-second answer from <a href="#a11y">Accessibility</a>: semantic elements first, then three manual checks — keyboard-only pass, contrast checker, every input labelled. Mention that automated tools catch only part of it, which is why the keyboard pass matters.</p>'},
+ {qa:'Have you written tests?', why:'Honesty check. Most applicants at this level have not, and pretending is transparent.', a:'<p>If you have, name the framework and what you tested. If you have not: "Not properly — I have tested by hand and with console output. I know that does not scale, and it is on my list; the closest I have come is <mark>writing a function to be pure so I could check it in isolation</mark>." Then stop. An honest no plus a direction is a fine answer; an invented yes collapses under one follow-up.</p>'},
+ {qa:'Do you have any experience with our stack?', why:'A fit question that is really a learning-speed question.', a:'<p>If yes, be specific about what you built. If no: name the closest thing you do know, say what transfers, and give evidence that you pick things up — "I had not used <mark>X</mark> before <mark>project</mark>; I learned enough in a weekend to ship the first version, then improved it as I understood the patterns." Learning speed is the thing they are buying at this level.</p>'}
+]},
+
+{id:'walkthrough', g:'Interview', t:'The project walk-through drill', k:'Two minutes, spoken out loud, structured. Rehearse this more than anything else on this page.', b:[
+ {p:'"Walk me through a project" is the highest-weight question in the interview and the one people prepare least, because it feels like something you can wing. You cannot. Unrehearsed, it turns into a tour of implementation details with no shape, and the interviewer\'s attention is gone by the third minute.'},
+ {p:'Use this structure, in this order. It takes about two minutes and it answers the follow-ups before they are asked.'},
+ {table:[['Beat','Seconds','What to say'],
+  ['Problem','15','Who had what problem. "Picking classes meant cross-referencing three pages, and nobody could tell what they still needed."'],
+  ['What it does','20','The one-sentence description of the working thing. Offer the live URL here.'],
+  ['Stack, briefly','15','What you built it with and <em>why</em> that choice. "Plain JS because it is one page and I did not want a build step to maintain."'],
+  ['The hard part','35','Pick one real problem and how you solved it. This is the part they are actually evaluating — it shows how you think.'],
+  ['What you would change','20','One honest thing. "The state is scattered across three functions; I would pull it into one object." Shows judgement, and pre-empts the critique.'],
+  ['What you cut','15','One feature you deliberately dropped to ship. This is the scoping duty, demonstrated rather than claimed.']]},
+ {note:'tip', n:'Lead with the person, not the stack', p:'Starting with "it is a React app with a Node backend" tells the interviewer nothing about whether you can think. Starting with who was stuck and why makes everything after it make sense — and it matches a posting about public-facing products for the campus community.'},
+ {check:['Write the six beats out as bullet points. Not a script — bullets, so you sound like a person.',
+  'Say it out loud, timed. Twice. The first attempt will run four minutes and the second will find what to cut.',
+  'Prepare the "hard part" beat properly: it should be a real problem with a real resolution, not "it was hard to learn".',
+  'Have the live URL or repo open in a tab before the interview so you are not searching for it while talking.',
+  'Prepare one sentence for "why did you build this?" — "because I wanted it" is a good answer.']},
+ {note:'trap', n:'Do not narrate the code', p:'Nobody wants a function-by-function tour. If they want detail they will ask, and then you go deep on exactly the part they asked about. Volunteering depth is how a two-minute answer becomes six minutes of the interviewer waiting to speak.'}
+]},
+
+{id:'ask', g:'Interview', t:'Questions to ask them', k:'Three good ones, chosen to show you read the posting. This is the last impression you leave.', b:[
+ {p:'Pick three, adapted to what came up in the conversation. Each of these is built from something the posting actually says, which is the point — they demonstrate attention rather than just filling the slot.'},
+ {h:'About the work'},
+ {ul:['"What is the Software branch working on right now, and where would a new developer be most useful in the first few weeks?"',
+  '"How do features usually arrive — does the Research branch bring findings that turn into products, or does it come from ASUCD requests?"',
+  '"How does the team handle continuity across quarters when people graduate? The posting mentions documentation for that, and I am curious what has worked."',
+  '"What does code review look like in practice here — who reviews, and roughly how quickly?"']},
+ {h:'About accessibility and users'},
+ {ul:['"How do the ASUCD Accessibility Guidelines get applied day to day — is it part of review, or checked separately?"',
+  '"Do you get to see usage of what you build, or hear from students who use it?"']},
+ {h:'About you succeeding'},
+ {ul:['"What does a developer who works out well here look like three months in?"',
+  '"How are the ten hours usually structured — fixed blocks, or flexible around the weekly staff meeting?"',
+  '"What is the most common reason a new developer struggles in this role?"']},
+ {note:'trap', n:'Three questions not to ask', p:'<strong>Anything the posting answers.</strong> Pay, hours and end date are all stated — asking signals you did not read it. <strong>"What does IRL do?"</strong> Fatal. <strong>Nothing at all.</strong> "No, I think you covered everything" is the most forgettable way to end an interview; have your three banked even if they did cover everything.'},
+ {note:'tip', n:'Ask one question that could not be prepared', p:'The strongest question in any interview comes from something they said twenty minutes earlier. If a project gets mentioned, ask what the hardest part of it has been. It proves you were listening, which no prepared question can.'}
+]},
+
+{id:'plan', g:'Execution', t:'The five-day plan', k:'Today is September 26. The application closes October 1. Here is where the hours go.', b:[
+ {p:'Five days, and the work divides naturally: the artefacts first, because they feed the writing, and the writing before the deadline day so a portal problem cannot end it. If you only have one evening, do Day 1 and Day 4 and skip the rest.'},
+ {h:'Day 1 — Friday, September 26'},
+ {check:['Read the listing yourself, start to finish.',
+  'Resume rebuilt in the order from <a href="#resume">the resume section</a>. One page, live link in the header.',
+  'Decide now whether you are shipping a small project before the deadline. If yes, scope it to one screen tonight.',
+  'Run the <a href="#a11y">accessibility checklist</a> on something you have already built. Fix what you find.']},
+ {h:'Day 2 — Saturday, September 27'},
+ {check:['Build the project, or finish and deploy what you have. Deployment matters more than features.',
+  'Git drill: branch, two commits, PR against your own main, merge. Then force a conflict and resolve it.',
+  'Write the README, ending with what you would do next and why.']},
+ {h:'Day 3 — Sunday, September 28'},
+ {check:['Draft supplemental answer two — the four moves, about 250 words. It is the one that decides the interview.',
+  'Draft supplemental answer three. Read the real UC Davis Principles of Community first, and use the accessibility work from Day 1 as your concrete example.',
+  'Draft supplemental answer one. Complete, including non-technical jobs.']},
+ {h:'Day 4 — Monday, September 29'},
+ {check:['Reread all three answers cold. Cut a quarter of the words. Every answer improves.',
+  'Check every claim against the posting\'s vocabulary: scoping, deployment, code review, documentation, accessibility, public-facing.',
+  'Have one other person read answer two. Ask them only: "does this say why IRL, or just why software?"',
+  'Submit the application. Do not wait for the last day.']},
+ {h:'Day 5 — Tuesday, September 30'},
+ {check:['Confirm the submission went through and you have a confirmation.',
+  'Rehearse the <a href="#walkthrough">two-minute walk-through</a> out loud, twice, timed.',
+  'Prepare the three <a href="#ask">questions to ask</a> and the one story about something you got wrong.',
+  'Reread the technical answers once. Do not cram; you are past the bar.']},
+ {note:'tip', n:'If you have three hours total', p:'Resume header with a live link (20 min) · accessibility pass on an existing project (30 min) · supplemental answer two, four moves (60 min) · answer three with the accessibility example (40 min) · answer one (15 min) · submit. Skip the new project and the Git drill. An application that exists beats a perfect one you did not send.'}
+]},
+
+{id:'after', g:'Execution', t:'After the interview', k:'Two short things, and then leave it alone.', b:[
+ {p:'Send a thank-you email within a day. Keep it to four sentences — its job is to be a small, positive, easy-to-read signal, not a second attempt at the interview. One specific reference to what you discussed is what makes it land; without that it reads as a template, because it is one.'},
+ {draft:'Thank-you email', d:'<p>Subject: Thank you — IRL Developer</p><p>Hi <mark>name</mark>,</p><p>Thanks for taking the time today. I enjoyed hearing about <mark>the specific thing they mentioned — a project, how review works, the research-to-software handoff</mark>, and it made me more interested in the role rather than less.</p><p>One thing I did not say well: <mark>optional, only if there is a real thing — a question you fumbled, or a detail you left out. One sentence, not a paragraph.</mark></p><p>Either way, happy to send <mark>whatever you offered — the repo, the deployed link</mark> if it is useful. Thanks again.</p><p><mark>Name</mark></p>'},
+ {note:'trap', n:'One follow-up, then stop', p:'If they gave a timeline, wait until it has passed before following up once. If they did not, a week is reasonable. A second follow-up does not help and it is remembered. This is a student-run organisation staffed by people carrying full course loads — silence is much more likely to be a busy week than a decision about you.'},
+ {h:'If it does not work out'},
+ {p:'It is ten hours a week at a student organisation with one opening and a five-day window; the outcome has a large random component and very little to do with your worth as an engineer. The assets you built getting here — a deployed project, a real README, an accessibility habit, a rehearsed walk-through, and a Git workflow you do not have to think about — transfer intact to every application after this one, and they are worth considerably more than this particular job.'},
+ {p:'Ask to be kept in mind for the next cycle, and mean it. Student organisations turn over constantly, which cuts both ways: someone will leave in March.'}
+]}
+
+];
+
+const esc = s => String(s).replace(/&(?![a-zA-Z#0-9]+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+const doc = document.getElementById('doc');
+const nav = document.getElementById('nav');
+let totalChecks = 0;
+
+function tableHTML(rows){
+  const head = rows[0], body = rows.slice(1);
+  return '<div class="tw"><table><thead><tr>' + head.map(h=>'<th>'+h+'</th>').join('') +
+    '</tr></thead><tbody>' + body.map(r=>'<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('') +
+    '</tbody></table></div>';
+}
+
+function blockHTML(b, sid, idx){
+  if(b.note)   return '<div class="note '+b.note+'"><b class="hd">'+b.n+'</b><p>'+b.p+'</p></div>';
+  if(b.p)      return '<p>'+b.p+'</p>';
+  if(b.h)      return '<h3>'+b.h+'</h3>';
+  if(b.ul)     return '<ul>'+b.ul.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  if(b.ol)     return '<ol>'+b.ol.map(x=>'<li>'+x+'</li>').join('')+'</ol>';
+  if(b.table)  return tableHTML(b.table);
+  if(b.draft)  return '<div class="draft"><div class="dh"><span>'+b.draft+'</span>'+
+                      '<button class="dbtn" data-copy="'+sid+'-'+idx+'">Copy</button></div>'+
+                      '<div class="db" id="d-'+sid+'-'+idx+'">'+b.d+'</div></div>';
+  if(b.code)   return '<div class="cb"><div class="top"><span class="tag"><b>'+(b.l||'snippet')+'</b></span>'+
+                      '<button class="btn" data-copy="'+sid+'-'+idx+'">Copy</button></div>'+
+                      '<pre id="d-'+sid+'-'+idx+'">'+esc(b.code)+'</pre></div>';
+  if(b.qa)     return '<div class="qa"><button type="button"><i>'+b.qn+'</i><span>'+b.qa+'</span><u>+</u></button>'+
+                      '<div class="ans"><span class="lb">What they are testing</span><p>'+b.why+'</p>'+
+                      '<span class="lb">How to answer</span>'+b.a+'</div></div>';
+  if(b.check)  return '<div class="ck">'+b.check.map((x,i)=>{
+                        const key = 'prep.ck.'+sid+'.'+idx+'.'+i;
+                        totalChecks++;
+                        return '<button type="button" data-ck="'+key+'"><em></em><span>'+x+'</span></button>';
+                      }).join('')+'</div>';
+  return '';
+}
+
+let qn = 0;
+const html = C.map((s, i) => {
+  qn = 0;
+  const body = s.b.map((b, j) => {
+    if(b.qa) b.qn = String(++qn).padStart(2,'0');
+    return blockHTML(b, s.id, j);
+  }).join('');
+  return '<section id="'+s.id+'"><span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
+    '<h2>'+s.t+'</h2><p class="kicker">'+s.k+'</p>'+body+'</section>';
+}).join('');
+doc.innerHTML = html;
+
+let lastGroup = '';
+nav.innerHTML = C.map((s, i) => {
+  let out = '';
+  if(s.g !== lastGroup){ lastGroup = s.g; out += '<div class="grp">'+s.g+'</div>'; }
+  const title = s.t.replace(/<\/?em>/g,'');
+  return out + '<a href="#'+s.id+'" data-id="'+s.id+'"><i>'+String(i+1).padStart(2,'0')+'</i><b>'+title+'</b><u>✓</u></a>';
+}).join('');
+[...nav.querySelectorAll('a')].forEach((a,i)=>a.style.animationDelay=(i*.016)+'s');
+
+document.getElementById('ctot').textContent = totalChecks;
+
+function refreshChecks(){
+  let done = 0;
+  document.querySelectorAll('[data-ck]').forEach(btn=>{
+    const on = localStorage.getItem(btn.dataset.ck) === '1';
+    btn.classList.toggle('on', on);
+    if(on) done++;
+  });
+  document.getElementById('cdone').textContent = done;
+  C.forEach(s=>{
+    const sec = document.getElementById(s.id);
+    const boxes = [...sec.querySelectorAll('[data-ck]')];
+    const link = nav.querySelector('a[data-id="'+s.id+'"]');
+    if(!link) return;
+    link.classList.toggle('done', boxes.length>0 && boxes.every(b=>b.classList.contains('on')));
+  });
+}
+refreshChecks();
+
+document.addEventListener('click', e=>{
+  const ck = e.target.closest('[data-ck]');
+  if(ck){
+    const key = ck.dataset.ck;
+    localStorage.setItem(key, localStorage.getItem(key)==='1' ? '0' : '1');
+    refreshChecks();
+    return;
+  }
+  const qa = e.target.closest('.qa > button');
+  if(qa){ qa.parentElement.classList.toggle('open'); return; }
+  const cp = e.target.closest('[data-copy]');
+  if(cp){
+    const src = document.getElementById('d-'+cp.dataset.copy);
+    const text = src.tagName === 'PRE' ? src.textContent
+      : src.innerText.replace(/\n{3,}/g,'\n\n');
+    navigator.clipboard.writeText(text).then(()=>{
+      const old = cp.textContent; cp.textContent = 'Copied';
+      setTimeout(()=>cp.textContent = old, 1400);
+    }).catch(()=>{ cp.textContent = 'Press Cmd C'; });
+  }
+});
+
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('prep.theme') || 'ink';
+root.dataset.theme = savedTheme;
+function labelTheme(){
+  const t = root.dataset.theme === 'ink' ? 'Paper' : 'Ink';
+  document.getElementById('theme').textContent = t;
+}
+function flipTheme(){
+  root.dataset.theme = root.dataset.theme === 'ink' ? 'paper' : 'ink';
+  localStorage.setItem('prep.theme', root.dataset.theme);
+  labelTheme();
+}
+labelTheme();
+document.getElementById('theme').onclick = flipTheme;
+document.getElementById('theme2').onclick = flipTheme;
+
+const clock = document.getElementById('clock');
+(function countdown(){
+  const end = new Date(DEADLINE + 'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const days = Math.round((end - today) / 86400000);
+  const el = document.getElementById('cdays');
+  if(days > 1){ el.textContent = days + ' days left'; }
+  else if(days === 1){ el.textContent = 'tomorrow'; }
+  else if(days === 0){ el.textContent = 'today'; }
+  else { el.textContent = 'closed'; }
+  clock.classList.toggle('hot', days <= 2);
+})();
+
+const bar = document.getElementById('bar');
+const links = [...nav.querySelectorAll('a')];
+const secs = C.map(s=>document.getElementById(s.id));
+
+function keepLinkVisible(on){
+  if(!on) return;
+  const r = on.getBoundingClientRect(), nr = nav.getBoundingClientRect();
+  if(r.top >= nr.top + 16 && r.bottom <= nr.bottom - 16) return;
+  const delta = (r.top - nr.top) - (nav.clientHeight/2 - r.height/2);
+  nav.scrollTop = Math.max(0, Math.min(nav.scrollTop + delta, nav.scrollHeight - nav.clientHeight));
+}
+
+let ticking = false;
+function onScroll(){
+  if(ticking) return;
+  ticking = true;
+  requestAnimationFrame(()=>{
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+    let cur = 0;
+    secs.forEach((s, i)=>{ if(s && s.getBoundingClientRect().top < 130) cur = i; });
+    links.forEach((a, i)=>a.classList.toggle('on', i === cur));
+    keepLinkVisible(links[cur]);
+    ticking = false;
+  });
+}
+addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+function goTo(id){
+  const t = document.getElementById(id);
+  if(!t) return;
+  history.replaceState(null, '', '#'+id);
+  t.scrollIntoView({block:'start'});
+}
+
+const pal = document.getElementById('pal'), palq = document.getElementById('palq'), palr = document.getElementById('palr');
+let sel = 0, hits = [];
+function renderPal(){
+  const q = palq.value.trim().toLowerCase();
+  hits = C.map((s,i)=>({s,i})).filter(({s})=>
+    !q || (s.t+' '+s.k+' '+s.g).toLowerCase().includes(q));
+  sel = 0;
+  palr.innerHTML = hits.map(({s,i},n)=>
+    '<a href="#'+s.id+'" class="'+(n===0?'sel':'')+'"><i>'+String(i+1).padStart(2,'0')+'</i>'+
+    '<span>'+s.t.replace(/<\/?em>/g,'')+'</span></a>').join('')
+    || '<a style="color:var(--ink3)"><i></i><span>Nothing matches</span></a>';
+}
+function openPal(){ pal.classList.add('open'); palq.value=''; renderPal(); palq.focus(); }
+function closePal(){ pal.classList.remove('open'); }
+document.getElementById('find').onclick = openPal;
+document.getElementById('find2').onclick = openPal;
+palq.oninput = renderPal;
+palr.onclick = e=>{
+  const a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  e.preventDefault(); goTo(a.getAttribute('href').slice(1)); closePal();
+};
+pal.onclick = e=>{ if(e.target === pal) closePal(); };
+
+addEventListener('keydown', e=>{
+  if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); openPal(); return; }
+  if(!pal.classList.contains('open')) return;
+  if(e.key === 'Escape'){ closePal(); return; }
+  const as = [...palr.querySelectorAll('a')];
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    sel = Math.max(0, Math.min(as.length-1, sel + (e.key === 'ArrowDown' ? 1 : -1)));
+    as.forEach((a,i)=>a.classList.toggle('sel', i === sel));
+    as[sel]?.scrollIntoView({block:'nearest'});
+  }
+  if(e.key === 'Enter' && hits[sel]){ e.preventDefault(); goTo(hits[sel].s.id); closePal(); }
+});
+
+nav.onclick = e=>{
+  const a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  e.preventDefault(); goTo(a.getAttribute('href').slice(1));
+};
+
+if(location.hash) setTimeout(()=>goTo(location.hash.slice(1)), 60);
+</script>
+</body>
+</html>
